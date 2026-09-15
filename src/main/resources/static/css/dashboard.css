@@ -169,6 +169,18 @@
         gap: 10px;
     }
 
+    .profile-address {
+        margin-top: 12px;
+        font-size: 14px;
+        color: #555;
+        line-height: 1.5;
+    }
+
+    .profile-address i {
+        margin-right: 0px;
+        color: #1F4EA3;
+    }
+
 
     .profile-mini-image {
         width: 43px;
@@ -678,6 +690,7 @@
         .address-alert .btn {
             width: 100%;
         }
+
 
         .new-call-card {
             flex-direction: column;

@@ -51,7 +51,9 @@
 
 
             <a href="#"
-               class="menu-item">
+               class="menu-item"
+               data-bs-toggle="modal"
+               data-bs-target="#modalEndereco">
 
                 <i class="bi bi-geo-alt-fill"></i>
                 <span>Meu endereço</span>
@@ -176,10 +178,7 @@
                         <i th:if="${pessoa.foto == null}"
                            class="bi bi-person-fill">
                         </i>
-
                     </div>
-
-
                     <!-- BOTÃO PARA EDITAR FOTO -->
                     <button type="button"
                             class="btn-edit-photo"
@@ -209,6 +208,26 @@
 
                     </span>
 
+
+                    <!-- Endereço quando houver CEP -->
+                    <div th:if="${pessoa.cep != null and !pessoa.cep.isEmpty()}"
+                         class="profile-address">
+
+                        <i class="bi bi-geo-alt-fill"></i>
+
+                        <span>
+                            <span th:text="${pessoa.logradouro}"></span>,
+                            <span th:text="${pessoa.numero}"></span>
+                            <span th:if="${pessoa.bairro != null and !pessoa.bairro.isEmpty()}">
+                                - <span th:text="${pessoa.bairro}"></span>
+                            </span>
+                            <span th:if="${pessoa.cidade != null and !pessoa.cidade.isEmpty()}">
+                                - <span th:text="${pessoa.cidade}"></span>
+                            </span>
+                        </span>
+
+                    </div>
+
                 </div>
 
 
@@ -229,36 +248,29 @@
 
         </section>
 
-
         <!-- ================================================= -->
-        <!-- AVISO SOBRE ENDEREÇO                               -->
+        <!-- AVISO SOBRE ENDEREÇO                              -->
         <!-- ================================================= -->
 
-        <div class="alert address-alert d-flex align-items-center"
+        <div th:if="${pessoa.cep == null or #strings.isEmpty(#strings.trim(pessoa.cep))}"
+             class="alert address-alert d-flex align-items-center"
              role="alert">
 
             <div class="alert-icon">
-
                 <i class="bi bi-geo-alt-fill"></i>
-
             </div>
-
 
             <div class="flex-grow-1">
 
                 <strong>Complete seu endereço</strong>
 
                 <p class="mb-0">
-
                     Para abrir chamados, você precisa cadastrar
                     seu endereço.
-
                 </p>
 
             </div>
 
-
-            <!-- BOTÃO CORRIGIDO -->
             <button type="button"
                     class="btn btn-primary"
                     data-bs-toggle="modal"
@@ -269,7 +281,6 @@
             </button>
 
         </div>
-
 
         <!-- ================================================= -->
         <!-- ESTATÍSTICAS                                      -->
