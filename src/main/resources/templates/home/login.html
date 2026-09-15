@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login - Reclama Mairinque</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #222;
+        }
+
+        /* FUNDO */
+
+        .pagina-login {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pagina-login::before {
+            content: "";
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: #1F4EA3;
+            border-radius: 50%;
+            top: -250px;
+            left: -180px;
+            opacity: 0.08;
+        }
+
+        .pagina-login::after {
+            content: "";
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: #F2C230;
+            border-radius: 50%;
+            bottom: -220px;
+            right: -150px;
+            opacity: 0.12;
+        }
+
+        /* CARD */
+
+        .login-card {
+            width: 100%;
+            max-width: 430px;
+            background: #ffffff;
+            border-radius: 18px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
+            overflow: hidden;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* TOPO AZUL */
+
+        .login-topo {
+            background: #1F4EA3;
+            padding: 32px 25px 28px;
+            text-align: center;
+            position: relative;
+        }
+
+        .login-topo::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: #F2C230;
+        }
+
+        .logo {
+            max-width: 180px;
+            max-height: 75px;
+            object-fit: contain;
+            margin-bottom: 15px;
+        }
+
+        .logo-fallback {
+            color: white;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .logo-fallback span {
+            color: #F2C230;
+        }
+
+        .login-topo h1 {
+            color: #ffffff;
+            font-size: 23px;
+            margin-bottom: 7px;
+        }
+
+        .login-topo p {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 14px;
+        }
+
+        /* CONTEÚDO */
+
+        .login-conteudo {
+            padding: 32px;
+        }
+
+        .campo {
+            margin-bottom: 20px;
+        }
+
+        .campo label {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .input-container {
+            position: relative;
+        }
+
+        .input-container i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #1F4EA3;
+            font-size: 18px;
+        }
+
+        .input-container input {
+            width: 100%;
+            height: 48px;
+            border: 1px solid #d5d9df;
+            border-radius: 9px;
+            padding: 0 15px 0 45px;
+            font-size: 15px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .input-container input:focus {
+            border-color: #1F4EA3;
+            box-shadow: 0 0 0 3px rgba(31, 78, 163, 0.10);
+        }
+
+        /* SENHA */
+
+        .senha-link {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: -10px;
+            margin-bottom: 22px;
+        }
+
+        .senha-link a {
+            color: #1F4EA3;
+            font-size: 13px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .senha-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* BOTÃO */
+
+        .btn-entrar {
+            width: 100%;
+            height: 50px;
+            border: none;
+            border-radius: 9px;
+            background: #1F4EA3;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+        }
+
+        .btn-entrar:hover {
+            background: #173e83;
+            transform: translateY(-1px);
+        }
+
+        .btn-entrar i {
+            font-size: 18px;
+        }
+
+        /* DIVISOR */
+
+        .divisor {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 25px 0;
+            color: #999;
+            font-size: 13px;
+        }
+
+        .divisor::before,
+        .divisor::after {
+            content: "";
+            height: 1px;
+            background: #e2e2e2;
+            flex: 1;
+        }
+
+        /* CADASTRO */
+
+        .cadastro {
+            text-align: center;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .cadastro a {
+            color: #1F4EA3;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .cadastro a:hover {
+            text-decoration: underline;
+        }
+
+        /* ERRO */
+
+        .mensagem-erro {
+            background: #fff0f0;
+            border: 1px solid #f0b5b5;
+            color: #a50000;
+            padding: 11px 13px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 18px;
+        }
+
+        /* RODAPÉ */
+
+        .login-footer {
+            background: #1F4EA3;
+            color: #ffffff;
+            text-align: center;
+            font-size: 12px;
+            padding: 15px;
+        }
+
+        .login-footer span {
+            color: #F2C230;
+        }
+
+        /* CELULAR */
+
+        @media (max-width: 480px) {
+
+            .pagina-login {
+                padding: 15px;
+            }
+
+            .login-card {
+                border-radius: 14px;
+            }
+
+            .login-topo {
+                padding: 27px 20px 24px;
+            }
+
+            .login-conteudo {
+                padding: 25px 20px;
+            }
+
+            .login-topo h1 {
+                font-size: 21px;
+            }
+
+            .logo {
+                max-width: 155px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="pagina-login">
+
+    <div class="login-card">
+
+        <!-- CABEÇALHO -->
+        <div class="login-topo">
+
+            <!--
+                Se sua logo estiver em /img/logomk.png,
+                ela aparecerá aqui.
+            -->
+            <img src="/img/logomk.png"
+                 alt="Reclama Mairinque"
+                 class="logo">
+
+            <h1>Bem-vindo!</h1>
+
+            <p>Entre na sua conta para continuar.</p>
+
+        </div>
+
+
+        <!-- FORMULÁRIO -->
+        <div class="login-conteudo">
+
+            <!-- Mensagem de erro do Spring -->
+            <div class="mensagem-erro"
+                 th:if="${erro != null}"
+                 th:text="${erro}">
+            </div>
+
+            <div class="mensagem-erro"
+                 th:if="${param.logout}">
+                Você saiu da sua conta.
+            </div>
+
+
+            <form th:action="@{/login}"
+                  method="post">
+
+                <!-- E-MAIL -->
+                <div class="campo">
+
+                    <label for="email">
+                        E-mail
+                    </label>
+
+                    <div class="input-container">
+
+                        <i class="bi bi-envelope-fill"></i>
+
+                        <input type="email"
+                               id="email"
+                               name="email"
+                               placeholder="Digite seu e-mail"
+                               required>
+
+                    </div>
+
+                </div>
+
+
+                <!-- SENHA -->
+                <div class="campo">
+
+                    <label for="senha">
+                        Senha
+                    </label>
+
+                    <div class="input-container">
+
+                        <i class="bi bi-lock-fill"></i>
+
+                        <input type="password"
+                               id="senha"
+                               name="senha"
+                               placeholder="Digite sua senha"
+                               required>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ESQUECI A SENHA -->
+                <div class="senha-link">
+
+                    <a href="#">
+                        Esqueci minha senha
+                    </a>
+
+                </div>
+
+
+                <!-- ENTRAR -->
+                <button type="submit"
+                        class="btn-entrar">
+
+                    <i class="bi bi-box-arrow-in-right"></i>
+
+                    Entrar
+
+                </button>
+
+            </form>
+
+
+            <!-- DIVISOR -->
+            <div class="divisor">
+                ou
+            </div>
+
+
+            <!-- CADASTRO -->
+            <div class="cadastro">
+
+                Ainda não possui uma conta?
+
+                <a th:href="@{/pessoa/cadastro}">
+                    Criar conta
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- RODAPÉ -->
+        <div class="login-footer">
+
+            © 2027 Reclama Mairinque -
+            <span>Licença MIT.</span>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

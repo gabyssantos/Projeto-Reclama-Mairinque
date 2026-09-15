@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alterar Ocorrência</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f1f3f5;
+            margin: 0;
+        }
+
+        /* MENU */
+        .menu {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: white;
+            padding: 10px 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .menu img {
+            height: 40px;
+        }
+
+        .menu-center {
+            flex: 1;
+            text-align: center;
+        }
+
+        .menu-left, .menu-right {
+            width: 120px;
+        }
+
+        /* FORM CARD */
+        .form-container {
+            max-width: 600px;
+            margin: 30px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        /* BOTÕES */
+        .acoes {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-salvar { background: #198754; }
+        .btn-voltar { background: #6c757d; }
+
+        .btn:hover {
+            transform: scale(1.05);
+            opacity: 0.9;
+        }
+
+        /* BOTÃO CAMERA */
+        .btn-camera {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            background: #0d6efd;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* MODAL */
+        .modal-foto {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content-foto {
+            background: white;
+            padding: 25px;
+            width: 320px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .botoes-foto {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .botoes-foto button {
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            background: #198754;
+            color: white;
+            cursor: pointer;
+        }
+
+        .fechar {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        /* RESPONSIVO */
+        @media(max-width: 600px) {
+            .form-container {
+                margin: 15px;
+                padding: 20px;
+            }
+
+            .acoes {
+                flex-direction: column;
+            }
+
+            .menu {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .menu-left, .menu-right {
+                width: auto;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<!-- MENU -->
+<div class="menu">
+    <div class="menu-left">
+        <a th:href="@{/}">
+            <img src="/img/home.png">
+        </a>
+    </div>
+
+    <div class="menu-center">
+        <img src="/img/logomk.png">
+    </div>
+
+    <div class="menu-right">
+        <img src="/img/whatsapp.png">
+    </div>
+</div>
+
+<!-- FORM -->
+<div class="form-container">
+    <form id="form-cadastro"
+          th:action="@{/ocorrencia/salvar}"
+          th:object="${ocorrencia}"
+          method="post"
+          enctype="multipart/form-data">
+
+        <input type="hidden" th:field="*{id}">
+        <input type="hidden" th:field="*{fotoOcorrencia}">
+
+        <label>Nome Completo</label>
+        <input type="text" th:field="*{nome}" placeholder="Campo não obrigatório*">
+
+        <label>Telefone</label>
+        <input type="text" th:field="*{telefone}" placeholder="Campo não obrigatório*">
+
+        <h2>Alterar Reclamação</h2>
+
+        <input type="text" id="rua" required th:field="*{rua}" placeholder="Rua">
+        <input type="text" id="bairro" required th:field="*{bairro}" placeholder="Bairro">
+        <input type="text" id="descricao" required th:field="*{descricaoOcorrencia}" placeholder="Descrição">
+
+        <label for="ocorrencia"><strong>Selecione sua ocorrência:</strong></label>
+        <select id="ocorrencia" name="ocorrencia"  th:field="*{status}">
+            <option value="Limpeza da cidade">Limpeza da cidade</option>
+            <option value="Posto de saude">Posto de saude</option>
+            <option value="Ruas asfaltadas">Ruas asfaltadas</option>
+            <option value="Iluminacao publica">Iluminacao publica</option>
+            <option value="Coleta de lixo">Coleta de lixo</option>
+            <option value="Areas de lazer">Areas de lazer</option>
+            <option value="Horario de onibus">Horario de onibus</option>
+            <option value="Servicos digitais">Servicos digitais</option>
+        </select>
+
+        <!-- FOTO -->
+        <label>Foto</label>
+        <button type="button" class="btn-camera" onclick="abrirModalFoto()">
+            📷 Tirar / Selecionar Foto
+        </button>
+
+        <input type="file" id="inputArquivo" name="arquivoFoto" accept="image/*" hidden>
+
+        <!-- BOTÕES -->
+        <div class="acoes">
+            <button type="submit" class="btn btn-salvar">Salvar</button>
+            <a th:href="@{/ocorrencia/listagem}" class="btn btn-voltar">Voltar para Lista</a>
+        </div>
+
+    </form>
+</div>
+
+<!-- MODAL -->
+<div id="modalFoto" class="modal-foto">
+    <div class="modal-content-foto">
+
+        <h3>Selecionar Foto</h3>
+
+        <div class="botoes-foto">
+            <button onclick="selecionarArquivo()">📁 Arquivo</button>
+            <button onclick="iniciarCamera()">📷 Câmera</button>
+        </div>
+
+        <video id="video" width="100%" autoplay style="display:none;"></video>
+        <canvas id="canvas" style="display:none;"></canvas>
+
+        <button id="btnCapturar" onclick="capturarFoto()" style="display:none;">
+            📸 Capturar
+        </button>
+
+        <button class="fechar" onclick="fecharModalFoto()">Fechar</button>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<div th:replace="~{/fragments/footer.html :: footer}"></div>
+
+<!-- JS ORIGINAL (INALTERADO) -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const status = document.getElementById("status");
+        status.value = "ABERTA";
+
+        status.addEventListener("change", function() {
+            this.value = "ABERTA";
+        });
+    });
+
+    let stream;
+
+    function abrirModalFoto() {
+        document.getElementById("modalFoto").style.display = "flex";
+    }
+
+    function fecharModalFoto() {
+        document.getElementById("modalFoto").style.display = "none";
+
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+        }
+
+        document.getElementById("video").style.display = "none";
+        document.getElementById("btnCapturar").style.display = "none";
+    }
+
+    function selecionarArquivo() {
+        const input = document.getElementById("inputArquivo");
+        input.click();
+        fecharModalFoto();
+    }
+
+    function iniciarCamera() {
+        const video = document.getElementById("video");
+        const botao = document.getElementById("btnCapturar");
+
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function(s) {
+                stream = s;
+                video.srcObject = stream;
+
+                video.style.display = "block";
+                botao.style.display = "inline-block";
+            })
+            .catch(function(err) {
+                alert("Erro ao acessar câmera: " + err);
+            });
+    }
+
+    function capturarFoto() {
+        const video = document.getElementById("video");
+        const canvas = document.getElementById("canvas");
+        const input = document.getElementById("inputArquivo");
+
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(video, 0, 0);
+
+        canvas.toBlob(function(blob) {
+            const file = new File([blob], "foto.png", { type: "image/png" });
+
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file);
+
+            input.files = dataTransfer.files;
+
+            fecharModalFoto();
+        });
+    }
+</script>
+
+</body>
+</html>

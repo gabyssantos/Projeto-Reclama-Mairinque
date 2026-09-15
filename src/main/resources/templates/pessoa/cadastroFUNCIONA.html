@@ -1,0 +1,83 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="pt-BR">-->
+
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Teste Foto</title>-->
+<!--</head>-->
+
+<!--<body>-->
+
+<!--<h1>Teste de Upload</h1>-->
+<!--<form th:action="@{/pessoa/salvar}"-->
+<!--      th:object="${pessoa}"-->
+<!--      method="post"-->
+<!--      enctype="multipart/form-data">-->
+
+<!--    &lt;!&ndash; Nome &ndash;&gt;-->
+<!--    <div class="col-12">-->
+<!--        <label for="nome"-->
+<!--               class="form-label required">-->
+<!--            Nome completo-->
+<!--        </label>-->
+
+<!--        <input type="text"-->
+<!--               class="form-control"-->
+<!--               id="nome"-->
+<!--               th:field="*{nome}"-->
+<!--               placeholder="Digite o nome completo"-->
+<!--               required>-->
+
+<!--        <div class="text-danger small mt-1"-->
+<!--             th:if="${#fields.hasErrors('nome')}"-->
+<!--             th:errors="*{nome}">-->
+<!--        </div>-->
+<!--    </div>-->
+
+
+<!--    &lt;!&ndash; CPF &ndash;&gt;-->
+<!--    <div class="col-md-6">-->
+<!--        <label for="cpf" class="form-label">-->
+<!--            CPF-->
+<!--        </label>-->
+
+<!--        <input type="text"-->
+<!--               class="form-control"-->
+<!--               id="cpf"-->
+<!--               th:field="*{cpf}"-->
+<!--               placeholder="000.000.000-00">-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; E-mail &ndash;&gt;-->
+<!--    <div class="col-md-6">-->
+<!--        <label for="email"-->
+<!--               class="form-label required">-->
+<!--            E-mail-->
+<!--        </label>-->
+
+<!--        <input type="email"-->
+<!--               class="form-control"-->
+<!--               id="email"-->
+<!--               th:field="*{email}"-->
+<!--               placeholder="exemplo@email.com"-->
+<!--               required>-->
+
+<!--        <div class="text-danger small mt-1"-->
+<!--             th:if="${#fields.hasErrors('email')}"-->
+<!--             th:errors="*{email}">-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    <input type="file"-->
+<!--           id="fotoArquivo"-->
+<!--           name="fotoArquivo"-->
+<!--           accept="image/png,image/jpeg,image/webp">-->
+
+<!--    <button type="submit">-->
+<!--        Enviar foto-->
+<!--    </button>-->
+
+<!--</form>-->
+
+<!--</body>-->
+<!--</html>-->

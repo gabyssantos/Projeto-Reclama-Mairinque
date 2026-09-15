@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/head :: head('Cadastrar usuário')}">
+</head>
+
+<body>
+
+<div class="container-fluid p-0 m-0">
+
+    <!-- MENU -->
+    <div th:insert="~{fragments/menu :: menu-content}"></div>
+
+    <div class="row justify-content-center">
+
+        <div class="col-12 col-lg-10 col-xl-9">
+
+            <div class="card shadow-sm">
+
+                <!-- CABEÇALHO -->
+                <div class="card-header bg-primary text-white p-4">
+
+                    <h1 class="h3 mb-1">
+                        Cadastro de usuário
+                    </h1>
+
+                    <p class="mb-0 opacity-75">
+                        Preencha os dados para cadastrar uma nova pessoa.
+                    </p>
+
+                </div>
+
+                <div class="card-body p-4 p-md-5">
+
+                    <!--
+                    IMPORTANTE:
+                    enctype é necessário para enviar arquivos.
+                    -->
+                    <form th:action="@{/pessoa/salvar}"
+                          th:object="${pessoa}"
+                          method="post">
+
+                        <div id="abaDadosConteudo" class="aba-conteudo">
+                            <h2 class="section-title">Dados pessoais</h2>
+
+                            <div class="row g-3">
+
+                                <!-- NOME -->
+                                <div class="col-12 col-md-6">
+
+                                    <label for="nome"
+                                           class="form-label required">
+                                        Nome completo
+                                    </label>
+
+                                    <input type="text"
+                                           class="form-control"
+                                           id="nome"
+                                           th:field="*{nome}"
+                                           placeholder="Digite o nome completo"
+                                           required>
+
+                                    <div class="text-danger small mt-1"
+                                         th:if="${#fields.hasErrors('nome')}"
+                                         th:errors="*{nome}">
+                                    </div>
+
+                                </div>
+
+                                <!-- E-MAIL -->
+                                <div class="col-12 col-md-6">
+
+                                    <label for="email"
+                                           class="form-label required">
+                                        E-mail
+                                    </label>
+
+                                    <input type="email"
+                                           class="form-control"
+                                           id="email"
+                                           th:field="*{email}"
+                                           placeholder="exemplo@email.com"
+                                           required>
+
+                                    <div class="text-danger small mt-1"
+                                         th:if="${#fields.hasErrors('email')}"
+                                         th:errors="*{email}">
+                                    </div>
+
+                                </div>
+
+
+
+                                <!-- CPF -->
+                                <div class="col-12 col-md-6">
+
+                                    <label for="cpf"
+                                           class="form-label">
+                                        CPF
+                                    </label>
+
+                                    <input type="text"
+                                           class="form-control"
+                                           id="cpf"
+                                           th:field="*{cpf}"
+                                           placeholder="000.000.000-00">
+
+                                    <div class="text-danger small mt-1"
+                                         th:if="${#fields.hasErrors('cpf')}"
+                                         th:errors="*{cpf}">
+                                    </div>
+
+                                </div>
+
+                                <!-- TELEFONE -->
+                                <div class="col-12 col-md-6">
+
+                                    <label for="telefone"
+                                           class="form-label">
+                                        Telefone
+                                    </label>
+
+                                    <input type="tel"
+                                           class="form-control"
+                                           id="telefone"
+                                           th:field="*{telefone}"
+                                           placeholder="(00) 00000-0000">
+
+                                </div>
+                            </div>
+
+                            <h3 class="section-title mt-5">Acesso</h3>
+
+                            <div class="row g-3">
+
+                                <!-- SENHA -->
+                                <div class="col-12 col-md-6">
+
+                                    <label for="senha"
+                                           class="form-label required">
+                                        Senha
+                                    </label>
+
+                                    <input type="password"
+                                           class="form-control"
+                                           id="senha"
+                                           th:field="*{senha}"
+                                           placeholder="Digite uma senha"
+                                           required>
+
+                                </div>
+
+
+                                <!-- CONFIRMAR SENHA -->
+                                <div class="col-12 col-md-6">
+
+                                    <label for="confirmarSenha"
+                                           class="form-label required">
+                                        Confirmar senha
+                                    </label>
+
+                                    <input type="password"
+                                           class="form-control"
+                                           id="confirmarSenha"
+                                           name="confirmarSenha"
+                                           placeholder="Digite a senha novamente"
+                                           required>
+
+                                    <div class="text-danger small mt-1"
+                                         th:if="${senhaErro}"
+                                         th:text="${senhaErro}">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+
+                        </div>
+
+
+                        <div class="d-flex justify-content-between mt-4">
+
+                            <a th:href="@{/}"
+                               class="btn btn-outline-secondary">
+
+                                <i class="bi bi-arrow-left"></i>
+                                Voltar
+
+                            </a>
+
+
+                            <div class="d-flex gap-2">
+
+                                <a th:href="@{/pessoa/listagem}"
+                                   class="btn btn-outline-secondary">
+
+                                    Cancelar
+
+                                </a>
+
+                                <button type="submit"
+                                        class="btn btn-primary">
+
+                                    <i class="bi bi-check-lg"></i>
+                                    Cadastrar usuário
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ========================================================= -->
+<!-- FOOTER                                                    -->
+<!-- ========================================================= -->
+
+<div th:insert="~{fragments/footer :: footer-content}"></div>
+
+
+<!-- ========================================================= -->
+<!-- CSS                                                       -->
+<!-- ========================================================= -->
+
+<style>
+
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .card {
+        border: none;
+        border-radius: 12px;
+    }
+
+    .card-header {
+        border-radius: 12px 12px 0 0 !important;
+    }
+
+    .section-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #343a40;
+        border-bottom: 1px solid #dee2e6;
+        padding-bottom: 8px;
+        margin-bottom: 20px;
+    }
+
+    .required::after {
+        content: " *";
+        color: #dc3545;
+    }
+
+    .mapa-container {
+        width: 100%;
+        height: 350px;
+        border-radius: 10px;
+        overflow: hidden;
+        border: 1px solid #dee2e6;
+        background-color: #f8f9fa;
+    }
+
+    .mapa-container iframe {
+        width: 100%;
+        height: 100%;
+        border: 0;
+    }
+
+    #btnBuscarCep {
+        min-width: 90px;
+    }
+
+    /* =========================================================
+       ABAS
+       ========================================================= */
+
+    .cadastro-tabs {
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    .cadastro-tabs .nav-link {
+        color: #6c757d;
+        font-weight: 500;
+        border: none;
+        padding: 12px 20px;
+    }
+
+    .cadastro-tabs .nav-link:hover {
+        color: #0d6efd;
+    }
+
+    .cadastro-tabs .nav-link.active {
+        color: #0d6efd;
+        background-color: transparent;
+        border-bottom: 3px solid #0d6efd;
+    }
+
+    .aba-conteudo {
+        animation: aparecerAba 0.2s ease-in-out;
+    }
+
+    @keyframes aparecerAba {
+
+        from {
+            opacity: 0;
+            transform: translateY(5px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+    }
+
+</style>
+
+
+
+</body>
+</html>

@@ -1,0 +1,1778 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Registrar Reclamação</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f6f9;
+            color: #212529;
+        }
+
+
+        /* =====================================================
+           MENU
+        ===================================================== */
+
+        .menu {
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            background: #1F4EA3;
+
+            padding: 0 35px;
+
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+
+        .menu-left,
+        .menu-right {
+            width: 120px;
+        }
+
+
+        .menu-left img {
+            height: 38px;
+            width: auto;
+        }
+
+
+        .menu-center {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+
+        .menu-center img {
+            height: 45px;
+            width: auto;
+        }
+
+
+        .menu-right {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+
+        .menu-right img {
+            height: 35px;
+            width: auto;
+        }
+
+
+        /* =====================================================
+           CONTAINER
+        ===================================================== */
+
+        .page {
+            width: 100%;
+            padding: 35px 20px 50px;
+        }
+
+
+        .form-container {
+            width: 100%;
+            max-width: 850px;
+
+            margin: 0 auto;
+
+            background: white;
+
+            border-radius: 16px;
+
+            box-shadow:
+                0 8px 30px rgba(0,0,0,0.08);
+
+            overflow: hidden;
+        }
+
+
+        /* =====================================================
+           CABEÇALHO
+        ===================================================== */
+
+        .form-header {
+            background: #1F4EA3;
+
+            color: white;
+
+            padding: 30px 35px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 20px;
+        }
+
+
+        .header-icon {
+            width: 58px;
+            height: 58px;
+
+            border-radius: 14px;
+
+            background: #F2C230;
+
+            color: #1F4EA3;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 28px;
+
+            flex-shrink: 0;
+        }
+
+
+        .form-header h1 {
+            margin: 0 0 5px;
+
+            font-size: 26px;
+        }
+
+
+        .form-header p {
+            margin: 0;
+
+            color: rgba(255,255,255,0.85);
+
+            font-size: 15px;
+        }
+
+
+        /* =====================================================
+           FORMULÁRIO
+        ===================================================== */
+
+        form {
+            padding: 35px;
+        }
+
+
+        .section {
+            margin-bottom: 35px;
+        }
+
+
+        .section:last-of-type {
+            margin-bottom: 20px;
+        }
+
+
+        .section-title {
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            color: #1F4EA3;
+
+            font-size: 19px;
+
+            margin: 0 0 20px;
+
+            padding-bottom: 12px;
+
+            border-bottom: 1px solid #e9ecef;
+        }
+
+
+        .section-title span {
+            width: 34px;
+            height: 34px;
+
+            border-radius: 9px;
+
+            background: #eaf1ff;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 16px;
+        }
+
+
+        /* =====================================================
+           CAMPOS
+        ===================================================== */
+
+        .campo {
+            margin-bottom: 20px;
+        }
+
+
+        .linha {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 20px;
+        }
+
+
+        label {
+            display: block;
+
+            font-weight: bold;
+
+            font-size: 14px;
+
+            margin-bottom: 8px;
+
+            color: #343a40;
+        }
+
+
+        .obrigatorio {
+            color: #dc3545;
+        }
+
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+
+            padding: 12px 14px;
+
+            border: 1px solid #ced4da;
+
+            border-radius: 9px;
+
+            background: white;
+
+            font-family: inherit;
+
+            font-size: 15px;
+
+            outline: none;
+
+            transition: 0.2s;
+        }
+
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #1F4EA3;
+
+            box-shadow:
+                0 0 0 3px rgba(31,78,163,0.12);
+        }
+
+
+        textarea {
+            min-height: 130px;
+
+            resize: vertical;
+        }
+
+
+        .campo-ajuda {
+            display: block;
+
+            margin-top: 6px;
+
+            font-size: 12px;
+
+            color: #6c757d;
+        }
+
+
+        /* =====================================================
+           CATEGORIA
+        ===================================================== */
+
+        .categoria-container {
+            position: relative;
+        }
+
+
+        .categoria-container select {
+            cursor: pointer;
+        }
+
+
+        /* =====================================================
+           FOTO
+        ===================================================== */
+
+        .foto-area {
+            border: 2px dashed #ced4da;
+
+            border-radius: 12px;
+
+            padding: 25px;
+
+            text-align: center;
+
+            background: #fafbfc;
+
+            transition: 0.2s;
+        }
+
+
+        .foto-area:hover {
+            border-color: #1F4EA3;
+
+            background: #f7f9ff;
+        }
+
+
+        .foto-icon {
+            width: 55px;
+            height: 55px;
+
+            margin: 0 auto 12px;
+
+            border-radius: 50%;
+
+            background: #eaf1ff;
+
+            color: #1F4EA3;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 25px;
+        }
+
+
+        .foto-area strong {
+            display: block;
+
+            margin-bottom: 5px;
+        }
+
+
+        .foto-area p {
+            margin: 0 0 15px;
+
+            color: #6c757d;
+
+            font-size: 13px;
+        }
+
+
+        .btn-camera {
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 8px;
+
+            padding: 11px 20px;
+
+            background: #1F4EA3;
+
+            color: white;
+
+            border: none;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+            transition: 0.2s;
+        }
+
+
+        .btn-camera:hover {
+            background: #173d80;
+
+            transform: translateY(-1px);
+        }
+
+
+        #nomeArquivo {
+            margin-top: 12px;
+
+            font-size: 13px;
+
+            color: #198754;
+
+            font-weight: bold;
+        }
+
+
+        /* =====================================================
+           AVISO
+        ===================================================== */
+
+        .aviso {
+            display: flex;
+
+            gap: 12px;
+
+            padding: 15px;
+
+            background: #fff8df;
+
+            border: 1px solid #f2c230;
+
+            border-radius: 10px;
+
+            margin-bottom: 25px;
+
+            font-size: 13px;
+
+            color: #5c4a00;
+        }
+
+
+        .aviso-icon {
+            color: #d39e00;
+
+            font-size: 20px;
+
+            flex-shrink: 0;
+        }
+
+
+        .aviso strong {
+            display: block;
+
+            margin-bottom: 3px;
+        }
+
+
+        /* =====================================================
+           BOTÕES
+        ===================================================== */
+
+        .acoes {
+            display: flex;
+
+            justify-content: flex-end;
+
+            gap: 12px;
+
+            padding-top: 10px;
+        }
+
+
+        .btn {
+            min-width: 150px;
+
+            padding: 13px 20px;
+
+            border-radius: 9px;
+
+            text-align: center;
+
+            text-decoration: none;
+
+            font-weight: bold;
+
+            border: none;
+
+            cursor: pointer;
+
+            font-size: 14px;
+
+            transition: 0.2s;
+        }
+
+
+        .btn-voltar {
+            background: #e9ecef;
+
+            color: #495057;
+        }
+
+
+        .btn-voltar:hover {
+            background: #dee2e6;
+        }
+
+
+        .btn-salvar {
+            background: #1F4EA3;
+
+            color: white;
+        }
+
+
+        .btn-salvar:hover {
+            background: #173d80;
+
+            transform: translateY(-1px);
+        }
+
+
+        /* =====================================================
+           MODAL FOTO
+        ===================================================== */
+
+        .modal-foto {
+            display: none;
+
+            position: fixed;
+
+            z-index: 9999;
+
+            left: 0;
+            top: 0;
+
+            width: 100%;
+            height: 100%;
+
+            background: rgba(0,0,0,0.75);
+
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+        }
+
+
+        .modal-content-foto {
+            width: 100%;
+            max-width: 400px;
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 14px;
+
+            text-align: center;
+
+            box-shadow:
+                0 10px 40px rgba(0,0,0,0.25);
+        }
+
+
+        .modal-content-foto h3 {
+            margin-top: 0;
+
+            color: #1F4EA3;
+        }
+
+
+        .botoes-foto {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 12px;
+
+            margin: 25px 0;
+        }
+
+
+        .botoes-foto button {
+            padding: 12px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #1F4EA3;
+
+            color: white;
+
+            cursor: pointer;
+
+            font-weight: bold;
+        }
+
+
+        .botoes-foto button:hover {
+            background: #173d80;
+        }
+
+
+        .fechar {
+            background: #6c757d;
+
+            color: white;
+
+            border: none;
+
+            padding: 10px 20px;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+        }
+
+
+        video {
+            border-radius: 10px;
+
+            margin-bottom: 15px;
+        }
+
+
+        #btnCapturar {
+            background: #198754;
+
+            color: white;
+
+            border: none;
+
+            padding: 10px 18px;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            margin-bottom: 15px;
+        }
+
+
+        /* =====================================================
+           RESPONSIVO
+        ===================================================== */
+
+        @media (max-width: 700px) {
+
+            .menu {
+                height: auto;
+
+                min-height: 65px;
+
+                padding: 10px 15px;
+            }
+
+
+            .menu-left,
+            .menu-right {
+                width: 70px;
+            }
+
+
+            .menu-left img {
+                height: 32px;
+            }
+
+
+            .menu-center img {
+                height: 38px;
+            }
+
+
+            .menu-right img {
+                height: 28px;
+            }
+
+
+            .page {
+                padding: 20px 12px 35px;
+            }
+
+
+            .form-header {
+                padding: 23px 20px;
+            }
+
+
+            .header-icon {
+                width: 48px;
+                height: 48px;
+
+                font-size: 22px;
+            }
+
+
+            .form-header h1 {
+                font-size: 21px;
+            }
+
+
+            form {
+                padding: 25px 20px;
+            }
+
+
+            .linha {
+                grid-template-columns: 1fr;
+
+                gap: 0;
+            }
+
+
+            .acoes {
+                flex-direction: column-reverse;
+            }
+
+
+            .btn {
+                width: 100%;
+            }
+
+
+            .botoes-foto {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     MENU
+========================================================= -->
+
+<div class="menu">
+
+    <div class="menu-left">
+
+        <a th:href="@{/}">
+
+            <img src="/img/home.png"
+                 alt="Início">
+
+        </a>
+
+    </div>
+
+
+    <div class="menu-center">
+
+        <img src="/img/logomk.png"
+             alt="Reclama Mairinque">
+
+    </div>
+
+
+    <div class="menu-right">
+
+        <img src="/img/whatsapp.png"
+             alt="WhatsApp">
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     PÁGINA
+========================================================= -->
+
+<div class="page">
+
+
+    <div class="form-container">
+
+
+        <!-- =================================================
+             CABEÇALHO
+        ================================================== -->
+
+        <div class="form-header">
+
+
+            <div>
+
+                <h1>Registrar reclamação</h1>
+
+                <p>
+                    Ajude a melhorar Mairinque relatando um problema.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             FORMULÁRIO
+        ================================================== -->
+
+        <form id="form-cadastro"
+              th:action="@{/ocorrencia/salvar}"
+              th:object="${ocorrencia}"
+              method="post"
+              enctype="multipart/form-data">
+
+
+            <!-- =================================================
+                 DADOS DO SOLICITANTE
+            ================================================== -->
+
+            <div class="section">
+
+                <h2 class="section-title">
+
+                    <span>👤</span>
+
+                    Seus dados
+
+                </h2>
+
+
+                <div class="linha">
+
+                    <div class="campo">
+
+                        <label for="nome">
+
+                            Nome completo
+
+                        </label>
+
+
+                        <input type="text"
+                               id="nome"
+                               th:field="*{nome}"
+                               placeholder="Digite seu nome">
+
+
+                        <span class="campo-ajuda">
+                            Campo opcional
+                        </span>
+
+                    </div>
+
+
+                    <div class="campo">
+
+                        <label for="telefone">
+
+                            Telefone
+
+                        </label>
+
+
+                        <input type="text"
+                               id="telefone"
+                               th:field="*{telefone}"
+                               placeholder="(00) 00000-0000">
+
+
+                        <span class="campo-ajuda">
+                            Campo opcional
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 RECLAMAÇÃO
+            ================================================== -->
+
+            <div class="section">
+
+                <h2 class="section-title">
+
+                    <span>📢</span>
+
+                    Sobre o problema
+
+                </h2>
+
+
+                <div class="campo categoria-container">
+
+                    <label for="ocorrencia">
+
+                        Categoria
+                        <span class="obrigatorio">*</span>
+
+                    </label>
+
+
+                    <select id="ocorrencia"
+                            name="ocorrencia"
+                            th:field="*{status}"
+                            required>
+
+                        <option value="">
+                            Selecione o tipo de problema
+                        </option>
+
+                        <option value="Limpeza da cidade">
+                            Limpeza da cidade
+                        </option>
+
+                        <option value="Posto de saude">
+                            Posto de saúde
+                        </option>
+
+                        <option value="Ruas asfaltadas">
+                            Ruas asfaltadas
+                        </option>
+
+                        <option value="Iluminacao publica">
+                            Iluminação pública
+                        </option>
+
+                        <option value="Coleta de lixo">
+                            Coleta de lixo
+                        </option>
+
+                        <option value="Areas de lazer">
+                            Áreas de lazer
+                        </option>
+
+                        <option value="Horario de onibus">
+                            Horário de ônibus
+                        </option>
+
+                        <option value="Servicos digitais">
+                            Serviços digitais
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="descricao">
+
+                        Descrição da reclamação
+                        <span class="obrigatorio">*</span>
+
+                    </label>
+
+
+                    <textarea id="descricao"
+                              th:field="*{descricaoOcorrencia}"
+                              placeholder="Descreva o problema encontrado..."
+                              required></textarea>
+
+
+                    <span class="campo-ajuda">
+
+                        Explique onde está o problema e o que está acontecendo.
+
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 LOCALIZAÇÃO
+            ================================================== -->
+
+            <div class="section">
+
+                <h2 class="section-title">
+
+                    <span>📍</span>
+
+                    Local do problema
+
+                </h2>
+
+
+                <!-- CEP -->
+
+                <div class="campo">
+
+                    <label for="cep">
+                        CEP
+                    </label>
+
+                    <div style="display: flex; gap: 10px;">
+
+                        <input type="text"
+                               id="cep"
+                               name="cep"
+                               placeholder="00000-000"
+                               maxlength="9">
+
+                        <button type="button"
+                                id="btnBuscarCep"
+                                class="btn btn-salvar"
+                                style="min-width: 130px;">
+
+                            Buscar
+
+                        </button>
+
+                    </div>
+
+                    <span class="campo-ajuda">
+                        Campo opcional. Se informado, o endereço será preenchido automaticamente.
+                    </span>
+
+                </div>
+
+
+                <!-- RUA -->
+
+                <div class="campo">
+
+                    <label for="rua">
+
+                        Rua
+                        <span class="obrigatorio">*</span>
+
+                    </label>
+
+                    <input type="text"
+                           id="rua"
+                           th:field="*{rua}"
+                           placeholder="Digite o nome da rua"
+                           required>
+
+                </div>
+
+
+                <!-- BAIRRO -->
+
+                <div class="campo">
+
+                    <label for="bairro">
+
+                        Bairro
+                        <span class="obrigatorio">*</span>
+
+                    </label>
+
+                    <input type="text"
+                           id="bairro"
+                           th:field="*{bairro}"
+                           placeholder="Digite o bairro"
+                           required>
+
+                </div>
+
+
+                <!-- CIDADE E ESTADO -->
+
+                <div class="linha">
+
+                    <div class="campo">
+
+                        <label for="cidade">
+
+                            Cidade
+                            <span class="obrigatorio">*</span>
+
+                        </label>
+
+                        <input type="text"
+                               id="cidade"
+                               name="cidade"
+                               placeholder="Digite a cidade"
+                               required>
+
+                    </div>
+
+
+                    <div class="campo">
+
+                        <label for="estado">
+
+                            Estado
+                            <span class="obrigatorio">*</span>
+
+                        </label>
+
+                        <input type="text"
+                               id="estado"
+                               name="estado"
+                               placeholder="Digite o estado"
+                               required>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PONTO DE REFERÊNCIA -->
+
+                <div class="campo">
+
+                    <label for="pontoReferencia">
+
+                        Ponto de referência
+
+                    </label>
+
+                    <input type="text"
+                           id="pontoReferencia"
+                           name="pontoReferencia"
+                           placeholder="Ex.: próximo à escola, praça, mercado...">
+
+                    <span class="campo-ajuda">
+                        Campo opcional
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 FOTO
+            ================================================== -->
+
+            <div class="section">
+
+                <h2 class="section-title">
+
+                    <span>📷</span>
+
+                    Foto do problema
+
+                </h2>
+
+
+                <div class="foto-area">
+
+                    <div class="foto-icon">
+                        📷
+                    </div>
+
+
+                    <strong>
+                        Adicione uma foto
+                    </strong>
+
+
+                    <p>
+                        Uma foto pode ajudar a prefeitura a entender
+                        melhor o problema relatado.
+                    </p>
+
+
+                    <button type="button"
+                            class="btn-camera"
+                            onclick="abrirModalFoto()">
+
+                        📷
+                        Tirar / selecionar foto
+
+                    </button>
+
+
+                    <input type="file"
+                           id="inputArquivo"
+                           name="arquivoFoto"
+                           accept="image/*"
+                           hidden>
+
+
+                    <div id="nomeArquivo"></div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 AVISO
+            ================================================== -->
+
+            <div class="aviso">
+
+                <div class="aviso-icon">
+                    ⚠
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        Antes de enviar
+                    </strong>
+
+
+                    <div>
+                        Confira se as informações estão corretas.
+                        Sua reclamação será registrada para análise.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 BOTÕES
+            ================================================== -->
+
+            <div class="acoes">
+
+                <a th:href="@{/ocorrencia/listagem}"
+                   class="btn btn-voltar">
+
+                    Voltar
+
+                </a>
+
+
+                <button type="submit"
+                        class="btn btn-salvar">
+
+                    📤
+                    Enviar reclamação
+
+                </button>
+
+            </div>
+
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     MODAL FOTO
+========================================================= -->
+
+<div id="modalFoto"
+     class="modal-foto">
+
+
+    <div class="modal-content-foto">
+
+        <h3>
+            Adicionar foto
+        </h3>
+
+
+        <p>
+            Escolha como deseja adicionar a foto.
+        </p>
+
+
+        <div class="botoes-foto">
+
+            <button type="button"
+                    onclick="selecionarArquivo()">
+
+                📁
+                Arquivo
+
+            </button>
+
+
+            <button type="button"
+                    onclick="iniciarCamera()">
+
+                📷
+                Câmera
+
+            </button>
+
+        </div>
+
+
+        <video id="video"
+               width="100%"
+               autoplay
+               style="display:none;">
+        </video>
+
+
+        <canvas id="canvas"
+                style="display:none;">
+        </canvas>
+
+
+        <button type="button"
+                id="btnCapturar"
+                onclick="capturarFoto()"
+                style="display:none;">
+
+            📸
+            Capturar foto
+
+        </button>
+
+
+        <br>
+
+
+        <button type="button"
+                class="fechar"
+                onclick="fecharModalFoto()">
+
+            Fechar
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script>
+
+    /* =========================================================
+       BUSCAR ENDEREÇO PELO CEP
+    ========================================================= */
+
+    document
+        .getElementById("btnBuscarCep")
+        .addEventListener("click", buscarCep);
+
+
+    document
+        .getElementById("cep")
+        .addEventListener("blur", function () {
+
+            const cep =
+                this.value.replace(/\D/g, "");
+
+            // CEP é opcional
+            if (cep.length === 0) {
+                return;
+            }
+
+            buscarCep();
+
+        });
+
+
+    async function buscarCep() {
+
+        const cepInput =
+            document.getElementById("cep");
+
+        const cep =
+            cepInput.value.replace(/\D/g, "");
+
+
+        // =====================================================
+        // CEP OPCIONAL
+        // =====================================================
+
+        if (cep.length === 0) {
+            return;
+        }
+
+
+        // =====================================================
+        // CEP INVÁLIDO
+        // =====================================================
+
+        if (cep.length !== 8) {
+
+            alert("Digite um CEP válido.");
+
+            return;
+        }
+
+
+        try {
+
+            const resposta =
+                await fetch(
+                    `https://viacep.com.br/ws/${cep}/json/`
+                );
+
+
+            if (!resposta.ok) {
+
+                throw new Error(
+                    "Erro ao consultar o CEP."
+                );
+
+            }
+
+
+            const dados =
+                await resposta.json();
+
+
+            // =================================================
+            // CEP NÃO ENCONTRADO
+            // =================================================
+
+            if (dados.erro) {
+
+                alert("CEP não encontrado.");
+
+                return;
+            }
+
+
+            // =================================================
+            // PREENCHER ENDEREÇO
+            // =================================================
+
+            document.getElementById("rua").value =
+                dados.logradouro || "";
+
+
+            document.getElementById("bairro").value =
+                dados.bairro || "";
+
+
+            document.getElementById("cidade").value =
+                dados.localidade || "";
+
+
+            document.getElementById("estado").value =
+                dados.uf || "";
+
+        }
+        catch (erro) {
+
+            console.error(erro);
+
+            alert(
+                "Não foi possível buscar o endereço pelo CEP."
+            );
+
+        }
+
+    }
+
+
+    /* =========================================================
+       STATUS
+    ========================================================= */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function() {
+
+            const status =
+                document.getElementById("ocorrencia");
+
+            if (status) {
+
+                status.addEventListener(
+                    "change",
+                    function() {
+
+                        console.log(
+                            "Categoria selecionada:",
+                            this.value
+                        );
+
+                    }
+                );
+
+            }
+
+        }
+    );
+
+
+    /* =========================================================
+       MODAL
+    ========================================================= */
+
+    let stream;
+
+
+    function abrirModalFoto() {
+
+        document.getElementById(
+            "modalFoto"
+        ).style.display = "flex";
+
+    }
+
+
+    function fecharModalFoto() {
+
+        document.getElementById(
+            "modalFoto"
+        ).style.display = "none";
+
+
+        if (stream) {
+
+            stream
+                .getTracks()
+                .forEach(
+                    track => track.stop()
+                );
+
+            stream = null;
+
+        }
+
+
+        document.getElementById(
+            "video"
+        ).style.display = "none";
+
+
+        document.getElementById(
+            "btnCapturar"
+        ).style.display = "none";
+
+    }
+
+
+    /* =========================================================
+       SELECIONAR ARQUIVO
+    ========================================================= */
+
+    function selecionarArquivo() {
+
+        const input =
+            document.getElementById(
+                "inputArquivo"
+            );
+
+
+        input.click();
+
+
+        fecharModalFoto();
+
+    }
+
+
+    /* =========================================================
+       MOSTRAR NOME DA FOTO
+    ========================================================= */
+
+    document
+        .getElementById("inputArquivo")
+        .addEventListener(
+            "change",
+            function() {
+
+                const nome =
+                    document.getElementById(
+                        "nomeArquivo"
+                    );
+
+
+                if (this.files.length > 0) {
+
+                    nome.textContent =
+                        "✓ Foto selecionada: "
+                        + this.files[0].name;
+
+                } else {
+
+                    nome.textContent = "";
+
+                }
+
+            }
+        );
+
+
+    /* =========================================================
+       CÂMERA
+    ========================================================= */
+
+    function iniciarCamera() {
+
+        const video =
+            document.getElementById("video");
+
+        const botao =
+            document.getElementById(
+                "btnCapturar"
+            );
+
+
+        if (!navigator.mediaDevices ||
+            !navigator.mediaDevices.getUserMedia) {
+
+            alert(
+                "Seu navegador não permite acesso à câmera."
+            );
+
+            return;
+        }
+
+
+        navigator.mediaDevices
+            .getUserMedia({
+                video: true
+            })
+            .then(
+                function(s) {
+
+                    stream = s;
+
+                    video.srcObject =
+                        stream;
+
+                    video.style.display =
+                        "block";
+
+                    botao.style.display =
+                        "inline-block";
+
+                }
+            )
+            .catch(
+                function(err) {
+
+                    console.error(err);
+
+                    alert(
+                        "Não foi possível acessar a câmera."
+                    );
+
+                }
+            );
+
+    }
+
+
+    /* =========================================================
+       CAPTURAR FOTO
+    ========================================================= */
+
+    function capturarFoto() {
+
+        const video =
+            document.getElementById(
+                "video"
+            );
+
+
+        const canvas =
+            document.getElementById(
+                "canvas"
+            );
+
+
+        const input =
+            document.getElementById(
+                "inputArquivo"
+            );
+
+
+        canvas.width =
+            video.videoWidth;
+
+
+        canvas.height =
+            video.videoHeight;
+
+
+        const ctx =
+            canvas.getContext("2d");
+
+
+        ctx.drawImage(
+            video,
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+
+        canvas.toBlob(
+            function(blob) {
+
+                if (!blob) {
+                    return;
+                }
+
+
+                const file =
+                    new File(
+                        [blob],
+                        "foto.png",
+                        {
+                            type: "image/png"
+                        }
+                    );
+
+
+                const dataTransfer =
+                    new DataTransfer();
+
+
+                dataTransfer.items.add(
+                    file
+                );
+
+
+                input.files =
+                    dataTransfer.files;
+
+
+                document.getElementById(
+                    "nomeArquivo"
+                ).textContent =
+                    "✓ Foto capturada";
+
+
+                fecharModalFoto();
+
+            },
+            "image/png"
+        );
+
+    }
+
+
+    /* =========================================================
+       FECHAR CLICANDO FORA DO MODAL
+    ========================================================= */
+
+    document
+        .getElementById("modalFoto")
+        .addEventListener(
+            "click",
+            function(event) {
+
+                if (event.target === this) {
+
+                    fecharModalFoto();
+
+                }
+
+            }
+        );
+
+</script>
+
+
+</body>
+</html>

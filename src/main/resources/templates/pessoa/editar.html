@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/head :: head(${ 'Editar usuário - ' + pessoa.nome })}">
+</head>
+
+<body>
+
+<div class="container-fluid p-0 m-0">
+
+    <!-- ========================================================= -->
+    <!-- MENU                                                       -->
+    <!-- ========================================================= -->
+
+    <div th:insert="~{fragments/menu :: menu-content}"></div>
+
+
+    <div class="row justify-content-center">
+
+        <div class="col-12 col-lg-10 col-xl-9">
+
+            <div class="card shadow-sm border-0">
+
+                <!-- ================================================= -->
+                <!-- CABEÇALHO                                         -->
+                <!-- ================================================= -->
+
+                <div class="card-header bg-primary text-white p-4">
+
+                    <h1 class="h3 mb-1">
+                        Editar o usuário
+                        <span th:text="${pessoa.nome}"></span>
+                    </h1>
+
+                    <p class="mb-0 opacity-75">
+                        Edite os dados do usuário.
+                    </p>
+
+                </div>
+
+
+                <div class="card-body p-4 p-md-5">
+
+
+                    <form th:action="@{/pessoa/atualizar}"
+                          th:object="${pessoa}"
+                          method="post"
+                          enctype="multipart/form-data">
+
+                        <input type="hidden" th:field="*{id}">
+
+
+                        <!-- ========================================================= -->
+                        <!-- FOTO DO USUÁRIO                                           -->
+                        <!-- ========================================================= -->
+
+                        <div class="mb-4">
+
+                            <h2 class="section-title">
+                                Foto do usuário
+                            </h2>
+
+                            <div class="d-flex align-items-center gap-4 flex-wrap">
+
+                                <!-- FOTO ATUAL / PRÉ-VISUALIZAÇÃO -->
+                                <div id="containerFoto">
+
+                                    <img th:if="${pessoa.foto != null and !pessoa.foto.isEmpty()}"
+                                         th:src="@{'/uploads/' + ${pessoa.foto}}"
+                                         alt="Foto do usuário"
+                                         id="previewFoto"
+                                         class="foto-perfil">
+
+                                    <div th:unless="${pessoa.foto != null and !pessoa.foto.isEmpty()}"
+                                         id="semFoto"
+                                         class="foto-perfil d-flex align-items-center justify-content-center">
+
+                                        <span class="text-muted">
+                                            Sem foto
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- BOTÃO EDITAR FOTO -->
+                                <div>
+
+                                    <label for="foto"
+                                           class="btn btn-primary">
+
+                                        <i class="bi bi-camera"></i>
+                                        Editar foto
+
+                                    </label>
+
+
+                                    <input type="file"
+                                           id="foto"
+                                           name="foto"
+                                           accept="image/*"
+                                           class="d-none">
+
+
+                                    <div class="small text-muted mt-2">
+                                        Selecione uma nova foto.
+                                    </div>
+
+
+                                    <!-- NOME DO ARQUIVO -->
+                                    <div id="nomeArquivo"
+                                         class="small text-success mt-1">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ================================================= -->
+                        <!-- DADOS PESSOAIS                                    -->
+                        <!-- ================================================= -->
+
+                        <h2 class="section-title">
+                            Dados pessoais
+                        </h2>
+
+
+                        <div class="row g-3">
+
+                            <!-- NOME -->
+                            <div class="col-12">
+
+                                <label for="nome"
+                                       class="form-label required">
+                                    Nome completo
+                                </label>
+
+                                <input type="text"
+                                       class="form-control"
+                                       id="nome"
+                                       th:field="*{nome}"
+                                       placeholder="Digite o nome completo"
+                                       required>
+
+                                <div class="text-danger small mt-1"
+                                     th:if="${#fields.hasErrors('nome')}"
+                                     th:errors="*{nome}">
+                                </div>
+
+                            </div>
+
+
+                            <!-- CPF -->
+                            <div class="col-md-6">
+
+                                <label for="cpf"
+                                       class="form-label">
+                                    CPF
+                                </label>
+
+                                <input type="text"
+                                       class="form-control"
+                                       id="cpf"
+                                       th:field="*{cpf}"
+                                       placeholder="000.000.000-00">
+
+                                <div class="text-danger small mt-1"
+                                     th:if="${#fields.hasErrors('cpf')}"
+                                     th:errors="*{cpf}">
+                                </div>
+
+                            </div>
+
+
+                            <!-- EMAIL -->
+                            <div class="col-md-6">
+
+                                <label for="email"
+                                       class="form-label required">
+                                    E-mail
+                                </label>
+
+                                <input type="email"
+                                       class="form-control"
+                                       id="email"
+                                       th:field="*{email}"
+                                       placeholder="exemplo@email.com"
+                                       required>
+
+                                <div class="text-danger small mt-1"
+                                     th:if="${#fields.hasErrors('email')}"
+                                     th:errors="*{email}">
+                                </div>
+
+                            </div>
+
+
+                            <!-- TELEFONE -->
+                            <div class="col-md-6">
+
+                                <label for="telefone"
+                                       class="form-label">
+                                    Telefone
+                                </label>
+
+                                <input type="tel"
+                                       class="form-control"
+                                       id="telefone"
+                                       th:field="*{telefone}"
+                                       placeholder="(00) 00000-0000">
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ================================================= -->
+                        <!-- ENDEREÇO                                          -->
+                        <!-- ================================================= -->
+
+                        <h2 class="section-title mt-5">
+                            Endereço
+                        </h2>
+
+
+                        <div class="row g-3">
+
+                            <!-- CEP -->
+                            <div class="col-md-5">
+
+                                <label for="cep"
+                                       class="form-label">
+                                    CEP
+                                </label>
+
+                                <div class="input-group">
+
+                                    <input type="text"
+                                           class="form-control"
+                                           id="cep"
+                                           th:field="*{cep}"
+                                           placeholder="00000-000"
+                                           maxlength="9">
+
+                                    <button type="button"
+                                            class="btn btn-primary"
+                                            id="btnBuscarCep">
+
+                                        Buscar
+
+                                    </button>
+
+                                </div>
+
+                                <div id="mensagemCep"
+                                     class="small mt-2">
+                                </div>
+
+                            </div>
+
+
+                            <!-- LOGRADOURO -->
+                            <div class="col-md-7">
+
+                                <label for="logradouro"
+                                       class="form-label">
+                                    Logradouro
+                                </label>
+
+                                <input type="text"
+                                       class="form-control"
+                                       id="logradouro"
+                                       th:field="*{logradouro}"
+                                       placeholder="Rua, Avenida, etc.">
+
+                            </div>
+
+
+                            <!-- NÚMERO -->
+                            <div class="col-md-4">
+
+                                <label for="numero"
+                                       class="form-label">
+                                    Número
+                                </label>
+
+                                <input type="text"
+                                       class="form-control"
+                                       id="numero"
+                                       th:field="*{numero}"
+                                       placeholder="Número">
+
+                            </div>
+
+
+                            <!-- COMPLEMENTO -->
+                            <div class="col-md-8">
+
+                                <label for="complemento"
+                                       class="form-label">
+                                    Complemento
+                                </label>
+
+                                <input type="text"
+                                       class="form-control"
+                                       id="complemento"
+                                       th:field="*{complemento}"
+                                       placeholder="Apartamento, bloco, etc.">
+
+                            </div>
+
+
+                            <!-- BAIRRO -->
+                            <div class="col-md-6">
+
+                                <label for="bairro"
+                                       class="form-label">
+                                    Bairro
+                                </label>
+
+                                <input type="text"
+                                       class="form-control"
+                                       id="bairro"
+                                       th:field="*{bairro}"
+                                       placeholder="Bairro">
+
+                            </div>
+
+
+                            <!-- CIDADE -->
+                            <div class="col-md-6">
+
+                                <label for="cidade"
+                                       class="form-label">
+                                    Cidade
+                                </label>
+
+                                <input type="text"
+                                       class="form-control"
+                                       id="cidade"
+                                       th:field="*{cidade}"
+                                       placeholder="Cidade">
+
+                            </div>
+
+
+                            <!-- ESTADO -->
+                            <div class="col-md-6">
+
+                                <label for="estado"
+                                       class="form-label">
+                                    Estado
+                                </label>
+
+                                <select class="form-select"
+                                        id="estado"
+                                        th:field="*{estado}">
+
+                                    <option value="">
+                                        Selecione o estado
+                                    </option>
+
+                                    <option value="AC">Acre</option>
+                                    <option value="AL">Alagoas</option>
+                                    <option value="AP">Amapá</option>
+                                    <option value="AM">Amazonas</option>
+                                    <option value="BA">Bahia</option>
+                                    <option value="CE">Ceará</option>
+                                    <option value="DF">Distrito Federal</option>
+                                    <option value="ES">Espírito Santo</option>
+                                    <option value="GO">Goiás</option>
+                                    <option value="MA">Maranhão</option>
+                                    <option value="MT">Mato Grosso</option>
+                                    <option value="MS">Mato Grosso do Sul</option>
+                                    <option value="MG">Minas Gerais</option>
+                                    <option value="PA">Pará</option>
+                                    <option value="PB">Paraíba</option>
+                                    <option value="PR">Paraná</option>
+                                    <option value="PE">Pernambuco</option>
+                                    <option value="PI">Piauí</option>
+                                    <option value="RJ">Rio de Janeiro</option>
+                                    <option value="RN">Rio Grande do Norte</option>
+                                    <option value="RS">Rio Grande do Sul</option>
+                                    <option value="RO">Rondônia</option>
+                                    <option value="RR">Roraima</option>
+                                    <option value="SC">Santa Catarina</option>
+                                    <option value="SP">São Paulo</option>
+                                    <option value="SE">Sergipe</option>
+                                    <option value="TO">Tocantins</option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ================================================= -->
+                        <!-- LOCALIZAÇÃO                                       -->
+                        <!-- ================================================= -->
+
+                        <h2 class="section-title mt-5">
+                            Localização
+                        </h2>
+
+
+                        <div class="row g-3">
+
+                            <!-- LATITUDE -->
+                            <div class="col-md-6">
+
+                                <label for="latitude"
+                                       class="form-label">
+                                    Latitude
+                                </label>
+
+                                <input type="number"
+                                       class="form-control"
+                                       id="latitude"
+                                       th:field="*{latitude}"
+                                       step="any"
+                                       placeholder="-23.000000"
+                                       readonly>
+
+                            </div>
+
+
+                            <!-- LONGITUDE -->
+                            <div class="col-md-6">
+
+                                <label for="longitude"
+                                       class="form-label">
+                                    Longitude
+                                </label>
+
+                                <input type="number"
+                                       class="form-control"
+                                       id="longitude"
+                                       th:field="*{longitude}"
+                                       step="any"
+                                       placeholder="-47.000000"
+                                       readonly>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- MENSAGEM LOCALIZAÇÃO -->
+
+                        <div id="mensagemLocalizacao"
+                             class="small mt-2">
+                        </div>
+
+
+                        <!-- ================================================= -->
+                        <!-- MAPA                                               -->
+                        <!-- ================================================= -->
+
+                        <div class="mt-4">
+
+                            <label class="form-label">
+                                Localização no mapa
+                            </label>
+
+                            <div id="mapa"
+                                 class="mapa-container">
+
+                                <div class="d-flex
+                                            justify-content-center
+                                            align-items-center
+                                            h-100
+                                            text-muted">
+
+                                    Localização ainda não carregada.
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ================================================= -->
+                        <!-- BOTÕES                                             -->
+                        <!-- ================================================= -->
+
+                        <hr class="my-4">
+
+
+                        <div class="d-flex justify-content-end gap-2">
+
+                            <a th:href="@{/pessoa/listagem}"
+                               class="btn btn-outline-secondary">
+
+                                Cancelar
+
+                            </a>
+
+
+                            <button type="submit"
+                                    class="btn btn-primary">
+
+                                Salvar alterações
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ========================================================= -->
+<!-- FOOTER                                                    -->
+<!-- ========================================================= -->
+
+<div th:insert="~{fragments/footer :: footer-content}"></div>
+
+
+<!-- ========================================================= -->
+<!-- LEAFLET                                                   -->
+<!-- ========================================================= -->
+
+<link rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      crossorigin=""/>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        crossorigin=""></script>
+
+
+<!-- ========================================================= -->
+<!-- CSS                                                       -->
+<!-- ========================================================= -->
+
+<style>
+
+    body {
+        background-color: #f8f9fa;
+    }
+
+
+    .card {
+        border: none;
+        border-radius: 12px;
+    }
+
+
+    .card-header {
+        border-radius: 12px 12px 0 0 !important;
+    }
+
+
+    .section-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #343a40;
+        border-bottom: 1px solid #dee2e6;
+        padding-bottom: 8px;
+        margin-bottom: 20px;
+    }
+
+
+    .required::after {
+        content: " *";
+        color: #dc3545;
+    }
+
+
+    /* ========================================================= */
+    /* FOTO                                                       */
+    /* ========================================================= */
+
+    .foto-perfil {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 3px solid #dee2e6;
+        background-color: #f8f9fa;
+        display: block;
+    }
+
+
+    /* ========================================================= */
+    /* MAPA                                                       */
+    /* ========================================================= */
+
+    .mapa-container {
+        width: 100%;
+        height: 350px;
+        border-radius: 10px;
+        overflow: hidden;
+        border: 1px solid #dee2e6;
+        background-color: #f8f9fa;
+    }
+
+
+    #btnBuscarCep {
+        min-width: 90px;
+    }
+
+</style>
+
+
+<!-- ========================================================= -->
+<!-- JAVASCRIPT                                                -->
+<!-- ========================================================= -->
+
+<script>
+
+    // =========================================================
+    // PRÉ-VISUALIZAÇÃO DA FOTO
+    // =========================================================
+
+    const campoFoto =
+        document.getElementById("foto");
+
+
+    if (campoFoto) {
+
+        campoFoto.addEventListener(
+            "change",
+            function () {
+
+                const arquivo =
+                    this.files[0];
+
+
+                if (!arquivo) {
+                    return;
+                }
+
+
+                // Verifica se é imagem
+                if (!arquivo.type.startsWith("image/")) {
+
+                    alert("Selecione uma imagem válida.");
+
+                    this.value = "";
+
+                    return;
+                }
+
+
+                const leitor =
+                    new FileReader();
+
+
+                leitor.onload =
+                    function (event) {
+
+                        const container =
+                            document.getElementById("containerFoto");
+
+
+                        let preview =
+                            document.getElementById("previewFoto");
+
+
+                        const semFoto =
+                            document.getElementById("semFoto");
+
+
+                        // Remove "Sem foto"
+                        if (semFoto) {
+                            semFoto.remove();
+                        }
+
+
+                        // Cria a imagem caso ainda não exista
+                        if (!preview) {
+
+                            preview =
+                                document.createElement("img");
+
+
+                            preview.id =
+                                "previewFoto";
+
+
+                            preview.className =
+                                "foto-perfil";
+
+
+                            preview.alt =
+                                "Pré-visualização da foto";
+
+
+                            container.appendChild(
+                                preview
+                            );
+
+                        }
+
+
+                        // Mostra a imagem escolhida
+                        preview.src =
+                            event.target.result;
+
+
+                        // Mostra o nome do arquivo
+                        const nomeArquivo =
+                            document.getElementById(
+                                "nomeArquivo"
+                            );
+
+
+                        if (nomeArquivo) {
+
+                            nomeArquivo.textContent =
+                                arquivo.name;
+
+                        }
+
+                    };
+
+
+                leitor.readAsDataURL(
+                    arquivo
+                );
+
+            }
+        );
+
+    }
+
+
+    // =========================================================
+    // VARIÁVEIS DO MAPA
+    // =========================================================
+
+    let mapa = null;
+    let marcador = null;
+
+
+    // =========================================================
+    // CAMPOS
+    // =========================================================
+
+    const campoCep =
+        document.getElementById("cep");
+
+    const campoLogradouro =
+        document.getElementById("logradouro");
+
+    const campoBairro =
+        document.getElementById("bairro");
+
+    const campoCidade =
+        document.getElementById("cidade");
+
+    const campoEstado =
+        document.getElementById("estado");
+
+    const campoLatitude =
+        document.getElementById("latitude");
+
+    const campoLongitude =
+        document.getElementById("longitude");
+
+    const mensagemCep =
+        document.getElementById("mensagemCep");
+
+    const mensagemLocalizacao =
+        document.getElementById("mensagemLocalizacao");
+
+    const botaoBuscarCep =
+        document.getElementById("btnBuscarCep");
+
+
+    // =========================================================
+    // MÁSCARA DO CEP
+    // =========================================================
+
+    campoCep.addEventListener(
+        "input",
+        function () {
+
+            let valor =
+                this.value.replace(/\D/g, "");
+
+
+            valor =
+                valor.substring(0, 8);
+
+
+            if (valor.length > 5) {
+
+                valor =
+                    valor.substring(0, 5)
+                    + "-"
+                    + valor.substring(5);
+
+            }
+
+
+            this.value =
+                valor;
+
+        }
+    );
+
+
+    // =========================================================
+    // BOTÃO BUSCAR CEP
+    // =========================================================
+
+    botaoBuscarCep.addEventListener(
+        "click",
+        buscarCep
+    );
+
+
+    // =========================================================
+    // BUSCAR AO SAIR DO CAMPO
+    // =========================================================
+
+    campoCep.addEventListener(
+        "blur",
+        function () {
+
+            const cep =
+                campoCep.value.replace(/\D/g, "");
+
+
+            if (cep.length === 8) {
+
+                buscarCep();
+
+            }
+
+        }
+    );
+
+
+    // =========================================================
+    // ENTER NO CEP
+    // =========================================================
+
+    campoCep.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (event.key === "Enter") {
+
+                event.preventDefault();
+
+                buscarCep();
+
+            }
+
+        }
+    );
+
+
+    // =========================================================
+    // BUSCAR CEP
+    // =========================================================
+
+    async function buscarCep() {
+
+        const cep =
+            campoCep.value.replace(/\D/g, "");
+
+
+        if (cep.length !== 8) {
+
+            mensagemCep.innerHTML =
+                '<span class="text-danger">' +
+                'Digite um CEP válido com 8 números.' +
+                '</span>';
+
+            return;
+
+        }
+
+
+        botaoBuscarCep.disabled =
+            true;
+
+
+        mensagemCep.innerHTML =
+            '<span class="text-info">' +
+            'Buscando endereço...' +
+            '</span>';
+
+
+        mensagemLocalizacao.innerHTML =
+            "";
+
+
+        try {
+
+            const resposta =
+                await fetch(
+                    "https://viacep.com.br/ws/"
+                    + cep
+                    + "/json/"
+                );
+
+
+            if (!resposta.ok) {
+
+                throw new Error(
+                    "Erro ao consultar ViaCEP."
+                );
+
+            }
+
+
+            const dados =
+                await resposta.json();
+
+
+            if (dados.erro) {
+
+                mensagemCep.innerHTML =
+                    '<span class="text-danger">' +
+                    'CEP não encontrado.' +
+                    '</span>';
+
+                limparEndereco();
+
+                return;
+
+            }
+
+
+            campoLogradouro.value =
+                dados.logradouro || "";
+
+
+            campoBairro.value =
+                dados.bairro || "";
+
+
+            campoCidade.value =
+                dados.localidade || "";
+
+
+            campoEstado.value =
+                dados.uf || "";
+
+
+            mensagemCep.innerHTML =
+                '<span class="text-success">' +
+                'Endereço encontrado com sucesso!' +
+                '</span>';
+
+
+            await buscarCoordenadas();
+
+
+        } catch (erro) {
+
+            console.error(
+                "Erro:",
+                erro
+            );
+
+
+            mensagemCep.innerHTML =
+                '<span class="text-danger">' +
+                'Não foi possível consultar o CEP.' +
+                '</span>';
+
+        } finally {
+
+            botaoBuscarCep.disabled =
+                false;
+
+        }
+
+    }
+
+
+    // =========================================================
+    // BUSCAR COORDENADAS
+    // =========================================================
+
+    async function buscarCoordenadas() {
+
+        const logradouro =
+            campoLogradouro.value.trim();
+
+        const bairro =
+            campoBairro.value.trim();
+
+        const cidade =
+            campoCidade.value.trim();
+
+        const estado =
+            campoEstado.value.trim();
+
+
+        if (!cidade || !estado) {
+
+            mensagemLocalizacao.innerHTML =
+                '<span class="text-warning">' +
+                'Cidade ou estado não informado.' +
+                '</span>';
+
+            return;
+
+        }
+
+
+        mensagemLocalizacao.innerHTML =
+            '<span class="text-info">' +
+            'Localizando endereço no mapa...' +
+            '</span>';
+
+
+        const enderecoCompleto = [
+
+            logradouro,
+            bairro,
+            cidade,
+            estado,
+            "Brasil"
+
+        ]
+        .filter(Boolean)
+        .join(", ");
+
+
+        let resultados =
+            await pesquisarNominatim(
+                enderecoCompleto
+            );
+
+
+        if (
+            !resultados ||
+            resultados.length === 0
+        ) {
+
+            const enderecoAlternativo = [
+
+                bairro,
+                cidade,
+                estado,
+                "Brasil"
+
+            ]
+            .filter(Boolean)
+            .join(", ");
+
+
+            resultados =
+                await pesquisarNominatim(
+                    enderecoAlternativo
+                );
+
+        }
+
+
+        if (
+            !resultados ||
+            resultados.length === 0
+        ) {
+
+            const enderecoCidade = [
+
+                cidade,
+                estado,
+                "Brasil"
+
+            ]
+            .filter(Boolean)
+            .join(", ");
+
+
+            resultados =
+                await pesquisarNominatim(
+                    enderecoCidade
+                );
+
+        }
+
+
+        if (
+            !resultados ||
+            resultados.length === 0
+        ) {
+
+            mensagemLocalizacao.innerHTML =
+                '<span class="text-warning">' +
+                'Não foi possível encontrar as coordenadas deste endereço.' +
+                '</span>';
+
+            return;
+
+        }
+
+
+        const resultado =
+            resultados[0];
+
+
+        const latitude =
+            parseFloat(
+                resultado.lat
+            );
+
+
+        const longitude =
+            parseFloat(
+                resultado.lon
+            );
+
+
+        if (
+            isNaN(latitude) ||
+            isNaN(longitude)
+        ) {
+
+            mensagemLocalizacao.innerHTML =
+                '<span class="text-warning">' +
+                'As coordenadas encontradas são inválidas.' +
+                '</span>';
+
+            return;
+
+        }
+
+
+        campoLatitude.value =
+            latitude.toFixed(6);
+
+
+        campoLongitude.value =
+            longitude.toFixed(6);
+
+
+        mensagemLocalizacao.innerHTML =
+            '<span class="text-success">' +
+            'Latitude e longitude encontradas automaticamente!' +
+            '</span>';
+
+
+        mostrarMapa(
+            latitude,
+            longitude
+        );
+
+    }
+
+
+    // =========================================================
+    // NOMINATIM
+    // =========================================================
+
+    async function pesquisarNominatim(
+        endereco
+    ) {
+
+        try {
+
+            const url =
+                "https://nominatim.openstreetmap.org/search"
+                + "?format=json"
+                + "&limit=1"
+                + "&countrycodes=br"
+                + "&addressdetails=1"
+                + "&q="
+                + encodeURIComponent(
+                    endereco
+                );
+
+
+            const resposta =
+                await fetch(
+                    url,
+                    {
+                        headers: {
+                            "Accept":
+                                "application/json"
+                        }
+                    }
+                );
+
+
+            if (!resposta.ok) {
+
+                throw new Error(
+                    "Erro no Nominatim."
+                );
+
+            }
+
+
+            return await resposta.json();
+
+
+        } catch (erro) {
+
+            console.error(
+                "Erro Nominatim:",
+                erro
+            );
+
+
+            return [];
+
+        }
+
+    }
+
+
+    // =========================================================
+    // MOSTRAR MAPA
+    // =========================================================
+
+    function mostrarMapa(
+        latitude,
+        longitude
+    ) {
+
+        const elementoMapa =
+            document.getElementById(
+                "mapa"
+            );
+
+
+        if (!mapa) {
+
+            // Limpa o conteúdo inicial
+            elementoMapa.innerHTML = "";
+
+
+            mapa =
+                L.map("mapa").setView(
+                    [
+                        latitude,
+                        longitude
+                    ],
+                    16
+                );
+
+
+            L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+                    maxZoom: 19,
+
+                    attribution:
+                        '&copy; OpenStreetMap contributors'
+
+                }
+            ).addTo(mapa);
+
+        } else {
+
+            mapa.setView(
+                [
+                    latitude,
+                    longitude
+                ],
+                16
+            );
+
+        }
+
+
+        if (marcador) {
+
+            mapa.removeLayer(
+                marcador
+            );
+
+        }
+
+
+        marcador =
+            L.marker(
+                [
+                    latitude,
+                    longitude
+                ]
+            )
+            .addTo(mapa);
+
+
+        marcador.bindPopup(
+
+            "<strong>Localização</strong><br>" +
+
+            "Latitude: " +
+            latitude.toFixed(6) +
+
+            "<br>" +
+
+            "Longitude: " +
+            longitude.toFixed(6)
+
+        ).openPopup();
+
+
+        setTimeout(
+            function () {
+
+                mapa.invalidateSize();
+
+            },
+            200
+        );
+
+    }
+
+
+    // =========================================================
+    // LIMPAR ENDEREÇO
+    // =========================================================
+
+    function limparEndereco() {
+
+        campoLogradouro.value = "";
+        campoBairro.value = "";
+        campoCidade.value = "";
+        campoEstado.value = "";
+
+        campoLatitude.value = "";
+        campoLongitude.value = "";
+
+        mensagemLocalizacao.innerHTML = "";
+
+
+        if (mapa) {
+
+            mapa.remove();
+
+            mapa = null;
+            marcador = null;
+
+        }
+
+
+        document.getElementById(
+            "mapa"
+        ).innerHTML =
+
+            '<div class="d-flex ' +
+            'justify-content-center ' +
+            'align-items-center ' +
+            'h-100 text-muted">' +
+
+            'Localização ainda não carregada.' +
+
+            '</div>';
+
+    }
+
+
+    // =========================================================
+    // CARREGAR MAPA AO ABRIR A PÁGINA
+    // =========================================================
+
+    window.addEventListener(
+        "load",
+        function () {
+
+            const latitude =
+                parseFloat(
+                    campoLatitude.value
+                );
+
+
+            const longitude =
+                parseFloat(
+                    campoLongitude.value
+                );
+
+
+            if (
+                !isNaN(latitude) &&
+                !isNaN(longitude)
+            ) {
+
+                mostrarMapa(
+                    latitude,
+                    longitude
+                );
+
+
+                mensagemLocalizacao.innerHTML =
+                    '<span class="text-success">' +
+                    'Localização atual carregada.' +
+                    '</span>';
+
+            }
+
+        }
+    );
+
+</script>
+
+
+</body>
+</html>

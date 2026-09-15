@@ -1,0 +1,161 @@
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background-color: #000000;
+}
+
+
+/* ================= HEADER ================= */
+
+.topo {
+    background-color: #1F4EA3;
+    height: 70px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 20px;
+}
+
+.logo {
+    height: 60px;
+}
+
+.menu-icon {
+    font-size: 28px;
+    color: white;
+    cursor: pointer;
+}
+
+.whatsapp img {
+    height: 28px;
+}
+
+
+/* ================= HERO ================= */
+
+.hero {
+    position: relative;
+    height: calc(100vh - 70px);
+
+    background-image: url("/img/mairinque.png"); /* coloque sua imagem */
+    background-size: cover;
+    background-position: center;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+/* camada escura transparente */
+.overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255,255,255,0.55);
+}
+
+.conteudo {
+    position: relative;
+    z-index: 2;
+    max-width: 600px;
+    padding: 20px;
+}
+
+.conteudo h1 {
+    font-size: 42px;
+    color: #000;
+    margin-bottom: 40px;
+    font-weight: bold;
+}
+
+/* BOTÃO */
+.btn-principal {
+    background-color: #F2C230;
+    border: none;
+    padding: 15px 28px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+
+}
+
+.btn-principal:hover {
+    transform: scale(1.05);
+}
+
+/* LINK */
+.anonima {
+    display: block;
+    margin-top: 15px;
+    color: #000000;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+
+/* ================= RESPONSIVIDADE ================= */
+
+/* TABLETS */
+@media (max-width: 1024px) {
+
+    .conteudo h1 {
+        font-size: 34px;
+    }
+
+    .btn-principal {
+        font-size: 16px;
+        padding: 14px 24px;
+    }
+}
+
+
+/* CELULARES */
+@media (max-width: 600px) {
+
+    .topo {
+        height: 60px;
+    }
+
+    .logo {
+        height: 38px;
+    }
+
+    .conteudo h1 {
+        font-size: 26px;
+        line-height: 1.3;
+    }
+
+    .btn-principal {
+        width: 100%;
+        font-size: 16px;
+        padding: 14px;
+    }
+
+    .hero {
+        padding: 20px;
+    }
+}
+/* 💻 TELAS GRANDES - CENTRALIZADO COM FUNDO */
+@media (min-width: 1200px) {
+
+  body {
+    background: linear-gradient(135deg, #1e1e1e, #2a2a2a);
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 40px auto;
+  }
+
+}
