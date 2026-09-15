@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/pessoa")
@@ -188,22 +189,25 @@ public class PessoaController {
 
         return "redirect:/pessoa/dashboard";
     }
-
     @GetMapping("/dashboard")
-    public String dashboard(Model model) {
+    public String dashboard(
+            HttpSession session,
+            Model model) {
 
-        // Por enquanto, busca o primeiro usuário cadastrado
-        // Depois vamos trocar isso pelo usuário que estiver logado.
-        Pessoa pessoa = pessoaRepository.findAll()
-                .stream()
-                .findFirst()
-                .orElseThrow(() ->
-                        new IllegalArgumentException(
-                                "Nenhum usuário cadastrado."
-                        )
-                );
+        // Pega a pessoa que fez login
+        Pessoa pessoa =
+                (Pessoa) session.getAttribute("pessoaLogada");
 
+
+        // Se não estiver logado, manda para o login
+        if (pessoa == null) {
+            return "redirect:/login";
+        }
+
+
+        // Envia os dados da pessoa para o dashboard
         model.addAttribute("pessoa", pessoa);
+
 
         // Estatísticas — por enquanto zeradas.
         // Depois vamos buscar os chamados reais no banco.
@@ -211,6 +215,7 @@ public class PessoaController {
         model.addAttribute("chamadosAbertos", 0);
         model.addAttribute("chamadosAtendidos", 0);
         model.addAttribute("chamadosPendentes", 0);
+
 
         return "pessoa/dashboard";
     }
