@@ -1,86 +1,311 @@
 <!DOCTYPE html>
-<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listagem - Escola</title>
-    <link rel="stylesheet" href="/style2.css">
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/head :: head('Lista de usuários')}">
 </head>
+
 <body>
 
-<!-- Menu -->
-<div th:replace="~{/fragments/menu.html :: menu}"></div>
+<div class="container-fluid p-0 m-0">
 
-<main>
+    <!-- MENU -->
+    <div th:insert="~{fragments/menu :: menu-content}"></div>
 
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
-        <h2>Listagem de Alunos</h2>
-        <a th:href="@{/aluno/cadastro}" class="btn btn-success">Cadastrar Novo</a>
+
+    <div class="container py-4">
+
+        <!-- CABEÇALHO -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+
+            <div>
+
+                <h1 class="h3 mb-1">
+                    Usuários cadastrados
+                </h1>
+
+                <p class="text-muted mb-0">
+                    Lista de pessoas cadastradas no sistema.
+                </p>
+
+            </div>
+
+
+            <a th:href="@{/pessoa/cadastro}"
+               class="btn btn-primary">
+
+                + Novo usuário
+
+            </a>
+
+        </div>
+
+
+        <!-- CASO NÃO TENHA USUÁRIOS -->
+        <div th:if="${pessoas == null or #lists.isEmpty(pessoas)}"
+             class="alert alert-info">
+
+            Nenhum usuário cadastrado.
+
+        </div>
+
+
+        <!-- TABELA -->
+        <div th:if="${pessoas != null and !#lists.isEmpty(pessoas)}"
+             class="card shadow-sm border-0">
+
+            <div class="card-body p-0">
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle mb-0">
+
+                        <thead class="table-light">
+
+                        <tr>
+
+                            <th class="px-3">
+                                Foto
+                            </th>
+
+                            <th>
+                                Nome
+                            </th>
+
+                            <th>
+                                CPF
+                            </th>
+
+                            <th>
+                                E-mail
+                            </th>
+
+                            <th>
+                                Telefone
+                            </th>
+
+                            <th>
+                                Cidade
+                            </th>
+
+                            <th>
+                                Perfil
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th class="text-center">
+                                Ações
+                            </th>
+
+                        </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                        <tr th:each="pessoa : ${pessoas}">
+
+
+                            <!-- FOTO -->
+                            <td class="px-3">
+
+                                <div th:if="${pessoa.foto != null}">
+
+                                    <img th:src="@{${pessoa.foto}}"
+                                         alt="Foto do usuário"
+                                         width="55"
+                                         height="55"
+                                         class="rounded-circle"
+                                         style="object-fit: cover;">
+
+                                </div>
+
+
+                                <div th:unless="${pessoa.foto != null}"
+                                     class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center"
+                                     style="width:55px; height:55px;">
+
+                                    <span>
+                                        ?
+                                    </span>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- NOME -->
+                            <td>
+
+                                <strong th:text="${pessoa.nome}">
+                                    Nome
+                                </strong>
+
+                            </td>
+
+
+                            <!-- CPF -->
+                            <td>
+
+                                <span th:text="${pessoa.cpf != null ? pessoa.cpf : '-'}">
+                                    -
+                                </span>
+
+                            </td>
+
+
+                            <!-- E-MAIL -->
+                            <td>
+
+                                <span th:text="${pessoa.email}">
+                                    -
+                                </span>
+
+                            </td>
+
+
+                            <!-- TELEFONE -->
+                            <td>
+
+                                <span th:text="${pessoa.telefone != null ? pessoa.telefone : '-'}">
+                                    -
+                                </span>
+
+                            </td>
+
+
+                            <!-- CIDADE -->
+                            <td>
+
+                                <span th:text="${pessoa.cidade != null ? pessoa.cidade : '-'}">
+                                    -
+                                </span>
+
+                            </td>
+
+
+                            <!-- PERFIL -->
+                            <td>
+
+                                <!-- ADMINISTRADOR -->
+                                <span th:if="${pessoa.perfil != null and pessoa.perfil.toString() == 'ADMINISTRADOR'}"
+                                      class="badge bg-danger">
+
+                                    Administrador
+
+                                </span>
+
+
+                                <!-- MODERADOR -->
+                                <span th:if="${pessoa.perfil != null and pessoa.perfil.toString() == 'MODERADOR'}"
+                                      class="badge bg-warning text-dark">
+
+                                    Moderador
+
+                                </span>
+
+
+                                <!-- NORMAL -->
+                                <span th:if="${pessoa.perfil != null and pessoa.perfil.toString() == 'NORMAL'}"
+                                      class="badge bg-primary">
+
+                                    Normal
+
+                                </span>
+
+
+                                <!-- PERFIL NULL -->
+                                <span th:if="${pessoa.perfil == null}"
+                                      class="badge bg-secondary">
+
+                                    Não definido
+
+                                </span>
+
+                            </td>
+
+
+                            <!-- STATUS -->
+                            <td>
+
+                                <span th:if="${pessoa.ativo == true}"
+                                      class="badge bg-success">
+
+                                    Ativo
+
+                                </span>
+
+
+                                <span th:if="${pessoa.ativo == false}"
+                                      class="badge bg-secondary">
+
+                                    Inativo
+
+                                </span>
+
+
+                                <span th:if="${pessoa.ativo == null}"
+                                      class="badge bg-secondary">
+
+                                    Não definido
+
+                                </span>
+
+                            </td>
+
+
+                            <!-- AÇÕES -->
+                            <td class="text-center">
+
+                                <div class="d-flex justify-content-center gap-2">
+
+
+                                    <!-- EDITAR -->
+                                    <a th:href="@{/pessoa/editar/{id}(id=${pessoa.id})}"
+                                       class="btn btn-sm btn-outline-primary">
+
+                                        Editar
+
+                                    </a>
+
+
+                                    <!-- EXCLUIR -->
+                                    <a th:href="@{/pessoa/excluir/{id}(id=${pessoa.id})}"
+                                       class="btn btn-sm btn-outline-danger"
+                                       onclick="return confirm('Tem certeza que deseja excluir este usuário?');">
+
+                                        Excluir
+
+                                    </a>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
 
-    <div class="table-container">
-        <table>
-            <thead>
-            <tr>
-                <th>Foto</th>
-                <th>Nome</th>
-                <th>Email</th>
-                <th>CPF</th>
-                <th>Ações</th>
-            </tr>
-            </thead>
+</div>
 
-            <tbody>
 
-            <!-- Caso não tenha registros -->
-            <tr th:if="${alunos.empty}">
-                <td colspan="5" style="text-align: center;">
-                    Nenhum registro encontrado.
-                </td>
-            </tr>
+<!-- FOOTER -->
+<div th:insert="~{fragments/footer :: footer-content}"></div>
 
-            <!-- Lista de alunos -->
-            <tr th:each="p : ${alunos}">
-
-                <!-- FOTO -->
-                <td>
-                    <img th:if="${p.foto != null}"
-                         th:src="@{'/foto_pessoa/' + ${p.foto}}"
-                         class="foto-tabela">
-
-                    <img th:if="${p.foto == null}"
-                         src="/foto_pessoa/default.png"
-                         class="foto-tabela">
-                </td>
-
-                <td th:text="${p.nome}"></td>
-                <td th:text="${p.email}"></td>
-                <td th:text="${p.cpf}"></td>
-
-                <td style="white-space: nowrap;">
-                    <a th:href="@{'/aluno/excluir/' + ${p.id}}"
-                       class="btn btn-cancel"
-                       onclick="return confirm('Deseja realmente excluir este registro?');"
-                       style="margin-right: 8px;">
-                        Excluir
-                    </a>
-
-                    <a th:href="@{'/aluno/alterar/' + ${p.id}}"
-                       class="btn btn-alter">
-                        Alterar
-                    </a>
-                </td>
-
-            </tr>
-
-            </tbody>
-        </table>
-    </div>
-
-</main>
-
-<!-- Footer -->
-<div th:replace="~{/fragments/footer.html :: footer}"></div>
 
 </body>
 </html>

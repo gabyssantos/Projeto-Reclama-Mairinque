@@ -31,6 +31,7 @@
 
         .menu {
             height: 70px;
+
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -43,6 +44,7 @@
 
             position: sticky;
             top: 0;
+
             z-index: 100;
         }
 
@@ -61,7 +63,9 @@
 
         .menu-center {
             position: absolute;
+
             left: 50%;
+
             transform: translateX(-50%);
         }
 
@@ -90,6 +94,7 @@
 
         .page {
             width: 100%;
+
             padding: 35px 20px 50px;
         }
 
@@ -126,26 +131,6 @@
             align-items: center;
 
             gap: 20px;
-        }
-
-
-        .header-icon {
-            width: 58px;
-            height: 58px;
-
-            border-radius: 14px;
-
-            background: #F2C230;
-
-            color: #1F4EA3;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            font-size: 28px;
-
-            flex-shrink: 0;
         }
 
 
@@ -284,6 +269,15 @@
 
             box-shadow:
                 0 0 0 3px rgba(31,78,163,0.12);
+        }
+
+
+        input[readonly] {
+            background: #f1f3f5;
+
+            color: #495057;
+
+            cursor: not-allowed;
         }
 
 
@@ -559,6 +553,7 @@
 
         .modal-content-foto {
             width: 100%;
+
             max-width: 400px;
 
             background: white;
@@ -630,6 +625,8 @@
 
 
         video {
+            width: 100%;
+
             border-radius: 10px;
 
             margin-bottom: 15px;
@@ -696,14 +693,6 @@
 
             .form-header {
                 padding: 23px 20px;
-            }
-
-
-            .header-icon {
-                width: 48px;
-                height: 48px;
-
-                font-size: 22px;
             }
 
 
@@ -790,7 +779,6 @@
 
 <div class="page">
 
-
     <div class="form-container">
 
 
@@ -800,13 +788,25 @@
 
         <div class="form-header">
 
-
             <div>
 
-                <h1>Registrar reclamação</h1>
+                <h1>
+
+                    Registrar reclamação -
+
+                    <span th:text="${pessoa != null ? pessoa.nome : 'Pessoa não encontrada'}">
+
+                        Pessoa não encontrada
+
+                    </span>
+
+                </h1>
+
 
                 <p>
+
                     Ajude a melhorar Mairinque relatando um problema.
+
                 </p>
 
             </div>
@@ -835,7 +835,7 @@
 
                     <span>👤</span>
 
-                    Seus dados
+                    Dados do solicitante
 
                 </h2>
 
@@ -846,44 +846,48 @@
 
                         <label for="nome">
 
-                            Nome completo
+                            Nome
 
                         </label>
 
-
                         <input type="text"
                                id="nome"
-                               th:field="*{nome}"
-                               placeholder="Digite seu nome">
-
-
-                        <span class="campo-ajuda">
-                            Campo opcional
-                        </span>
+                               th:value="${pessoa.nome}"
+                               readonly>
 
                     </div>
 
 
                     <div class="campo">
 
-                        <label for="telefone">
+                        <label for="email">
 
-                            Telefone
+                            E-mail
 
                         </label>
 
-
-                        <input type="text"
-                               id="telefone"
-                               th:field="*{telefone}"
-                               placeholder="(00) 00000-0000">
-
-
-                        <span class="campo-ajuda">
-                            Campo opcional
-                        </span>
+                        <input type="email"
+                               id="email"
+                               th:value="${pessoa.email}"
+                               readonly>
 
                     </div>
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="telefone">
+
+                        Telefone
+
+                    </label>
+
+                    <input type="text"
+                           id="telefone"
+                           th:value="${pessoa.telefone}"
+                           readonly>
 
                 </div>
 
@@ -905,55 +909,83 @@
                 </h2>
 
 
+                <!-- CATEGORIA -->
+
                 <div class="campo categoria-container">
 
-                    <label for="ocorrencia">
+                    <label for="categoriaOcorrencia">
 
                         Categoria
+
                         <span class="obrigatorio">*</span>
 
                     </label>
 
 
-                    <select id="ocorrencia"
-                            name="ocorrencia"
-                            th:field="*{status}"
+                    <select id="categoriaOcorrencia"
+                            th:field="*{categoriaOcorrencia}"
                             required>
 
                         <option value="">
+
                             Selecione o tipo de problema
+
                         </option>
+
 
                         <option value="Limpeza da cidade">
+
                             Limpeza da cidade
+
                         </option>
 
-                        <option value="Posto de saude">
+
+                        <option value="Posto de saúde">
+
                             Posto de saúde
+
                         </option>
+
 
                         <option value="Ruas asfaltadas">
+
                             Ruas asfaltadas
+
                         </option>
 
-                        <option value="Iluminacao publica">
+
+                        <option value="Iluminação pública">
+
                             Iluminação pública
+
                         </option>
+
 
                         <option value="Coleta de lixo">
+
                             Coleta de lixo
+
                         </option>
 
-                        <option value="Areas de lazer">
+
+                        <option value="Áreas de lazer">
+
                             Áreas de lazer
+
                         </option>
 
-                        <option value="Horario de onibus">
+
+                        <option value="Horário de ônibus">
+
                             Horário de ônibus
+
                         </option>
 
-                        <option value="Servicos digitais">
+
+                        <option value="Serviços digitais">
+
                             Serviços digitais
+
                         </option>
 
                     </select>
@@ -961,17 +993,20 @@
                 </div>
 
 
+                <!-- DESCRIÇÃO -->
+
                 <div class="campo">
 
-                    <label for="descricao">
+                    <label for="descricaoOcorrencia">
 
                         Descrição da reclamação
+
                         <span class="obrigatorio">*</span>
 
                     </label>
 
 
-                    <textarea id="descricao"
+                    <textarea id="descricaoOcorrencia"
                               th:field="*{descricaoOcorrencia}"
                               placeholder="Descreva o problema encontrado..."
                               required></textarea>
@@ -1008,16 +1043,20 @@
                 <div class="campo">
 
                     <label for="cep">
+
                         CEP
+
                     </label>
+
 
                     <div style="display: flex; gap: 10px;">
 
                         <input type="text"
                                id="cep"
-                               name="cep"
+                               th:field="*{cep}"
                                placeholder="00000-000"
                                maxlength="9">
+
 
                         <button type="button"
                                 id="btnBuscarCep"
@@ -1030,8 +1069,11 @@
 
                     </div>
 
+
                     <span class="campo-ajuda">
-                        Campo opcional. Se informado, o endereço será preenchido automaticamente.
+
+                        Informe o CEP do local onde o problema está acontecendo.
+
                     </span>
 
                 </div>
@@ -1044,9 +1086,11 @@
                     <label for="rua">
 
                         Rua
+
                         <span class="obrigatorio">*</span>
 
                     </label>
+
 
                     <input type="text"
                            id="rua"
@@ -1064,79 +1108,17 @@
                     <label for="bairro">
 
                         Bairro
+
                         <span class="obrigatorio">*</span>
 
                     </label>
+
 
                     <input type="text"
                            id="bairro"
                            th:field="*{bairro}"
                            placeholder="Digite o bairro"
                            required>
-
-                </div>
-
-
-                <!-- CIDADE E ESTADO -->
-
-                <div class="linha">
-
-                    <div class="campo">
-
-                        <label for="cidade">
-
-                            Cidade
-                            <span class="obrigatorio">*</span>
-
-                        </label>
-
-                        <input type="text"
-                               id="cidade"
-                               name="cidade"
-                               placeholder="Digite a cidade"
-                               required>
-
-                    </div>
-
-
-                    <div class="campo">
-
-                        <label for="estado">
-
-                            Estado
-                            <span class="obrigatorio">*</span>
-
-                        </label>
-
-                        <input type="text"
-                               id="estado"
-                               name="estado"
-                               placeholder="Digite o estado"
-                               required>
-
-                    </div>
-
-                </div>
-
-
-                <!-- PONTO DE REFERÊNCIA -->
-
-                <div class="campo">
-
-                    <label for="pontoReferencia">
-
-                        Ponto de referência
-
-                    </label>
-
-                    <input type="text"
-                           id="pontoReferencia"
-                           name="pontoReferencia"
-                           placeholder="Ex.: próximo à escola, praça, mercado...">
-
-                    <span class="campo-ajuda">
-                        Campo opcional
-                    </span>
 
                 </div>
 
@@ -1161,18 +1143,24 @@
                 <div class="foto-area">
 
                     <div class="foto-icon">
+
                         📷
+
                     </div>
 
 
                     <strong>
+
                         Adicione uma foto
+
                     </strong>
 
 
                     <p>
+
                         Uma foto pode ajudar a prefeitura a entender
                         melhor o problema relatado.
+
                     </p>
 
 
@@ -1181,6 +1169,7 @@
                             onclick="abrirModalFoto()">
 
                         📷
+
                         Tirar / selecionar foto
 
                     </button>
@@ -1189,7 +1178,7 @@
                     <input type="file"
                            id="inputArquivo"
                            name="arquivoFoto"
-                           accept="image/*"
+                           accept="image/jpeg,image/png,image/webp"
                            hidden>
 
 
@@ -1207,20 +1196,26 @@
             <div class="aviso">
 
                 <div class="aviso-icon">
+
                     ⚠
+
                 </div>
 
 
                 <div>
 
                     <strong>
+
                         Antes de enviar
+
                     </strong>
 
 
                     <div>
+
                         Confira se as informações estão corretas.
                         Sua reclamação será registrada para análise.
+
                     </div>
 
                 </div>
@@ -1234,7 +1229,7 @@
 
             <div class="acoes">
 
-                <a th:href="@{/ocorrencia/listagem}"
+                <a th:href="@{/pessoa/dashboard}"
                    class="btn btn-voltar">
 
                     Voltar
@@ -1246,6 +1241,7 @@
                         class="btn btn-salvar">
 
                     📤
+
                     Enviar reclamação
 
                 </button>
@@ -1271,12 +1267,16 @@
     <div class="modal-content-foto">
 
         <h3>
+
             Adicionar foto
+
         </h3>
 
 
         <p>
+
             Escolha como deseja adicionar a foto.
+
         </p>
 
 
@@ -1286,6 +1286,7 @@
                     onclick="selecionarArquivo()">
 
                 📁
+
                 Arquivo
 
             </button>
@@ -1295,6 +1296,7 @@
                     onclick="iniciarCamera()">
 
                 📷
+
                 Câmera
 
             </button>
@@ -1303,7 +1305,6 @@
 
 
         <video id="video"
-               width="100%"
                autoplay
                style="display:none;">
         </video>
@@ -1320,6 +1321,7 @@
                 style="display:none;">
 
             📸
+
             Capturar foto
 
         </button>
@@ -1347,30 +1349,40 @@
 
 <script>
 
+
     /* =========================================================
        BUSCAR ENDEREÇO PELO CEP
     ========================================================= */
 
     document
         .getElementById("btnBuscarCep")
-        .addEventListener("click", buscarCep);
+        .addEventListener(
+            "click",
+            buscarCep
+        );
 
 
     document
         .getElementById("cep")
-        .addEventListener("blur", function () {
+        .addEventListener(
+            "blur",
+            function () {
 
-            const cep =
-                this.value.replace(/\D/g, "");
+                const cep =
+                    this.value.replace(/\D/g, "");
 
-            // CEP é opcional
-            if (cep.length === 0) {
-                return;
+
+                if (cep.length === 0) {
+
+                    return;
+
+                }
+
+
+                buscarCep();
+
             }
-
-            buscarCep();
-
-        });
+        );
 
 
     async function buscarCep() {
@@ -1378,28 +1390,26 @@
         const cepInput =
             document.getElementById("cep");
 
+
         const cep =
             cepInput.value.replace(/\D/g, "");
 
 
-        // =====================================================
-        // CEP OPCIONAL
-        // =====================================================
-
         if (cep.length === 0) {
+
             return;
+
         }
 
 
-        // =====================================================
-        // CEP INVÁLIDO
-        // =====================================================
-
         if (cep.length !== 8) {
 
-            alert("Digite um CEP válido.");
+            alert(
+                "Digite um CEP válido."
+            );
 
             return;
+
         }
 
 
@@ -1424,36 +1434,27 @@
                 await resposta.json();
 
 
-            // =================================================
-            // CEP NÃO ENCONTRADO
-            // =================================================
-
             if (dados.erro) {
 
-                alert("CEP não encontrado.");
+                alert(
+                    "CEP não encontrado."
+                );
 
                 return;
+
             }
 
 
-            // =================================================
-            // PREENCHER ENDEREÇO
-            // =================================================
-
-            document.getElementById("rua").value =
+            document
+                .getElementById("rua")
+                .value =
                 dados.logradouro || "";
 
 
-            document.getElementById("bairro").value =
+            document
+                .getElementById("bairro")
+                .value =
                 dados.bairro || "";
-
-
-            document.getElementById("cidade").value =
-                dados.localidade || "";
-
-
-            document.getElementById("estado").value =
-                dados.uf || "";
 
         }
         catch (erro) {
@@ -1470,21 +1471,24 @@
 
 
     /* =========================================================
-       STATUS
+       CATEGORIA DA OCORRÊNCIA
     ========================================================= */
 
     document.addEventListener(
         "DOMContentLoaded",
-        function() {
+        function () {
 
-            const status =
-                document.getElementById("ocorrencia");
+            const categoria =
+                document.getElementById(
+                    "categoriaOcorrencia"
+                );
 
-            if (status) {
 
-                status.addEventListener(
+            if (categoria) {
+
+                categoria.addEventListener(
                     "change",
-                    function() {
+                    function () {
 
                         console.log(
                             "Categoria selecionada:",
@@ -1501,10 +1505,10 @@
 
 
     /* =========================================================
-       MODAL
+       MODAL DA FOTO
     ========================================================= */
 
-    let stream;
+    let stream = null;
 
 
     function abrirModalFoto() {
@@ -1576,7 +1580,7 @@
         .getElementById("inputArquivo")
         .addEventListener(
             "change",
-            function() {
+            function () {
 
                 const nome =
                     document.getElementById(
@@ -1590,7 +1594,8 @@
                         "✓ Foto selecionada: "
                         + this.files[0].name;
 
-                } else {
+                }
+                else {
 
                     nome.textContent = "";
 
@@ -1601,13 +1606,16 @@
 
 
     /* =========================================================
-       CÂMERA
+       INICIAR CÂMERA
     ========================================================= */
 
     function iniciarCamera() {
 
         const video =
-            document.getElementById("video");
+            document.getElementById(
+                "video"
+            );
+
 
         const botao =
             document.getElementById(
@@ -1615,14 +1623,17 @@
             );
 
 
-        if (!navigator.mediaDevices ||
-            !navigator.mediaDevices.getUserMedia) {
+        if (
+            !navigator.mediaDevices ||
+            !navigator.mediaDevices.getUserMedia
+        ) {
 
             alert(
                 "Seu navegador não permite acesso à câmera."
             );
 
             return;
+
         }
 
 
@@ -1631,15 +1642,18 @@
                 video: true
             })
             .then(
-                function(s) {
+                function (s) {
 
                     stream = s;
+
 
                     video.srcObject =
                         stream;
 
+
                     video.style.display =
                         "block";
+
 
                     botao.style.display =
                         "inline-block";
@@ -1647,9 +1661,9 @@
                 }
             )
             .catch(
-                function(err) {
+                function (erro) {
 
-                    console.error(err);
+                    console.error(erro);
 
                     alert(
                         "Não foi possível acessar a câmera."
@@ -1685,6 +1699,20 @@
             );
 
 
+        if (
+            video.videoWidth === 0 ||
+            video.videoHeight === 0
+        ) {
+
+            alert(
+                "A câmera ainda não está pronta."
+            );
+
+            return;
+
+        }
+
+
         canvas.width =
             video.videoWidth;
 
@@ -1707,10 +1735,16 @@
 
 
         canvas.toBlob(
-            function(blob) {
+            function (blob) {
 
                 if (!blob) {
+
+                    alert(
+                        "Não foi possível capturar a foto."
+                    );
+
                     return;
+
                 }
 
 
@@ -1760,9 +1794,11 @@
         .getElementById("modalFoto")
         .addEventListener(
             "click",
-            function(event) {
+            function (event) {
 
-                if (event.target === this) {
+                if (
+                    event.target === this
+                ) {
 
                     fecharModalFoto();
 
@@ -1771,8 +1807,10 @@
             }
         );
 
+
 </script>
 
 
 </body>
+
 </html>

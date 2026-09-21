@@ -12,22 +12,30 @@
     <!-- MENU -->
     <div th:insert="~{fragments/menu :: menu-content}"></div>
 
+
     <div class="container py-4">
 
         <!-- CABEÇALHO -->
         <div class="d-flex justify-content-between align-items-center mb-4">
 
             <div>
-                <h1 class="h3 mb-1">Usuários cadastrados</h1>
+
+                <h1 class="h3 mb-1">
+                    Usuários cadastrados
+                </h1>
 
                 <p class="text-muted mb-0">
                     Lista de pessoas cadastradas no sistema.
                 </p>
+
             </div>
+
 
             <a th:href="@{/pessoa/cadastro}"
                class="btn btn-primary">
+
                 + Novo usuário
+
             </a>
 
         </div>
@@ -52,41 +60,63 @@
 
                     <table class="table table-hover align-middle mb-0">
 
+                        <!-- CABEÇALHO DA TABELA -->
                         <thead class="table-light">
 
                         <tr>
 
-                            <th class="px-3">Foto</th>
+                            <th class="px-3">
+                                Foto
+                            </th>
 
-                            <th>Nome</th>
+                            <th>
+                                Nome
+                            </th>
 
-                            <th>CPF</th>
+                            <th>
+                                CPF
+                            </th>
 
-                            <th>E-mail</th>
+                            <th>
+                                E-mail
+                            </th>
 
-                            <th>Telefone</th>
+                            <th>
+                                Telefone
+                            </th>
 
-                            <th>Cidade</th>
+                            <th>
+                                Cidade
+                            </th>
 
-                            <th>Perfil</th>
+                            <th>
+                                Perfil
+                            </th>
 
-                            <th>Status</th>
+                            <th>
+                                Status
+                            </th>
 
-                            <th class="text-center">Ações</th>
+                            <th class="text-center">
+                                Ações
+                            </th>
 
                         </tr>
 
                         </thead>
 
 
+                        <!-- CORPO DA TABELA -->
                         <tbody>
 
                         <tr th:each="pessoa : ${pessoas}">
 
+
                             <!-- FOTO -->
                             <td class="px-3">
 
-                                <div th:if="${pessoa.foto != null}">
+                                <!-- QUANDO POSSUI FOTO -->
+                                <div th:if="${pessoa.foto != null and !pessoa.foto.isBlank()}">
 
                                     <img th:src="@{${pessoa.foto}}"
                                          alt="Foto do usuário"
@@ -97,11 +127,15 @@
 
                                 </div>
 
-                                <div th:unless="${pessoa.foto != null}"
+
+                                <!-- QUANDO NÃO POSSUI FOTO -->
+                                <div th:unless="${pessoa.foto != null and !pessoa.foto.isBlank()}"
                                      class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center"
                                      style="width:55px; height:55px;">
 
-                                    <span>?</span>
+                                    <span>
+                                        ?
+                                    </span>
 
                                 </div>
 
@@ -111,7 +145,7 @@
                             <!-- NOME -->
                             <td>
 
-                                <strong th:text="${pessoa.nome}">
+                                <strong th:text="${pessoa.nome != null and !pessoa.nome.isBlank() ? pessoa.nome : '-'}">
                                     Nome
                                 </strong>
 
@@ -121,7 +155,7 @@
                             <!-- CPF -->
                             <td>
 
-                                <span th:text="${pessoa.cpf != null && !pessoa.cpf.isBlank() ? pessoa.cpf : '-'}">
+                                <span th:text="${pessoa.cpf != null and !pessoa.cpf.isBlank() ? pessoa.cpf : '-'}">
                                     -
                                 </span>
 
@@ -131,8 +165,8 @@
                             <!-- E-MAIL -->
                             <td>
 
-                                <span th:text="${pessoa.email}">
-                                    email@email.com
+                                <span th:text="${pessoa.email != null and !pessoa.email.isBlank() ? pessoa.email : '-'}">
+                                    -
                                 </span>
 
                             </td>
@@ -141,7 +175,7 @@
                             <!-- TELEFONE -->
                             <td>
 
-                                <span th:text="${pessoa.telefone != null && !pessoa.telefone.isBlank() ? pessoa.telefone : '-'}">
+                                <span th:text="${pessoa.telefone != null and !pessoa.telefone.isBlank() ? pessoa.telefone : '-'}">
                                     -
                                 </span>
 
@@ -151,7 +185,7 @@
                             <!-- CIDADE -->
                             <td>
 
-                                <span th:text="${pessoa.cidade != null && !pessoa.cidade.isBlank() ? pessoa.cidade : '-'}">
+                                <span th:text="${pessoa.cidade != null and !pessoa.cidade.isBlank() ? pessoa.cidade : '-'}">
                                     -
                                 </span>
 
@@ -161,19 +195,39 @@
                             <!-- PERFIL -->
                             <td>
 
-                                <span th:if="${pessoa.perfil.name() == 'ADMINISTRADOR'}"
+                                <!-- PERFIL NÃO DEFINIDO -->
+                                <span th:if="${pessoa.perfil == null}"
+                                      class="badge bg-secondary">
+
+                                    Não definido
+
+                                </span>
+
+
+                                <!-- ADMINISTRADOR -->
+                                <span th:if="${pessoa.perfil != null and pessoa.perfil.name() == 'ADMINISTRADOR'}"
                                       class="badge bg-danger">
+
                                     Administrador
+
                                 </span>
 
-                                <span th:if="${pessoa.perfil.name() == 'MODERADOR'}"
+
+                                <!-- MODERADOR -->
+                                <span th:if="${pessoa.perfil != null and pessoa.perfil.name() == 'MODERADOR'}"
                                       class="badge bg-warning text-dark">
+
                                     Moderador
+
                                 </span>
 
-                                <span th:if="${pessoa.perfil.name() == 'NORMAL'}"
+
+                                <!-- NORMAL -->
+                                <span th:if="${pessoa.perfil != null and pessoa.perfil.name() == 'NORMAL'}"
                                       class="badge bg-primary">
+
                                     Normal
+
                                 </span>
 
                             </td>
@@ -182,14 +236,21 @@
                             <!-- STATUS -->
                             <td>
 
+                                <!-- ATIVO -->
                                 <span th:if="${pessoa.ativo}"
                                       class="badge bg-success">
+
                                     Ativo
+
                                 </span>
 
+
+                                <!-- INATIVO -->
                                 <span th:unless="${pessoa.ativo}"
                                       class="badge bg-secondary">
+
                                     Inativo
+
                                 </span>
 
                             </td>
@@ -200,10 +261,13 @@
 
                                 <div class="d-flex justify-content-center gap-2">
 
+
                                     <!-- EDITAR -->
                                     <a th:href="@{/pessoa/editar/{id}(id=${pessoa.id})}"
                                        class="btn btn-sm btn-outline-primary">
+
                                         Editar
+
                                     </a>
 
 
@@ -211,7 +275,9 @@
                                     <a th:href="@{/pessoa/excluir/{id}(id=${pessoa.id})}"
                                        class="btn btn-sm btn-outline-danger"
                                        onclick="return confirm('Tem certeza que deseja excluir este usuário?');">
+
                                         Excluir
+
                                     </a>
 
                                 </div>

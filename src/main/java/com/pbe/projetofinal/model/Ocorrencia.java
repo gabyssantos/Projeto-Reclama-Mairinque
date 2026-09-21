@@ -1,38 +1,83 @@
 package com.pbe.projetofinal.model;
 
-
 import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
+@Table(name = "ocorrencia")
 public class Ocorrencia {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
+    // =================================================
+    // CLIENTE / SOLICITANTE
+    // =================================================
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_cliente", nullable = false)
+    private Pessoa cliente;
+
+
+    // =================================================
+    // DADOS DA OCORRÊNCIA
+    // =================================================
+
     private LocalDate dataOcorrencia;
+
     private LocalDate dataSolucao;
 
-    @Column(length = 1000)
+    @Column(length = 1000, nullable = false)
     private String descricaoOcorrencia;
 
     @Column(length = 1000)
     private String descricaoSolucao;
 
-    private String status;
+    private String categoriaOcorrencia;
+
+
+    // =================================================
+    // STATUS DA OCORRÊNCIA
+    // =================================================
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private StatusOcorrencia statusOcorrencia = StatusOcorrencia.RASCUNHO;
+
+
+    // =================================================
+    // FOTOS
+    // =================================================
 
     private String fotoOcorrencia;
+
     private String fotoSolucao;
 
+
+    // =================================================
+    // LOCAL DA OCORRÊNCIA
+    // =================================================
+
     private String bairro;
+
     private String rua;
 
-    private String nome;
-    private String telefone;
+    private String cep;
 
+
+    // =================================================
+    // JUSTIFICATIVA DA RECUSA
+    // =================================================
+
+    @Column(length = 1000)
+    private String justificativaRecusa;
+
+
+    // =================================================
     // GETTERS E SETTERS
-
+    // =================================================
 
     public Long getId() {
         return id;
@@ -42,6 +87,16 @@ public class Ocorrencia {
         this.id = id;
     }
 
+
+    public Pessoa getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Pessoa cliente) {
+        this.cliente = cliente;
+    }
+
+
     public LocalDate getDataOcorrencia() {
         return dataOcorrencia;
     }
@@ -49,6 +104,7 @@ public class Ocorrencia {
     public void setDataOcorrencia(LocalDate dataOcorrencia) {
         this.dataOcorrencia = dataOcorrencia;
     }
+
 
     public LocalDate getDataSolucao() {
         return dataSolucao;
@@ -58,6 +114,7 @@ public class Ocorrencia {
         this.dataSolucao = dataSolucao;
     }
 
+
     public String getDescricaoOcorrencia() {
         return descricaoOcorrencia;
     }
@@ -65,6 +122,7 @@ public class Ocorrencia {
     public void setDescricaoOcorrencia(String descricaoOcorrencia) {
         this.descricaoOcorrencia = descricaoOcorrencia;
     }
+
 
     public String getDescricaoSolucao() {
         return descricaoSolucao;
@@ -74,13 +132,24 @@ public class Ocorrencia {
         this.descricaoSolucao = descricaoSolucao;
     }
 
-    public String getStatus() {
-        return status;
+
+    public String getCategoriaOcorrencia() {
+        return categoriaOcorrencia;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setCategoriaOcorrencia(String categoriaOcorrencia) {
+        this.categoriaOcorrencia = categoriaOcorrencia;
     }
+
+
+    public StatusOcorrencia getStatusOcorrencia() {
+        return statusOcorrencia;
+    }
+
+    public void setStatusOcorrencia(StatusOcorrencia statusOcorrencia) {
+        this.statusOcorrencia = statusOcorrencia;
+    }
+
 
     public String getFotoOcorrencia() {
         return fotoOcorrencia;
@@ -90,6 +159,7 @@ public class Ocorrencia {
         this.fotoOcorrencia = fotoOcorrencia;
     }
 
+
     public String getFotoSolucao() {
         return fotoSolucao;
     }
@@ -97,6 +167,7 @@ public class Ocorrencia {
     public void setFotoSolucao(String fotoSolucao) {
         this.fotoSolucao = fotoSolucao;
     }
+
 
     public String getBairro() {
         return bairro;
@@ -106,6 +177,7 @@ public class Ocorrencia {
         this.bairro = bairro;
     }
 
+
     public String getRua() {
         return rua;
     }
@@ -114,19 +186,21 @@ public class Ocorrencia {
         this.rua = rua;
     }
 
-    public String getNome() {
-        return nome;
+
+    public String getCep() {
+        return cep;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setCep(String cep) {
+        this.cep = cep;
     }
 
-    public String getTelefone() {
-        return telefone;
+
+    public String getJustificativaRecusa() {
+        return justificativaRecusa;
     }
 
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
+    public void setJustificativaRecusa(String justificativaRecusa) {
+        this.justificativaRecusa = justificativaRecusa;
     }
 }
