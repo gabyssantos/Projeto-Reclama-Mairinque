@@ -1,4 +1,5 @@
-/* RESET */
+/* ================= RESET ================= */
+
 * {
     margin: 0;
     padding: 0;
@@ -6,8 +7,17 @@
     font-family: Arial, Helvetica, sans-serif;
 }
 
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
 body {
     background-color: #000000;
+    overflow-x: hidden;
 }
 
 
@@ -39,33 +49,66 @@ body {
 }
 
 
+/* ================= CARROSSEL ================= */
+
+.carousel {
+    width: 100%;
+    height: 100vh;
+}
+
+.carousel-inner {
+    width: 100%;
+    height: 100vh;
+}
+
+.carousel-item {
+    width: 100%;
+    height: 100vh;
+}
+
+.carousel-item img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
 /* ================= HERO ================= */
 
 .hero {
     position: relative;
     height: calc(100vh - 70px);
 
-    background-image: url("/img/mairinque.png"); /* coloque sua imagem */
+    background-image: url("/img/mairinque.png");
     background-size: cover;
     background-position: center;
 
     display: flex;
     align-items: center;
     justify-content: center;
+
     text-align: center;
 }
 
-/* camada escura transparente */
+
+/* camada escura/transparente */
+
 .overlay {
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: rgba(255,255,255,0.55);
+
+    background-color: rgba(255, 255, 255, 0.55);
 }
+
+
+/* conteúdo */
 
 .conteudo {
     position: relative;
     z-index: 2;
+
     max-width: 600px;
     padding: 20px;
 }
@@ -77,27 +120,36 @@ body {
     font-weight: bold;
 }
 
-/* BOTÃO */
+
+/* ================= BOTÃO ================= */
+
 .btn-principal {
     background-color: #F2C230;
     border: none;
+
     padding: 15px 28px;
+
     font-size: 18px;
     font-weight: bold;
+
     border-radius: 8px;
+
     cursor: pointer;
     transition: 0.3s;
-
 }
 
 .btn-principal:hover {
     transform: scale(1.05);
 }
 
-/* LINK */
+
+/* ================= LINK ================= */
+
 .anonima {
     display: block;
+
     margin-top: 15px;
+
     color: #000000;
     font-weight: bold;
     text-decoration: underline;
@@ -106,7 +158,9 @@ body {
 
 /* ================= RESPONSIVIDADE ================= */
 
+
 /* TABLETS */
+
 @media (max-width: 1024px) {
 
     .conteudo h1 {
@@ -121,6 +175,7 @@ body {
 
 
 /* CELULARES */
+
 @media (max-width: 600px) {
 
     .topo {
@@ -145,17 +200,30 @@ body {
     .hero {
         padding: 20px;
     }
+
+    .carousel,
+    .carousel-inner,
+    .carousel-item {
+        height: 100vh;
+    }
+
+    .carousel-item img {
+        height: 100vh;
+        object-fit: cover;
+    }
 }
-/* 💻 TELAS GRANDES - CENTRALIZADO COM FUNDO */
+
+
+/* ================= TELAS GRANDES ================= */
+
 @media (min-width: 1200px) {
 
-  body {
-    background: linear-gradient(135deg, #1e1e1e, #2a2a2a);
-  }
+    body {
+        background-color: #000000;
+    }
 
-  .container {
-    max-width: 900px;
-    margin: 40px auto;
-  }
-
+    .container {
+        max-width: 900px;
+        margin: 40px auto;
+    }
 }

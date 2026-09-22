@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import java.util.List;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -23,6 +24,12 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.UUID;
 
+import com.pbe.projetofinal.model.Ocorrencia;
+import com.pbe.projetofinal.model.Pessoa;
+import com.pbe.projetofinal.model.Perfil;
+import jakarta.servlet.http.HttpSession;
+
+import java.util.List;
 @Controller
 public class OcorrenciaController {
 
@@ -233,14 +240,35 @@ public class OcorrenciaController {
     // =================================================
     // LISTAGEM
     // =================================================
-
     @GetMapping("/ocorrencia/listagem")
-    public String listagem(Model model) {
+    public String listagem(Model model, HttpSession session) {
 
-        model.addAttribute(
-                "ocorrencias",
-                ocorrenciaRepository.findAll()
-        );
+        Pessoa pessoaLogada =
+                (Pessoa) session.getAttribute("pessoaLogada");
+
+        // Usuário não está logado
+        if (pessoaLogada == null) {
+            return "redirect:/login";
+        }
+
+        List<Ocorrencia> ocorrencias;
+
+        // MODERADOR E ADMINISTRADOR
+        // podem visualizar todas as ocorrências
+        if (pessoaLogada.getPerfil() == Perfil.MODERADOR ||
+                pessoaLogada.getPerfil() == Perfil.ADMINISTRADOR) {
+
+            ocorrencias = ocorrenciaRepository.findAll();
+
+        } else {
+
+            // USUÁRIO NORMAL
+            // visualiza somente as próprias ocorrências
+            ocorrencias = ocorrenciaRepository
+                    .findByClienteId(pessoaLogada.getId());
+        }
+
+        model.addAttribute("ocorrencias", ocorrencias);
 
         return "/ocorrencia/card";
     }

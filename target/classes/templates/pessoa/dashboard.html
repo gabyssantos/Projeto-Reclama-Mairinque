@@ -61,7 +61,8 @@
             </a>
 
 
-            <a href="#"
+            <!-- MEUS CHAMADOS -->
+            <a href="/ocorrencia/listagem"
                class="menu-item">
 
                 <i class="bi bi-exclamation-circle-fill"></i>
@@ -306,7 +307,7 @@
             <div class="row g-4">
 
                 <!-- TOTAL -->
-                <div class="col-12 col-sm-6 col-xl-3">
+                <div class="col-12 col-sm-6 col-xl">
 
                     <div class="stat-card">
 
@@ -315,7 +316,6 @@
                             <i class="bi bi-file-earmark-text-fill"></i>
 
                         </div>
-
 
                         <div class="stat-info">
 
@@ -332,8 +332,34 @@
                 </div>
 
 
-                <!-- ABERTOS -->
-                <div class="col-12 col-sm-6 col-xl-3">
+                <!-- RASCUNHOS -->
+                <div class="col-12 col-sm-6 col-xl">
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+
+                            <i class="bi bi-file-earmark-fill"></i>
+
+                        </div>
+
+                        <div class="stat-info">
+
+                            <span>Rascunhos</span>
+
+                            <strong th:text="${chamadosRascunho ?: 0}">
+                                0
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- EM ANDAMENTO -->
+                <div class="col-12 col-sm-6 col-xl">
 
                     <div class="stat-card">
 
@@ -343,12 +369,11 @@
 
                         </div>
 
-
                         <div class="stat-info">
 
                             <span>Em andamento</span>
 
-                            <strong th:text="${chamadosAbertos ?: 0}">
+                            <strong th:text="${chamadosEmAndamento ?: 0}">
                                 0
                             </strong>
 
@@ -359,8 +384,8 @@
                 </div>
 
 
-                <!-- ATENDIDOS -->
-                <div class="col-12 col-sm-6 col-xl-3">
+                <!-- APROVADOS -->
+                <div class="col-12 col-sm-6 col-xl">
 
                     <div class="stat-card">
 
@@ -370,12 +395,11 @@
 
                         </div>
 
-
                         <div class="stat-info">
 
-                            <span>Atendidos</span>
+                            <span>Aprovados</span>
 
-                            <strong th:text="${chamadosAtendidos ?: 0}">
+                            <strong th:text="${chamadosAprovados ?: 0}">
                                 0
                             </strong>
 
@@ -386,23 +410,22 @@
                 </div>
 
 
-                <!-- PENDENTES -->
-                <div class="col-12 col-sm-6 col-xl-3">
+                <!-- RECUSADOS -->
+                <div class="col-12 col-sm-6 col-xl">
 
                     <div class="stat-card">
 
                         <div class="stat-icon orange">
 
-                            <i class="bi bi-exclamation-triangle-fill"></i>
+                            <i class="bi bi-x-circle-fill"></i>
 
                         </div>
 
-
                         <div class="stat-info">
 
-                            <span>Pendentes</span>
+                            <span>Recusados</span>
 
-                            <strong th:text="${chamadosPendentes ?: 0}">
+                            <strong th:text="${chamadosRecusados ?: 0}">
                                 0
                             </strong>
 

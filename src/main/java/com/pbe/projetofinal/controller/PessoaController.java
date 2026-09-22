@@ -57,9 +57,16 @@ public class PessoaController {
     // CADASTRO
     // =========================================================
 
-    @GetMapping("/cadastro")
-    public String cadastro(Model model) {
 
+    @GetMapping("/cadastro")
+    public String cadastro(
+            Model model,
+            HttpSession session) {
+
+        // Encerra a sessão do usuário que estiver logado
+        session.invalidate();
+
+        // Cria uma nova pessoa vazia para o formulário
         model.addAttribute(
                 "pessoa",
                 new Pessoa()
@@ -67,6 +74,7 @@ public class PessoaController {
 
         return "pessoa/cadastro";
     }
+
 
     // =========================================================
     // SALVAR CADASTRO
@@ -135,7 +143,8 @@ public class PessoaController {
 
     @PostMapping("/atualizar-endereco")
     public String atualizarEndereco(
-            @ModelAttribute("pessoa") Pessoa pessoa) {
+            @ModelAttribute("pessoa") Pessoa pessoa,
+            HttpSession session) {
 
         Pessoa pessoaBanco = pessoaRepository.findById(pessoa.getId())
                 .orElseThrow(() ->
@@ -153,8 +162,13 @@ public class PessoaController {
         pessoaBanco.setLatitude(pessoa.getLatitude());
         pessoaBanco.setLongitude(pessoa.getLongitude());
 
+        // Salva no banco
         pessoaRepository.save(pessoaBanco);
 
+        // Atualiza a pessoa que está armazenada na sessão
+        session.setAttribute("pessoaLogada", pessoaBanco);
+
+        // Volta para o dashboard
         return "redirect:/pessoa/dashboard";
     }
 

@@ -1,23 +1,36 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
+
     <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
     <title>Ocorrências</title>
 
     <style>
+
         body {
-            font-family: Arial;
+            font-family: Arial, sans-serif;
             background: #f1f3f5;
             margin: 0;
         }
 
-        /* MENU SUPERIOR */
+        /* ================================
+           MENU SUPERIOR
+        ================================= */
+
         .menu {
             display: flex;
             align-items: center;
             justify-content: space-between;
+
             background: white;
+
             padding: 10px 20px;
+
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
@@ -30,7 +43,8 @@
             flex: 1;
         }
 
-        .menu-left, .menu-right {
+        .menu-left,
+        .menu-right {
             width: 120px;
         }
 
@@ -38,13 +52,22 @@
             cursor: pointer;
         }
 
-        /* TOPO */
+
+        /* ================================
+           TOPO
+        ================================= */
+
         .topo {
             display: flex;
+
             justify-content: space-between;
+
             align-items: center;
+
             margin: 20px;
+
             gap: 10px;
+
             flex-wrap: wrap;
         }
 
@@ -52,204 +75,549 @@
             margin: 0;
         }
 
+
+        /* ================================
+           BUSCA
+        ================================= */
+
         input {
             padding: 10px;
+
             width: 250px;
+
             border-radius: 8px;
+
             border: 1px solid #ccc;
         }
 
-        /* BOTÃO MODERNO */
+
+        /* ================================
+           BOTÃO NOVO
+        ================================= */
+
         .btn-novo {
+
             background: #198754;
+
             color: white;
+
             padding: 10px 18px;
+
             border-radius: 8px;
+
             text-decoration: none;
+
             font-weight: bold;
+
             transition: 0.3s;
         }
 
         .btn-novo:hover {
+
             background: #157347;
+
             transform: scale(1.05);
         }
 
-        /* GRID */
+
+        /* ================================
+           GRID
+        ================================= */
+
         .container {
+
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
             gap: 25px;
+
             padding: 20px;
         }
 
-        /* CARD */
+
+        /* ================================
+           CARD
+        ================================= */
+
         .card {
+
             background: white;
+
             border-radius: 12px;
+
             border: 1px solid #ddd;
+
             overflow: hidden;
+
             transition: 0.3s;
         }
 
         .card:hover {
+
             transform: scale(1.02);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+
+            box-shadow:
+                0 8px 20px
+                rgba(0,0,0,0.15);
         }
 
-        /* HEADER */
+
+        /* ================================
+           HEADER DO CARD
+        ================================= */
+
         .card-header {
+
             display: flex;
+
             justify-content: space-between;
+
+            align-items: center;
+
             padding: 10px;
+
             font-size: 13px;
         }
 
-        /* BADGE */
+
+        /* ================================
+           BADGES
+        ================================= */
+
         .badge {
+
             padding: 4px 8px;
+
             border-radius: 6px;
+
             color: white;
+
             font-size: 11px;
         }
 
-        .aberta { background: #0d6efd; }
-        .andamento { background: #ffc107; color: black; }
-        .concluida { background: #198754; }
+        .rascunho {
 
-        /* IMAGEM MAIS RETANGULAR */
+            background: #6c757d;
+        }
+
+        .andamento {
+
+            background: #ffc107;
+
+            color: black;
+        }
+
+        .aprovado {
+
+            background: #198754;
+        }
+
+        .recusado {
+
+            background: #dc3545;
+        }
+
+
+        /* ================================
+           IMAGEM
+        ================================= */
+
         .card img {
+
             width: 100%;
+
             height: 160px;
+
             object-fit: cover;
         }
 
-        /* BODY */
+
+        /* ================================
+           BODY
+        ================================= */
+
         .card-body {
+
             padding: 12px;
+
             font-size: 14px;
         }
 
-        /* BOTÕES */
+
+        /* ================================
+           BOTÕES
+        ================================= */
+
         .card-actions {
+
             display: flex;
+
             justify-content: space-around;
+
             padding: 10px;
+
             border-top: 1px solid #eee;
         }
 
         .card-actions a {
+
             text-decoration: none;
+
             padding: 6px 12px;
+
             border-radius: 6px;
+
             font-size: 12px;
+
             color: white;
         }
 
-        .btn-edit { background: #0d6efd; }
-        .btn-delete { background: #dc3545; }
+        .btn-edit {
 
-        /* RESPONSIVIDADE */
-        @media(max-width: 900px){
+            background: #0d6efd;
+        }
+
+        .btn-delete {
+
+            background: #dc3545;
+        }
+
+
+        /* ================================
+           RESPONSIVIDADE
+        ================================= */
+
+        @media(max-width: 900px) {
+
             .container {
-                grid-template-columns: repeat(2, 1fr);
+
+                grid-template-columns:
+                    repeat(2, 1fr);
             }
         }
 
-        @media(max-width: 600px){
+
+        @media(max-width: 600px) {
+
             .container {
+
                 grid-template-columns: 1fr;
             }
 
             .topo {
+
                 flex-direction: column;
+
                 align-items: stretch;
             }
 
             input {
+
                 width: 100%;
             }
 
             .btn-novo {
+
                 text-align: center;
             }
 
             .menu {
+
                 flex-direction: column;
+
                 gap: 10px;
             }
 
-            .menu-left, .menu-right {
+            .menu-left,
+            .menu-right {
+
                 width: auto;
             }
         }
 
     </style>
+
 </head>
+
 
 <body>
 
-<!-- MENU -->
+
+<!-- =================================
+     MENU
+================================= -->
+
 <div class="menu">
+
     <div class="menu-left">
+
         <a th:href="@{/}">
-            <img src="/img/home.png">
+
+            <img src="/img/home.png"
+                 alt="Início">
+
         </a>
+
     </div>
+
 
     <div class="menu-center">
-        <img src="/img/logomk.png">
+
+        <img src="/img/logomk.png"
+             alt="Reclama Mairinque">
+
     </div>
+
 
     <div class="menu-right">
-        <img src="/img/whatsapp.png">
+
+        <img src="/img/whatsapp.png"
+             alt="WhatsApp">
+
     </div>
+
 </div>
 
-<!-- TOPO -->
+
+
+<!-- =================================
+     TOPO
+================================= -->
+
 <div class="topo">
-    <h2>Ocorrências</h2>
-    <input type="text" id="busca" placeholder="🔎 Buscar...">
-    <a th:href="@{/ocorrencia/cadastro}" class="btn-novo">+ Cadastrar Novo</a>
+
+    <h2>
+        Ocorrências
+    </h2>
+
+
+    <input type="text"
+           id="busca"
+           placeholder="🔎 Buscar...">
+
+
+    <!--
+        O controller possui:
+        /ocorrencia/nova
+    -->
+
+    <a th:href="@{/ocorrencia/nova}"
+       class="btn-novo">
+
+        + Cadastrar Novo
+
+    </a>
+
 </div>
 
-<!-- CARDS -->
-<div class="container" id="listaCards">
 
-    <div class="card" th:each="p : ${ocorrencias}">
+
+<!-- =================================
+     CARDS
+================================= -->
+
+<div class="container"
+     id="listaCards">
+
+
+    <div class="card"
+         th:each="p : ${ocorrencias}">
+
+
+        <!-- ============================
+             HEADER
+        ============================= -->
 
         <div class="card-header">
-            <span th:text="${p.dataOcorrencia}"></span>
 
-            <span class="badge"
-                  th:classappend="${p.status == 'ABERTA'} ? 'aberta' :
-                                  (${p.status == 'EM_ANDAMENTO'} ? 'andamento' : 'concluida')"
-                  th:text="${p.status}">
+            <span th:text="${p.dataOcorrencia}">
+                Data
             </span>
+
+
+            <!-- STATUS -->
+            <span class="badge"
+
+                  th:classappend="${p.statusOcorrencia != null and p.statusOcorrencia.name() == 'RASCUNHO'} ? ' rascunho' :
+                                  (${p.statusOcorrencia != null and p.statusOcorrencia.name() == 'EM_ANDAMENTO'} ? ' andamento' :
+                                  (${p.statusOcorrencia != null and p.statusOcorrencia.name() == 'APROVADO'} ? ' aprovado' :
+                                  ' recusado'))"
+
+                  th:text="${p.statusOcorrencia != null ? p.statusOcorrencia.name() : 'SEM STATUS'}">
+
+                Status
+
+            </span>
+
         </div>
+
+
+
+        <!-- ============================
+             FOTO DA OCORRÊNCIA
+        ============================= -->
 
         <img th:if="${p.fotoOcorrencia != null}"
-             th:src="@{'/foto_ocorrencia/' + ${p.fotoOcorrencia}}">
+
+             th:src="@{'/foto_ocorrencia/' + ${p.fotoOcorrencia}}"
+
+             alt="Foto da ocorrência">
+
 
         <img th:if="${p.fotoOcorrencia == null}"
-             src="/foto_ocorrencia/default.png">
+
+             src="/foto_ocorrencia/default.png"
+
+             alt="Sem foto">
+
+
+
+        <!-- ============================
+             INFORMAÇÕES
+        ============================= -->
 
         <div class="card-body">
-            <p><strong>Rua:</strong> <span th:text="${p.rua}"></span></p>
-            <p><strong>Bairro:</strong> <span th:text="${p.bairro}"></span></p>
-            <p th:text="${p.descricaoOcorrencia}"></p>
+
+
+            <p>
+
+                <strong>
+                    Rua:
+                </strong>
+
+                <span th:text="${p.rua != null ? p.rua : '-'}">
+                    -
+                </span>
+
+            </p>
+
+
+            <p>
+
+                <strong>
+                    Bairro:
+                </strong>
+
+                <span th:text="${p.bairro != null ? p.bairro : '-'}">
+                    -
+                </span>
+
+            </p>
+
+
+            <p>
+
+                <strong>
+                    CEP:
+                </strong>
+
+                <span th:text="${p.cep != null ? p.cep : '-'}">
+                    -
+                </span>
+
+            </p>
+
+
+            <p>
+
+                <strong>
+                    Categoria:
+                </strong>
+
+                <span th:text="${p.categoriaOcorrencia != null ? p.categoriaOcorrencia : '-'}">
+                    -
+                </span>
+
+            </p>
+
+
+            <p th:text="${p.descricaoOcorrencia}">
+                Descrição da ocorrência
+            </p>
+
+
         </div>
 
+
+
+        <!-- ============================
+             AÇÕES
+        ============================= -->
+
         <div class="card-actions">
-            <a th:href="@{/ocorrencia/alterar/{id}(id=${p.id})}" class="btn-edit">Alterar</a>
+
+
+            <a th:href="@{/ocorrencia/alterar/{id}(id=${p.id})}"
+               class="btn-edit">
+
+                Alterar
+
+            </a>
+
+
             <a th:href="@{/ocorrencia/excluir/{id}(id=${p.id})}"
+
                onclick="return confirm('Deseja excluir?')"
-               class="btn-delete">Excluir</a>
+
+               class="btn-delete">
+
+                Excluir
+
+            </a>
+
         </div>
+
 
     </div>
 
 </div>
 
+
+
+<!-- =================================
+     BUSCA DOS CARDS
+================================= -->
+
+<script>
+
+    const busca =
+        document.getElementById("busca");
+
+    const cards =
+        document.querySelectorAll(".card");
+
+
+    busca.addEventListener("input", function () {
+
+        const texto =
+            this.value.toLowerCase();
+
+
+        cards.forEach(function (card) {
+
+            const conteudo =
+                card.textContent.toLowerCase();
+
+
+            if (conteudo.includes(texto)) {
+
+                card.style.display = "";
+
+            } else {
+
+                card.style.display = "none";
+
+            }
+
+        });
+
+    });
+
+</script>
+
+
 </body>
+
 </html>
