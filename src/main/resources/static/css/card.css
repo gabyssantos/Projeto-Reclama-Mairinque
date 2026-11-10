@@ -1,0 +1,348 @@
+
+/* =====================================
+   RECLAMA MAIRINQUE
+   MINHAS RECLAMAÇÕES
+===================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f7fc;
+    color: #212529;
+}
+
+/* MENU SUPERIOR */
+
+.menu {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 25px;
+    background: #ffffff;
+    border-bottom: 1px solid #e2e6ed;
+}
+
+.menu img {
+    height: 40px;
+    object-fit: contain;
+}
+
+.menu-left,
+.menu-right {
+    width: 100px;
+}
+
+.menu-center {
+    flex: 1;
+    text-align: center;
+}
+
+/* CONTEÚDO PRINCIPAL */
+
+.reclamacoes-page {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 35px 40px 60px;
+}
+
+/* CABEÇALHO */
+
+.reclamacoes-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+.reclamacoes-header h1 {
+    margin: 0 0 8px;
+    font-size: 28px;
+    font-weight: 700;
+    color: #202b3c;
+}
+
+.reclamacoes-header p {
+    margin: 0;
+    font-size: 14px;
+    color: #718096;
+}
+
+/* BUSCA E BOTÃO */
+
+.reclamacoes-acoes {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.reclamacoes-busca {
+    width: 260px;
+    padding: 12px 15px;
+    border: 1px solid #dce2eb;
+    border-radius: 8px;
+    background: #ffffff;
+    font-size: 14px;
+    outline: none;
+}
+
+.reclamacoes-busca:focus {
+    border-color: #2d50a1;
+    box-shadow: 0 0 0 3px rgba(45, 80, 161, 0.10);
+}
+
+.btn-nova {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 18px;
+    background: #2d50a1;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.2s;
+    white-space: nowrap;
+}
+
+.btn-nova:hover {
+    background: #203f86;
+}
+
+/* GRID */
+
+.reclamacoes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+}
+
+/* CARD */
+
+.reclamacao-card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    background: #ffffff;
+    border: 1px solid #e1e6ee;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: 0.2s;
+}
+
+.reclamacao-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.07);
+}
+
+/* DATA E STATUS */
+
+.reclamacao-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+    border-bottom: 1px solid #edf0f4;
+}
+
+.reclamacao-data {
+    font-size: 13px;
+    color: #718096;
+}
+
+.reclamacao-status {
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.status-rascunho {
+    background: #e9edf2;
+    color: #667085;
+}
+
+.status-andamento {
+    background: #fff4cf;
+    color: #987000;
+}
+
+.status-aprovado {
+    background: #e2f5e9;
+    color: #198754;
+}
+
+.status-recusado {
+    background: #fde8e8;
+    color: #dc3545;
+}
+
+/* FOTO */
+
+.reclamacao-imagem {
+    display: block;
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+    background: #edf1f7;
+}
+
+/* INFORMAÇÕES */
+
+.reclamacao-body {
+    flex: 1;
+    padding: 18px;
+}
+
+.reclamacao-body > p {
+    margin: 0 0 12px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #667085;
+}
+
+.reclamacao-body strong {
+    color: #344054;
+}
+
+.reclamacao-descricao {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid #edf0f4;
+    font-size: 13px;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+.reclamacao-descricao p {
+    margin: 7px 0 0;
+    color: #667085;
+}
+
+/* BOTÕES */
+
+.reclamacao-acoes {
+    display: flex;
+    gap: 10px;
+    padding: 14px 18px;
+    border-top: 1px solid #edf0f4;
+}
+
+.btn-alterar,
+.btn-excluir {
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.btn-alterar {
+    background: #eaf0ff;
+    color: #2d50a1;
+    border: 1px solid #d8e2ff;
+}
+
+.btn-alterar:hover {
+    background: #2d50a1;
+    color: #ffffff;
+}
+
+.btn-excluir {
+    background: #fff0f0;
+    color: #dc3545;
+    border: 1px solid #f5d5d5;
+}
+
+.btn-excluir:hover {
+    background: #dc3545;
+    color: #ffffff;
+}
+
+/* LISTA VAZIA */
+
+.reclamacoes-vazias {
+    padding: 55px 20px;
+    text-align: center;
+    background: #ffffff;
+    border: 1px solid #e1e6ee;
+    border-radius: 12px;
+}
+
+.reclamacoes-vazias h2 {
+    margin-bottom: 10px;
+    color: #344054;
+    font-size: 20px;
+}
+
+.reclamacoes-vazias p {
+    margin-bottom: 22px;
+    color: #718096;
+    font-size: 14px;
+}
+
+/* TABLET */
+
+@media (max-width: 1100px) {
+    .reclamacoes-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .reclamacoes-page {
+        padding: 30px 25px;
+    }
+}
+
+/* CELULAR */
+
+@media (max-width: 700px) {
+    .reclamacoes-page {
+        padding: 25px 15px 40px;
+    }
+
+    .reclamacoes-header {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .reclamacoes-header h1 {
+        font-size: 23px;
+    }
+
+    .reclamacoes-acoes {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .reclamacoes-busca {
+        width: 100%;
+    }
+
+    .btn-nova {
+        width: 100%;
+    }
+
+    .reclamacoes-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .reclamacao-imagem {
+        height: 210px;
+    }
+
+    .menu {
+        padding: 10px 15px;
+    }
+}

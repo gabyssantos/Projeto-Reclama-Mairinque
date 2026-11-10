@@ -40,16 +40,6 @@
 
             </a>
 
-
-            <a href="#"
-               class="menu-item">
-
-                <i class="bi bi-person-fill"></i>
-                <span>Meu perfil</span>
-
-            </a>
-
-
             <a href="#"
                class="menu-item"
                data-bs-toggle="modal"
@@ -234,11 +224,10 @@
 
                 <div class="profile-actions">
 
-                    <a href="#"
+                    <a th:href="@{/pessoa/editar/{id}(id=${pessoa.id})}"
                        class="btn btn-primary">
 
                         <i class="bi bi-pencil-fill"></i>
-
                         Editar perfil
 
                     </a>

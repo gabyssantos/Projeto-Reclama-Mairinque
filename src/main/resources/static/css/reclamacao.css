@@ -1,0 +1,715 @@
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f6f9;
+            color: #212529;
+        }
+
+
+        /* =====================================================
+           MENU
+        ===================================================== */
+
+        .menu {
+            height: 70px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            background: #1F4EA3;
+
+            padding: 0 35px;
+
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+
+            position: sticky;
+            top: 0;
+
+            z-index: 100;
+        }
+
+
+        .menu-left,
+        .menu-right {
+            width: 120px;
+        }
+
+
+        .menu-left img {
+            height: 38px;
+            width: auto;
+        }
+
+
+        .menu-center {
+            position: absolute;
+
+            left: 50%;
+
+            transform: translateX(-50%);
+        }
+
+
+        .menu-center img {
+            height: 45px;
+            width: auto;
+        }
+
+
+        .menu-right {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+
+        .menu-right img {
+            height: 35px;
+            width: auto;
+        }
+
+
+        /* =====================================================
+           CONTAINER
+        ===================================================== */
+
+        .page {
+            width: 100%;
+
+            padding: 35px 20px 50px;
+        }
+
+
+        .form-container {
+            width: 100%;
+            max-width: 850px;
+
+            margin: 0 auto;
+
+            background: white;
+
+            border-radius: 16px;
+
+            box-shadow:
+                0 8px 30px rgba(0,0,0,0.08);
+
+            overflow: hidden;
+        }
+
+
+        /* =====================================================
+           CABEÇALHO
+        ===================================================== */
+
+        .form-header {
+            background: #1F4EA3;
+
+            color: white;
+
+            padding: 30px 35px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 20px;
+        }
+
+
+        .form-header h1 {
+            margin: 0 0 5px;
+
+            font-size: 26px;
+        }
+
+
+        .form-header p {
+            margin: 0;
+
+            color: rgba(255,255,255,0.85);
+
+            font-size: 15px;
+        }
+
+
+        /* =====================================================
+           FORMULÁRIO
+        ===================================================== */
+
+        form {
+            padding: 35px;
+        }
+
+
+        .section {
+            margin-bottom: 35px;
+        }
+
+
+        .section:last-of-type {
+            margin-bottom: 20px;
+        }
+
+
+        .section-title {
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            color: #1F4EA3;
+
+            font-size: 19px;
+
+            margin: 0 0 20px;
+
+            padding-bottom: 12px;
+
+            border-bottom: 1px solid #e9ecef;
+        }
+
+
+        .section-title span {
+            width: 34px;
+            height: 34px;
+
+            border-radius: 9px;
+
+            background: #eaf1ff;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 16px;
+        }
+
+
+        /* =====================================================
+           CAMPOS
+        ===================================================== */
+
+        .campo {
+            margin-bottom: 20px;
+        }
+
+
+        .linha {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 20px;
+        }
+
+
+        label {
+            display: block;
+
+            font-weight: bold;
+
+            font-size: 14px;
+
+            margin-bottom: 8px;
+
+            color: #343a40;
+        }
+
+
+        .obrigatorio {
+            color: #dc3545;
+        }
+
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+
+            padding: 12px 14px;
+
+            border: 1px solid #ced4da;
+
+            border-radius: 9px;
+
+            background: white;
+
+            font-family: inherit;
+
+            font-size: 15px;
+
+            outline: none;
+
+            transition: 0.2s;
+        }
+
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #1F4EA3;
+
+            box-shadow:
+                0 0 0 3px rgba(31,78,163,0.12);
+        }
+
+
+        input[readonly] {
+            background: #f1f3f5;
+
+            color: #495057;
+
+            cursor: not-allowed;
+        }
+
+
+        textarea {
+            min-height: 130px;
+
+            resize: vertical;
+        }
+
+
+        .campo-ajuda {
+            display: block;
+
+            margin-top: 6px;
+
+            font-size: 12px;
+
+            color: #6c757d;
+        }
+
+
+        /* =====================================================
+           CATEGORIA
+        ===================================================== */
+
+        .categoria-container {
+            position: relative;
+        }
+
+
+        .categoria-container select {
+            cursor: pointer;
+        }
+
+
+        /* =====================================================
+           FOTO
+        ===================================================== */
+
+        .foto-area {
+            border: 2px dashed #ced4da;
+
+            border-radius: 12px;
+
+            padding: 25px;
+
+            text-align: center;
+
+            background: #fafbfc;
+
+            transition: 0.2s;
+        }
+
+
+        .foto-area:hover {
+            border-color: #1F4EA3;
+
+            background: #f7f9ff;
+        }
+
+
+        .foto-icon {
+            width: 55px;
+            height: 55px;
+
+            margin: 0 auto 12px;
+
+            border-radius: 50%;
+
+            background: #eaf1ff;
+
+            color: #1F4EA3;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 25px;
+        }
+
+
+        .foto-area strong {
+            display: block;
+
+            margin-bottom: 5px;
+        }
+
+
+        .foto-area p {
+            margin: 0 0 15px;
+
+            color: #6c757d;
+
+            font-size: 13px;
+        }
+
+
+        .btn-camera {
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 8px;
+
+            padding: 11px 20px;
+
+            background: #1F4EA3;
+
+            color: white;
+
+            border: none;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+            transition: 0.2s;
+        }
+
+
+        .btn-camera:hover {
+            background: #173d80;
+
+            transform: translateY(-1px);
+        }
+
+
+        #nomeArquivo {
+            margin-top: 12px;
+
+            font-size: 13px;
+
+            color: #198754;
+
+            font-weight: bold;
+        }
+
+
+        /* =====================================================
+           AVISO
+        ===================================================== */
+
+        .aviso {
+            display: flex;
+
+            gap: 12px;
+
+            padding: 15px;
+
+            background: #fff8df;
+
+            border: 1px solid #f2c230;
+
+            border-radius: 10px;
+
+            margin-bottom: 25px;
+
+            font-size: 13px;
+
+            color: #5c4a00;
+        }
+
+
+        .aviso-icon {
+            color: #d39e00;
+
+            font-size: 20px;
+
+            flex-shrink: 0;
+        }
+
+
+        .aviso strong {
+            display: block;
+
+            margin-bottom: 3px;
+        }
+
+
+        /* =====================================================
+           BOTÕES
+        ===================================================== */
+
+        .acoes {
+            display: flex;
+
+            justify-content: flex-end;
+
+            gap: 12px;
+
+            padding-top: 10px;
+        }
+
+
+        .btn {
+            min-width: 150px;
+
+            padding: 13px 20px;
+
+            border-radius: 9px;
+
+            text-align: center;
+
+            text-decoration: none;
+
+            font-weight: bold;
+
+            border: none;
+
+            cursor: pointer;
+
+            font-size: 14px;
+
+            transition: 0.2s;
+        }
+
+
+        .btn-voltar {
+            background: #e9ecef;
+
+            color: #495057;
+        }
+
+
+        .btn-voltar:hover {
+            background: #dee2e6;
+        }
+
+
+        .btn-salvar {
+            background: #1F4EA3;
+
+            color: white;
+        }
+
+
+        .btn-salvar:hover {
+            background: #173d80;
+
+            transform: translateY(-1px);
+        }
+
+
+        /* =====================================================
+           MODAL FOTO
+        ===================================================== */
+
+        .modal-foto {
+            display: none;
+
+            position: fixed;
+
+            z-index: 9999;
+
+            left: 0;
+            top: 0;
+
+            width: 100%;
+            height: 100%;
+
+            background: rgba(0,0,0,0.75);
+
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+        }
+
+
+        .modal-content-foto {
+            width: 100%;
+
+            max-width: 400px;
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 14px;
+
+            text-align: center;
+
+            box-shadow:
+                0 10px 40px rgba(0,0,0,0.25);
+        }
+
+
+        .modal-content-foto h3 {
+            margin-top: 0;
+
+            color: #1F4EA3;
+        }
+
+
+        .botoes-foto {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 12px;
+
+            margin: 25px 0;
+        }
+
+
+        .botoes-foto button {
+            padding: 12px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #1F4EA3;
+
+            color: white;
+
+            cursor: pointer;
+
+            font-weight: bold;
+        }
+
+
+        .botoes-foto button:hover {
+            background: #173d80;
+        }
+
+
+        .fechar {
+            background: #6c757d;
+
+            color: white;
+
+            border: none;
+
+            padding: 10px 20px;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+        }
+
+
+        video {
+            width: 100%;
+
+            border-radius: 10px;
+
+            margin-bottom: 15px;
+        }
+
+
+        #btnCapturar {
+            background: #198754;
+
+            color: white;
+
+            border: none;
+
+            padding: 10px 18px;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            margin-bottom: 15px;
+        }
+
+
+        /* =====================================================
+           RESPONSIVO
+        ===================================================== */
+
+        @media (max-width: 700px) {
+
+            .menu {
+                height: auto;
+
+                min-height: 65px;
+
+                padding: 10px 15px;
+            }
+
+
+            .menu-left,
+            .menu-right {
+                width: 70px;
+            }
+
+
+            .menu-left img {
+                height: 32px;
+            }
+
+
+            .menu-center img {
+                height: 38px;
+            }
+
+
+            .menu-right img {
+                height: 28px;
+            }
+
+
+            .page {
+                padding: 20px 12px 35px;
+            }
+
+
+            .form-header {
+                padding: 23px 20px;
+            }
+
+
+            .form-header h1 {
+                font-size: 21px;
+            }
+
+
+            form {
+                padding: 25px 20px;
+            }
+
+
+            .linha {
+                grid-template-columns: 1fr;
+
+                gap: 0;
+            }
+
+
+            .acoes {
+                flex-direction: column-reverse;
+            }
+
+
+            .btn {
+                width: 100%;
+            }
+
+
+            .botoes-foto {
+                grid-template-columns: 1fr;
+            }
+
+        }

@@ -246,27 +246,14 @@ public class OcorrenciaController {
         Pessoa pessoaLogada =
                 (Pessoa) session.getAttribute("pessoaLogada");
 
-        // Usuário não está logado
+        // Verifica se está logado
         if (pessoaLogada == null) {
             return "redirect:/login";
         }
 
-        List<Ocorrencia> ocorrencias;
-
-        // MODERADOR E ADMINISTRADOR
-        // podem visualizar todas as ocorrências
-        if (pessoaLogada.getPerfil() == Perfil.MODERADOR ||
-                pessoaLogada.getPerfil() == Perfil.ADMINISTRADOR) {
-
-            ocorrencias = ocorrenciaRepository.findAll();
-
-        } else {
-
-            // USUÁRIO NORMAL
-            // visualiza somente as próprias ocorrências
-            ocorrencias = ocorrenciaRepository
-                    .findByClienteId(pessoaLogada.getId());
-        }
+        // Busca somente as reclamações do usuário conectado
+        List<Ocorrencia> ocorrencias =
+                ocorrenciaRepository.findByClienteId(pessoaLogada.getId());
 
         model.addAttribute("ocorrencias", ocorrencias);
 
