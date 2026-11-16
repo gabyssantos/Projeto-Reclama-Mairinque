@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 
@@ -5,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alterar Ocorrência</title>
+
 
     <style>
         body {
@@ -46,7 +48,7 @@
             box-shadow: 0 5px 20px rgba(0,0,0,0.1);
         }
 
-        input, select {
+        input, select, textarea {
             width: 100%;
             padding: 10px;
             margin-top: 8px;
@@ -54,6 +56,12 @@
             border-radius: 8px;
             border: 1px solid #ccc;
             box-sizing: border-box;
+            font-family: Arial;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
         }
 
         label {
@@ -62,45 +70,74 @@
 
         h2 {
             text-align: center;
+            color: #1F4EA3;
         }
 
-        /* BOTÕES */
+        /* BOTÕES PRINCIPAIS */
         .acoes {
             display: flex;
-            gap: 10px;
-            margin-top: 15px;
+            gap: 15px;
+            margin-top: 25px;
         }
 
         .btn {
             flex: 1;
-            padding: 12px;
+            padding: 13px 18px;
             border-radius: 8px;
             text-align: center;
             text-decoration: none;
-            color: white;
+            font-size: 15px;
             font-weight: bold;
-            border: none;
+            border: 2px solid #1F4EA3;
             cursor: pointer;
             transition: 0.3s;
         }
 
-        .btn-salvar { background: #198754; }
-        .btn-voltar { background: #6c757d; }
-
-        .btn:hover {
-            transform: scale(1.05);
-            opacity: 0.9;
+        .btn-salvar {
+            background: #1F4EA3;
+            color: white;
         }
 
-        /* BOTÃO CAMERA */
+        .btn-voltar {
+            background: white;
+            color: #1F4EA3;
+        }
+
+        .btn-salvar:hover {
+            background: #173B7A;
+            border-color: #173B7A;
+        }
+
+        .btn-voltar:hover {
+            background: #F2C230;
+            border-color: #F2C230;
+            color: #222;
+        }
+
+        /* BOTÃO CÂMERA */
         .btn-camera {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             border: none;
             border-radius: 8px;
-            background: #0d6efd;
+            background: #1F4EA3;
             color: white;
+            font-weight: bold;
             cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-camera:hover {
+            background: #173B7A;
+        }
+
+        /* FOTO ATUAL */
+        .foto-atual {
+            max-width: 100%;
+            max-height: 220px;
+            display: block;
+            margin: 10px auto 20px;
+            border-radius: 8px;
         }
 
         /* MODAL */
@@ -113,7 +150,6 @@
             width: 100%;
             height: 100%;
             background: rgba(0,0,0,0.8);
-            display: flex;
             align-items: center;
             justify-content: center;
         }
@@ -122,6 +158,7 @@
             background: white;
             padding: 25px;
             width: 320px;
+            max-width: 85%;
             border-radius: 12px;
             text-align: center;
         }
@@ -134,21 +171,32 @@
         }
 
         .botoes-foto button {
-            padding: 10px;
+            padding: 10px 15px;
             border: none;
             border-radius: 6px;
-            background: #198754;
+            background: #1F4EA3;
             color: white;
+            font-weight: bold;
             cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .botoes-foto button:hover {
+            background: #173B7A;
         }
 
         .fechar {
             background: #dc3545;
             color: white;
             border: none;
-            padding: 8px;
+            padding: 9px 18px;
             border-radius: 6px;
             cursor: pointer;
+            font-weight: bold;
+        }
+
+        .fechar:hover {
+            background: #b02a37;
         }
 
         /* RESPONSIVO */
@@ -171,31 +219,34 @@
                 width: auto;
             }
         }
-
     </style>
+
 </head>
 
 <body>
 
 <!-- MENU -->
 <div class="menu">
+
     <div class="menu-left">
         <a th:href="@{/}">
-            <img src="/img/home.png">
+            <img src="/img/home.png" alt="Início">
         </a>
     </div>
 
     <div class="menu-center">
-        <img src="/img/logomk.png">
+        <img src="/img/logomk.png" alt="Reclama Mairinque">
     </div>
 
     <div class="menu-right">
-        <img src="/img/whatsapp.png">
+        <img src="/img/whatsapp.png" alt="WhatsApp">
     </div>
+
 </div>
 
-<!-- FORM -->
+<!-- FORMULÁRIO -->
 <div class="form-container">
+
     <form id="form-cadastro"
           th:action="@{/ocorrencia/salvar}"
           th:object="${ocorrencia}"
@@ -203,44 +254,89 @@
           enctype="multipart/form-data">
 
         <input type="hidden" th:field="*{id}">
-        <input type="hidden" th:field="*{fotoOcorrencia}">
-
-        <label>Nome Completo</label>
-        <input type="text" th:field="*{nome}" placeholder="Campo não obrigatório*">
-
-        <label>Telefone</label>
-        <input type="text" th:field="*{telefone}" placeholder="Campo não obrigatório*">
 
         <h2>Alterar Reclamação</h2>
 
-        <input type="text" id="rua" required th:field="*{rua}" placeholder="Rua">
-        <input type="text" id="bairro" required th:field="*{bairro}" placeholder="Bairro">
-        <input type="text" id="descricao" required th:field="*{descricaoOcorrencia}" placeholder="Descrição">
+        <label for="rua">Rua</label>
+        <input type="text"
+               id="rua"
+               th:field="*{rua}"
+               placeholder="Digite o nome da rua"
+               required>
 
-        <label for="ocorrencia"><strong>Selecione sua ocorrência:</strong></label>
-        <select id="ocorrencia" name="ocorrencia"  th:field="*{status}">
+        <label for="bairro">Bairro</label>
+        <input type="text"
+               id="bairro"
+               th:field="*{bairro}"
+               placeholder="Digite o bairro"
+               required>
+
+        <label for="cep">CEP</label>
+        <input type="text"
+               id="cep"
+               th:field="*{cep}"
+               placeholder="Digite o CEP">
+
+        <label for="descricao">Descrição</label>
+        <textarea id="descricao"
+                  th:field="*{descricaoOcorrencia}"
+                  placeholder="Descreva sua reclamação"
+                  maxlength="1000"
+                  required></textarea>
+
+        <label for="categoriaOcorrencia">Selecione sua ocorrência:</label>
+
+        <select id="categoriaOcorrencia"
+                th:field="*{categoriaOcorrencia}"
+                required>
+
+            <option value="">Selecione uma categoria</option>
             <option value="Limpeza da cidade">Limpeza da cidade</option>
-            <option value="Posto de saude">Posto de saude</option>
+            <option value="Posto de saude">Posto de saúde</option>
             <option value="Ruas asfaltadas">Ruas asfaltadas</option>
-            <option value="Iluminacao publica">Iluminacao publica</option>
+            <option value="Iluminacao publica">Iluminação pública</option>
             <option value="Coleta de lixo">Coleta de lixo</option>
-            <option value="Areas de lazer">Areas de lazer</option>
-            <option value="Horario de onibus">Horario de onibus</option>
-            <option value="Servicos digitais">Servicos digitais</option>
+            <option value="Areas de lazer">Áreas de lazer</option>
+            <option value="Horario de onibus">Horário de ônibus</option>
+            <option value="Servicos digitais">Serviços digitais</option>
+
         </select>
 
-        <!-- FOTO -->
-        <label>Foto</label>
-        <button type="button" class="btn-camera" onclick="abrirModalFoto()">
+        <!-- FOTO ATUAL -->
+        <label>Foto atual</label>
+
+        <div th:if="${ocorrencia.fotoOcorrencia != null and !ocorrencia.fotoOcorrencia.isEmpty()}">
+            <img class="foto-atual"
+                 th:src="@{'/foto_ocorrencia/' + ${ocorrencia.fotoOcorrencia}}"
+                 alt="Foto atual da ocorrência">
+        </div>
+
+        <p>Se quiser, você pode selecionar uma nova foto.</p>
+
+        <button type="button"
+                class="btn-camera"
+                onclick="abrirModalFoto()">
             📷 Tirar / Selecionar Foto
         </button>
 
-        <input type="file" id="inputArquivo" name="arquivoFoto" accept="image/*" hidden>
+        <input type="file"
+               id="inputArquivo"
+               name="arquivoFoto"
+               accept="image/*"
+               hidden>
 
         <!-- BOTÕES -->
         <div class="acoes">
-            <button type="submit" class="btn btn-salvar">Salvar</button>
-            <a th:href="@{/ocorrencia/listagem}" class="btn btn-voltar">Voltar para Lista</a>
+
+            <button type="submit" class="btn btn-salvar">
+                Salvar alterações
+            </button>
+
+            <a th:href="@{/ocorrencia/listagem}"
+               class="btn btn-voltar">
+                Voltar para Lista
+            </a>
+
         </div>
 
     </form>
@@ -248,39 +344,47 @@
 
 <!-- MODAL -->
 <div id="modalFoto" class="modal-foto">
+
     <div class="modal-content-foto">
 
         <h3>Selecionar Foto</h3>
 
         <div class="botoes-foto">
-            <button onclick="selecionarArquivo()">📁 Arquivo</button>
-            <button onclick="iniciarCamera()">📷 Câmera</button>
+            <button type="button" onclick="selecionarArquivo()">
+                📁 Arquivo
+            </button>
+
+            <button type="button" onclick="iniciarCamera()">
+                📷 Câmera
+            </button>
         </div>
 
         <video id="video" width="100%" autoplay style="display:none;"></video>
         <canvas id="canvas" style="display:none;"></canvas>
 
-        <button id="btnCapturar" onclick="capturarFoto()" style="display:none;">
+        <button type="button"
+                id="btnCapturar"
+                onclick="capturarFoto()"
+                style="display:none;">
             📸 Capturar
         </button>
 
-        <button class="fechar" onclick="fecharModalFoto()">Fechar</button>
+        <br><br>
+
+        <button type="button"
+                class="fechar"
+                onclick="fecharModalFoto()">
+            Fechar
+        </button>
+
     </div>
 </div>
 
 <!-- FOOTER -->
 <div th:replace="~{/fragments/footer.html :: footer}"></div>
 
-<!-- JS ORIGINAL (INALTERADO) -->
+<!-- JAVASCRIPT -->
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const status = document.getElementById("status");
-        status.value = "ABERTA";
-
-        status.addEventListener("change", function() {
-            this.value = "ABERTA";
-        });
-    });
 
     let stream;
 
@@ -293,6 +397,7 @@
 
         if (stream) {
             stream.getTracks().forEach(track => track.stop());
+            stream = null;
         }
 
         document.getElementById("video").style.display = "none";
@@ -334,7 +439,10 @@
         ctx.drawImage(video, 0, 0);
 
         canvas.toBlob(function(blob) {
-            const file = new File([blob], "foto.png", { type: "image/png" });
+
+            const file = new File([blob], "foto.png", {
+                type: "image/png"
+            });
 
             const dataTransfer = new DataTransfer();
             dataTransfer.items.add(file);
@@ -342,8 +450,10 @@
             input.files = dataTransfer.files;
 
             fecharModalFoto();
-        });
+
+        }, "image/png");
     }
+
 </script>
 
 </body>

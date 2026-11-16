@@ -15,12 +15,15 @@ public interface OcorrenciaRepository extends JpaRepository<Ocorrencia, Long> {
 
     long countByStatusOcorrencia(StatusOcorrencia statusOcorrencia);
 
-
-
     long countByClienteIdAndStatusOcorrencia(
             Long clienteId,
             StatusOcorrencia statusOcorrencia
     );
 
     List<Ocorrencia> findTop5ByClienteIdOrderByIdDesc(Long clienteId);
+
+    // Busca somente reclamações aprovadas, das mais recentes para as mais antigas
+    List<Ocorrencia> findByStatusOcorrenciaOrderByIdDesc(
+            StatusOcorrencia statusOcorrencia
+    );
 }

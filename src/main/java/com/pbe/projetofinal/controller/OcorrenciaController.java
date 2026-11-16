@@ -1,3 +1,4 @@
+
 package com.pbe.projetofinal.controller;
 
 import com.pbe.projetofinal.model.Ocorrencia;
@@ -15,21 +16,15 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import java.util.List;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
-import com.pbe.projetofinal.model.Ocorrencia;
-import com.pbe.projetofinal.model.Pessoa;
-import com.pbe.projetofinal.model.Perfil;
-import jakarta.servlet.http.HttpSession;
-
-import java.util.List;
 @Controller
 public class OcorrenciaController {
 
@@ -38,7 +33,6 @@ public class OcorrenciaController {
 
     private final String uploadDir =
             "src/main/resources/static/foto_ocorrencia/";
-
 
     // =================================================
     // NOVA OCORRÊNCIA
@@ -52,31 +46,23 @@ public class OcorrenciaController {
         Pessoa pessoaLogada =
                 (Pessoa) session.getAttribute("pessoaLogada");
 
-        // Não está logado
         if (pessoaLogada == null) {
             return "redirect:/login";
         }
 
-        // Envia a pessoa para o HTML
         model.addAttribute("pessoa", pessoaLogada);
-
-        // Cria uma nova ocorrência
-        model.addAttribute(
-                "ocorrencia",
-                new Ocorrencia()
-        );
+        model.addAttribute("ocorrencia", new Ocorrencia());
 
         return "/ocorrencia/reclamacao";
     }
 
-
     // =================================================
-    // SALVAR
+    // SALVAR OU ALTERAR OCORRÊNCIA
     // =================================================
 
     @PostMapping("/ocorrencia/salvar")
     public String salvar(
-            @Valid Ocorrencia ocorrencia,
+            @Valid @ModelAttribute("ocorrencia") Ocorrencia ocorrencia,
             BindingResult result,
             @RequestParam(
                     value = "arquivoFoto",
@@ -85,10 +71,6 @@ public class OcorrenciaController {
             HttpSession session,
             Model model) {
 
-        // =================================================
-        // PESSOA LOGADA
-        // =================================================
-
         Pessoa pessoaLogada =
                 (Pessoa) session.getAttribute("pessoaLogada");
 
@@ -96,18 +78,128 @@ public class OcorrenciaController {
             return "redirect:/login";
         }
 
+        Ocorrencia ocorrenciaSalva = null;
 
-        // =================================================
+        // VERIFICAR SE É UMA ALTERAÇÃO
+
+        if (ocorrencia.getId() != null) {
+
+            ocorrenciaSalva = ocorrenciaRepository
+                    .findById(ocorrencia.getId())
+                    .orElse(null);
+
+            if (ocorrenciaSalva == null ||
+                    !ocorrenciaSalva.getCliente().getId()
+                            .equals(pessoaLogada.getId())) {
+
+                return "redirect:/ocorrencia/listagem";
+            }
+        }
+
         // VALIDAÇÃO
-        // =================================================
 
         if (result.hasErrors()) {
 
-            // Precisamos enviar novamente a pessoa
-            // para o formulário
+            model.addAttribute("pessoa", pessoaLogada);
+
+            if (ocorrenciaSalva != null) {
+
+                ocorrencia.setFotoOcorrencia(
+                        ocorrenciaSalva.getFotoOcorrencia()
+                );
+
+                return "/ocorrencia/alterar";
+            }
+
+            return "/ocorrencia/reclamacao";
+        }
+
+        try {
+
+            // SE FOR ALTERAÇÃO
+
+            if (ocorrenciaSalva != null) {
+
+                ocorrenciaSalva.setRua(ocorrencia.getRua());
+
+                ocorrenciaSalva.setBairro(ocorrencia.getBairro());
+
+                ocorrenciaSalva.setCep(ocorrencia.getCep());
+
+                ocorrenciaSalva.setCategoriaOcorrencia(
+                        ocorrencia.getCategoriaOcorrencia()
+                );
+
+                ocorrenciaSalva.setDescricaoOcorrencia(
+                        ocorrencia.getDescricaoOcorrencia()
+                );
+
+            } else {
+
+                // SE FOR NOVA OCORRÊNCIA
+
+                ocorrencia.setCliente(pessoaLogada);
+
+                if (ocorrencia.getDataOcorrencia() == null) {
+                    ocorrencia.setDataOcorrencia(LocalDate.now());
+                }
+
+                if (pessoaLogada.getPerfil() == Perfil.NORMAL) {
+
+                    ocorrencia.setStatusOcorrencia(
+                            StatusOcorrencia.RASCUNHO
+                    );
+
+                } else {
+
+                    ocorrencia.setStatusOcorrencia(
+                            StatusOcorrencia.APROVADO
+                    );
+                }
+
+                ocorrenciaSalva = ocorrencia;
+            }
+
+            // FOTO
+
+            if (arquivoFoto != null && !arquivoFoto.isEmpty()) {
+
+                String nomeOriginal = Paths.get(
+                        arquivoFoto.getOriginalFilename()
+                ).getFileName().toString();
+
+                String nomeArquivo =
+                        UUID.randomUUID() + "_" + nomeOriginal;
+
+                Path caminhoDiretorio =
+                        Paths.get(uploadDir).toAbsolutePath();
+
+                if (!Files.exists(caminhoDiretorio)) {
+                    Files.createDirectories(caminhoDiretorio);
+                }
+
+                Path caminhoArquivo =
+                        caminhoDiretorio.resolve(nomeArquivo);
+
+                arquivoFoto.transferTo(caminhoArquivo.toFile());
+
+                ocorrenciaSalva.setFotoOcorrencia(nomeArquivo);
+            }
+
+            // SALVAR NO BANCO
+
+            ocorrenciaRepository.save(ocorrenciaSalva);
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+
+            model.addAttribute("pessoa", pessoaLogada);
+            model.addAttribute("ocorrencia", ocorrencia);
+
             model.addAttribute(
-                    "pessoa",
-                    pessoaLogada
+                    "erro",
+                    "Não foi possível salvar a foto da ocorrência."
             );
 
             if (ocorrencia.getId() != null) {
@@ -117,185 +209,112 @@ public class OcorrenciaController {
             return "/ocorrencia/reclamacao";
         }
 
-
-        try {
-
-            // =================================================
-            // VINCULAR À PESSOA LOGADA
-            // =================================================
-
-            ocorrencia.setCliente(
-                    pessoaLogada
-            );
-
-
-            // =================================================
-            // DATA DA OCORRÊNCIA
-            // =================================================
-
-            if (ocorrencia.getDataOcorrencia() == null) {
-
-                ocorrencia.setDataOcorrencia(
-                        LocalDate.now()
-                );
-            }
-
-
-            // =================================================
-            // STATUS
-            // =================================================
-
-            if (pessoaLogada.getPerfil() == Perfil.NORMAL) {
-
-                // Usuário normal:
-                // sempre começa como RASCUNHO
-
-                ocorrencia.setStatusOcorrencia(
-                        StatusOcorrencia.RASCUNHO
-                );
-
-            } else {
-
-                // Moderador ou administrador:
-                // pode publicar diretamente
-
-                ocorrencia.setStatusOcorrencia(
-                        StatusOcorrencia.APROVADO
-                );
-            }
-
-
-            // =================================================
-            // FOTO
-            // =================================================
-
-            if (arquivoFoto != null
-                    && !arquivoFoto.isEmpty()) {
-
-                String nomeArquivo =
-                        UUID.randomUUID()
-                                + "_"
-                                + arquivoFoto.getOriginalFilename();
-
-                Path caminhoDiretorio =
-                        Paths.get(uploadDir)
-                                .toAbsolutePath();
-
-                if (!Files.exists(caminhoDiretorio)) {
-
-                    Files.createDirectories(
-                            caminhoDiretorio
-                    );
-                }
-
-                Path caminhoArquivo =
-                        caminhoDiretorio.resolve(
-                                nomeArquivo
-                        );
-
-                arquivoFoto.transferTo(
-                        caminhoArquivo.toFile()
-                );
-
-                ocorrencia.setFotoOcorrencia(
-                        nomeArquivo
-                );
-            }
-
-
-            // =================================================
-            // SALVAR NO BANCO
-            // =================================================
-
-            ocorrenciaRepository.save(
-                    ocorrencia
-            );
-
-        } catch (IOException e) {
-
-            e.printStackTrace();
-
-            model.addAttribute(
-                    "pessoa",
-                    pessoaLogada
-            );
-
-            model.addAttribute(
-                    "erro",
-                    "Não foi possível salvar a foto da ocorrência."
-            );
-
-            return "/ocorrencia/reclamacao";
-        }
-
-
-        // =================================================
-        // FINAL
-        // =================================================
-
         return "redirect:/ocorrencia/listagem";
     }
 
+    // =================================================
+    // FEED DE RECLAMAÇÕES APROVADAS
+    // =================================================
+
+    @GetMapping("/ocorrencia/feed")
+    public String feed(Model model) {
+
+        List<Ocorrencia> ocorrencias =
+                ocorrenciaRepository.findByStatusOcorrenciaOrderByIdDesc(
+                        StatusOcorrencia.APROVADO
+                );
+
+        model.addAttribute("ocorrencias", ocorrencias);
+
+        return "/ocorrencia/feed";
+    }
 
     // =================================================
-    // LISTAGEM
+    // LISTAGEM DAS OCORRÊNCIAS DO USUÁRIO
     // =================================================
+
     @GetMapping("/ocorrencia/listagem")
-    public String listagem(Model model, HttpSession session) {
+    public String listagem(
+            Model model,
+            HttpSession session) {
 
         Pessoa pessoaLogada =
                 (Pessoa) session.getAttribute("pessoaLogada");
 
-        // Verifica se está logado
         if (pessoaLogada == null) {
             return "redirect:/login";
         }
 
-        // Busca somente as reclamações do usuário conectado
         List<Ocorrencia> ocorrencias =
-                ocorrenciaRepository.findByClienteId(pessoaLogada.getId());
+                ocorrenciaRepository.findByClienteId(
+                        pessoaLogada.getId()
+                );
 
         model.addAttribute("ocorrencias", ocorrencias);
 
         return "/ocorrencia/card";
     }
 
-
     // =================================================
-    // ALTERAR
+    // ALTERAR OCORRÊNCIA
     // =================================================
 
     @GetMapping("/ocorrencia/alterar/{id}")
     public String alterar(
             @PathVariable Long id,
-            Model model) {
+            Model model,
+            HttpSession session) {
+
+        Pessoa pessoaLogada =
+                (Pessoa) session.getAttribute("pessoaLogada");
+
+        if (pessoaLogada == null) {
+            return "redirect:/login";
+        }
 
         Ocorrencia ocorrencia =
-                ocorrenciaRepository.findById(id)
-                        .orElseThrow(() ->
-                                new IllegalArgumentException(
-                                        "Ocorrência inválida"
-                                )
-                        );
+                ocorrenciaRepository.findById(id).orElse(null);
 
-        model.addAttribute(
-                "ocorrencia",
-                ocorrencia
-        );
+        if (ocorrencia == null ||
+                !ocorrencia.getCliente().getId()
+                        .equals(pessoaLogada.getId())) {
+
+            return "redirect:/ocorrencia/listagem";
+        }
+
+        model.addAttribute("pessoa", pessoaLogada);
+        model.addAttribute("ocorrencia", ocorrencia);
 
         return "/ocorrencia/alterar";
     }
 
-
     // =================================================
-    // EXCLUIR
+    // EXCLUIR OCORRÊNCIA
     // =================================================
 
     @GetMapping("/ocorrencia/excluir/{id}")
     public String excluir(
-            @PathVariable Long id) {
+            @PathVariable Long id,
+            HttpSession session) {
 
-        ocorrenciaRepository.deleteById(id);
+        Pessoa pessoaLogada =
+                (Pessoa) session.getAttribute("pessoaLogada");
+
+        if (pessoaLogada == null) {
+            return "redirect:/login";
+        }
+
+        Ocorrencia ocorrencia =
+                ocorrenciaRepository.findById(id).orElse(null);
+
+        if (ocorrencia == null ||
+                !ocorrencia.getCliente().getId()
+                        .equals(pessoaLogada.getId())) {
+
+            return "redirect:/ocorrencia/listagem";
+        }
+
+        ocorrenciaRepository.delete(ocorrencia);
 
         return "redirect:/ocorrencia/listagem";
     }
