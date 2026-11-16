@@ -1,8 +1,12 @@
+
 package com.pbe.projetofinal.controller;
 
 import com.pbe.projetofinal.model.Pessoa;
+import com.pbe.projetofinal.model.Perfil;
 import com.pbe.projetofinal.repository.PessoaRepository;
+
 import jakarta.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +28,15 @@ public class LoginController {
     @GetMapping
     public String login(HttpSession session) {
 
-        // Se já estiver logado, vai direto para o dashboard
-        if (session.getAttribute("pessoaLogada") != null) {
+        // Se já estiver logado, direciona conforme o perfil
+        Pessoa pessoa = (Pessoa) session.getAttribute("pessoaLogada");
+
+        if (pessoa != null) {
+
+            if (pessoa.getPerfil() == Perfil.ADMINISTRADOR) {
+                return "redirect:/admin/dashboard";
+            }
+
             return "redirect:/pessoa/dashboard";
         }
 
@@ -89,6 +100,11 @@ public class LoginController {
                 "pessoaLogada",
                 pessoa
         );
+
+        // Redirecionamento conforme o perfil
+        if (pessoa.getPerfil() == Perfil.ADMINISTRADOR) {
+            return "redirect:/admin/dashboard";
+        }
 
         return "redirect:/pessoa/dashboard";
     }

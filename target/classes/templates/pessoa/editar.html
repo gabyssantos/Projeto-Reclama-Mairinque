@@ -45,80 +45,9 @@
 
                     <form th:action="@{/pessoa/atualizar}"
                           th:object="${pessoa}"
-                          method="post"
-                          enctype="multipart/form-data">
+                          method="post">
 
                         <input type="hidden" th:field="*{id}">
-
-
-                        <!-- ========================================================= -->
-                        <!-- FOTO DO USUÁRIO                                           -->
-                        <!-- ========================================================= -->
-
-                        <div class="mb-4">
-
-                            <h2 class="section-title">
-                                Foto do usuário
-                            </h2>
-
-                            <div class="d-flex align-items-center gap-4 flex-wrap">
-
-                                <!-- FOTO ATUAL / PRÉ-VISUALIZAÇÃO -->
-                                <div id="containerFoto">
-
-                                    <img th:if="${pessoa.foto != null and !pessoa.foto.isEmpty()}"
-                                         th:src="@{'/uploads/' + ${pessoa.foto}}"
-                                         alt="Foto do usuário"
-                                         id="previewFoto"
-                                         class="foto-perfil">
-
-                                    <div th:unless="${pessoa.foto != null and !pessoa.foto.isEmpty()}"
-                                         id="semFoto"
-                                         class="foto-perfil d-flex align-items-center justify-content-center">
-
-                                        <span class="text-muted">
-                                            Sem foto
-                                        </span>
-
-                                    </div>
-
-                                </div>
-
-
-                                <!-- BOTÃO EDITAR FOTO -->
-                                <div>
-
-                                    <label for="foto"
-                                           class="btn btn-primary">
-
-                                        <i class="bi bi-camera"></i>
-                                        Editar foto
-
-                                    </label>
-
-
-                                    <input type="file"
-                                           id="foto"
-                                           name="foto"
-                                           accept="image/*"
-                                           class="d-none">
-
-
-                                    <div class="small text-muted mt-2">
-                                        Selecione uma nova foto.
-                                    </div>
-
-
-                                    <!-- NOME DO ARQUIVO -->
-                                    <div id="nomeArquivo"
-                                         class="small text-success mt-1">
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </div>
 
 
                         <!-- ================================================= -->

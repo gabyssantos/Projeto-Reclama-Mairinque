@@ -9,52 +9,86 @@
 
         <div th:insert="~{fragments/menu :: menu-content}"></div>
 
-        <div class="imgs-reclamacoes-mk w-100 mx-auto">
 
-            <div id="carouselExample" class="carousel slide carousel-fade" data-bs-ride="carousel"
-                data-bs-interval="5000" style="height: 450px;">
+        <div class="imgs-reclamacoes-mk w-100">
+
+            <div id="carouselExample"
+                 class="carousel slide carousel-fade position-relative"
+                 data-bs-ride="carousel"
+                 data-bs-interval="5000"
+                 style="height: calc(100vh - 100px);">
 
                 <div class="carousel-inner h-100">
 
+                    <!-- TEXTO SOBRE AS IMAGENS -->
+                    <div class="position-absolute top-50 start-50 translate-middle text-center w-100 px-3"
+                         style="z-index: 5;">
+
+                        <h1 class="display-3 fw-bold text-white"
+                            style="text-shadow: 2px 2px 6px #000;">
+                            Reclama Mairinque
+                        </h1>
+
+                        <h2 class="fs-3 fw-semibold text-white"
+                            style="text-shadow: 2px 2px 6px #000;">
+                            Participe da melhoria do seu município
+                        </h2>
+
+                    </div>
+
                     <div class="carousel-item active h-100">
-                        <img src="/img/estacao.png" class="w-100 h-100" alt="Banner Reclama Mairinque"
-                            style="object-fit: cover;">
+                        <img th:src="@{/img/estacao.png}"
+                             class="d-block w-100 h-100"
+                             alt="Estação de Mairinque"
+                             style="object-fit: cover;">
                     </div>
 
                     <div class="carousel-item h-100">
-                        <img src="/img/igreja.png" class="w-100 h-100" alt="Banner Reclama Mairinque"
-                            style="object-fit: cover;">
+                        <img th:src="@{/img/igreja.png}"
+                             class="d-block w-100 h-100"
+                             alt="Igreja de Mairinque"
+                             style="object-fit: cover;">
                     </div>
 
                     <div class="carousel-item h-100">
-                        <img src="/img/mairinquecolor.png" class="w-100 h-100" alt="Banner Reclama Mairinque"
-                            style="object-fit: cover;">
+                        <img th:src="@{/img/mairinquecolor.png}"
+                             class="d-block w-100 h-100"
+                             alt="Mairinque"
+                             style="object-fit: cover;">
                     </div>
 
                 </div>
 
-                <!-- CTA -->
-                <div class="position-absolute bottom-0 start-50 translate-middle text-center" style="z-index: 10;">
+                <!-- BOTÃO -->
+                <div class="position-absolute bottom-0 start-50 translate-middle-x mb-4"
+                     style="z-index: 10;">
 
-                    <a th:href="@{/login}" class="btn btn-warning btn-lg px-5 py-3 shadow fw-semibold">
+                    <a th:href="@{/login}"
+                       class="btn btn-warning btn-lg px-5 py-3 shadow fw-semibold">
                         FAÇA SUA RECLAMAÇÃO
                     </a>
 
                 </div>
 
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample"
-                    data-bs-slide="prev">
+                <!-- VOLTAR -->
+                <button class="carousel-control-prev"
+                        type="button"
+                        data-bs-target="#carouselExample"
+                        data-bs-slide="prev">
 
                     <span class="carousel-control-prev-icon"></span>
-                    <span class="visually-hidden">Previous</span>
+                    <span class="visually-hidden">Anterior</span>
 
                 </button>
 
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExample"
-                    data-bs-slide="next">
+                <!-- AVANÇAR -->
+                <button class="carousel-control-next"
+                        type="button"
+                        data-bs-target="#carouselExample"
+                        data-bs-slide="next">
 
                     <span class="carousel-control-next-icon"></span>
-                    <span class="visually-hidden">Next</span>
+                    <span class="visually-hidden">Próxima</span>
 
                 </button>
 
@@ -62,86 +96,72 @@
 
         </div>
 
-        <main>
+            <div class="container py-5">
 
-            <div class="px-4 py-2 my-2 text-center"> <img class="d-block mx-auto mb-4" src="imagens/logo.png" alt=""
-                    width="250">
-                <h1 class="display-5 fw-bold text-body-emphasis">Reclama Mairinque</h1>
-                <h2>Participe da melhoria do seu município</h2>
-                <div class="col-lg-6 mx-auto">
-                    <p class="lead mb-4">Encontrou um problema em um serviço público? Registre sua reclamação, acompanhe
-                        a situação e ajude a dar visibilidade às necessidades da população. Sua participação contribui
-                        para que gestores públicos, prefeitos e vereadores conheçam de perto os desafios da cidade e
-                        possam buscar soluções.</p>
-                    <p>Sua voz pode ajudar a transformar o município.</p>
-                    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                        <a th:href="@{/pessoa/cadastro}"
-                           class="btn btn-outline-secondary btn-lg px-4">
-                            Criar conta
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </main>
-        <!-- CONTEÚDO ABAIXO DO CAROUSEL -->
-        <div class="container py-5">
+                <h2 class="text-center mb-4">Estatísticas</h2>
 
-            <h2 class="text-center">Estatísticas</h2>
-            <p>
-                Informações baseada no ano de 2026. Caso queira visualizar as informações dos anos anteriores, <a
-                    href="#">clique aqui</a>
-            </p>
-            <div class="row">
-                <div class="col">
-                    <div class="card border-primary text-bg-primary mb-3" style="max-width: 18rem;">
-                        <div class="card-header d-none">Reclamações registradas</div>
-                        <div class="card-body">
-                            <h5 class="card-title">Reclamações registradas</h5>
-                            <p class="card-text"><span class="badge text-bg-light w-100 ">504</span></p>
+                <p class="text-center">
+                    Confira os números das reclamações registradas em nosso portal.
+                </p>
+
+                <div class="row justify-content-center g-4">
+
+                    <!-- REGISTRADAS -->
+                    <div class="col-md-4">
+                        <div class="card border-primary text-bg-primary mb-3">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Reclamações registradas</h5>
+                                <h2 class="card-text">
+                        <span class="badge text-bg-light w-100"
+                              th:text="${totalRegistradas}">0</span>
+                                </h2>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col">
-                    <div class="card border-success text-bg-success mb-3" style="max-width: 18rem;">
-                        <div class="card-header d-none">Reclamações resolvidas</div>
-                        <div class="card-body">
-                            <h5 class="card-title">Reclamações resolvidas</h5>
-                            <p class="card-text"><span class="badge text-bg-light w-100 ">504</span></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card border-warning text-bg-warning mb-3" style="max-width: 18rem;">
-                        <div class="card-header d-none">Reclamações em análise</div>
-                        <div class="card-body">
-                            <h5 class="card-title">Reclamações em análise</h5>
-                            <p class="card-text"><span class="badge text-bg-light w-100 ">504</span></p>
 
+                    <!-- EM ANDAMENTO -->
+                    <div class="col-md-4">
+                        <div class="card border-warning text-bg-warning mb-3">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Em andamento</h5>
+                                <h2 class="card-text">
+                        <span class="badge text-bg-light w-100"
+                              th:text="${totalEmAndamento}">0</span>
+                                </h2>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col">
-                    <div class="card border-danger text-bg-danger mb-3" style="max-width: 18rem;">
-                        <div class="card-header d-none">Reclamações pendentes</div>
-                        <div class="card-body ">
-                            <h5 class="card-title">Reclamações pendentes</h5>
-                            <p class="card-text"><span class="badge text-bg-light w-100 ">504</span></p>
 
+                    <!-- APROVADAS -->
+                    <div class="col-md-4">
+                        <div class="card border-success text-bg-success mb-3">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Aprovadas</h5>
+                                <h2 class="card-text">
+                        <span class="badge text-bg-light w-100"
+                              th:text="${totalAprovadas}">0</span>
+                                </h2>
+                            </div>
                         </div>
                     </div>
+
                 </div>
+
             </div>
 
         </div>
 
     </div>
-    <div th:insert="~{fragments/footer :: footer-content}"></div>
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
 
+    <footer class="text-center text-white py-3"
+            style="background-color: #1F4EA3;">
+        © 2027 Reclama Mairinque - Licença MIT.
+    </footer>
 </body>
 
 </html>

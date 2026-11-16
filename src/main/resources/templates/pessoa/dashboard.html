@@ -116,32 +116,6 @@
 
             </div>
 
-
-            <div class="topbar-profile">
-
-                <div class="profile-mini">
-
-                    <div class="profile-mini-image">
-
-                        <i class="bi bi-person-fill"></i>
-
-                    </div>
-
-
-                    <div class="profile-mini-info">
-
-                        <strong th:text="${pessoa.nome}">
-                            Usuário
-                        </strong>
-
-                        <span>Usuário normal</span>
-
-                    </div>
-
-                </div>
-
-            </div>
-
         </header>
 
 
@@ -161,8 +135,8 @@
                     <div class="profile-photo">
 
                         <!-- Quando houver foto -->
-                        <img th:if="${pessoa.foto != null}"
-                             th:src="@{${pessoa.foto}}"
+                        <img th:if="${pessoa.foto != null and !#strings.isEmpty(pessoa.foto)}"
+                             th:src="${pessoa.foto}"
                              alt="Foto de perfil">
 
                         <!-- Quando não houver foto -->
@@ -471,72 +445,6 @@
             </div>
 
         </section>
-
-
-        <!-- ================================================= -->
-        <!-- ÚLTIMOS CHAMADOS                                   -->
-        <!-- ================================================= -->
-
-        <section class="recent-section">
-
-            <div class="section-heading">
-
-                <div>
-
-                    <h2>Chamados recentes</h2>
-
-                    <p>
-                        Seus últimos chamados registrados.
-                    </p>
-
-                </div>
-
-
-                <a href="#">
-
-                    Ver todos
-
-                    <i class="bi bi-arrow-right"></i>
-
-                </a>
-
-            </div>
-
-
-            <!-- QUANDO NÃO EXISTIREM CHAMADOS -->
-
-            <div class="empty-state">
-
-                <div class="empty-icon">
-
-                    <i class="bi bi-clipboard-x"></i>
-
-                </div>
-
-
-                <h3>Nenhum chamado registrado</h3>
-
-                <p>
-
-                    Quando você abrir um chamado,
-                    ele aparecerá aqui.
-
-                </p>
-
-
-                <a th:href="@{/ocorrencia/nova}"
-                   class="btn btn-primary">
-
-                    <i class="bi bi-plus-lg"></i>
-
-                    Abrir primeiro chamado
-
-                </a>
-
-            </div>
-
-        </section>
-
     </main>
 
 </div>
@@ -590,8 +498,8 @@
 
                         <div class="photo-preview">
 
-                            <img th:if="${pessoa.foto != null}"
-                                 th:src="@{${pessoa.foto}}"
+                            <img th:if="${pessoa.foto != null and !#strings.isEmpty(pessoa.foto)}"
+                                 th:src="${pessoa.foto}"
                                  alt="Foto atual">
 
                             <i th:if="${pessoa.foto == null}"

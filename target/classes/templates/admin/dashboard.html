@@ -1,0 +1,402 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/head2 :: head('Painel Administrativo')}"></head>
+
+<body>
+
+<div class="dashboard-wrapper">
+
+    <!-- MENU LATERAL -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-header">
+
+            <div class="logo-box">
+                <i class="bi bi-shield-check"></i>
+            </div>
+
+            <div>
+                <h5>Reclama</h5>
+                <span>Mairinque</span>
+            </div>
+
+        </div>
+
+        <nav class="sidebar-menu">
+
+            <a th:href="@{/admin/dashboard}"
+               class="menu-item active">
+                <i class="bi bi-grid-1x2-fill"></i>
+                <span>Painel administrativo</span>
+            </a>
+
+            <a th:href="@{/admin/perfil}"
+               class="menu-item">
+                <i class="bi bi-person-circle"></i>
+                <span>Meu perfil</span>
+            </a>
+
+            <a th:href="@{/admin/usuarios}"
+               class="menu-item">
+                <i class="bi bi-people-fill"></i>
+                <span>Usuários</span>
+            </a>
+
+            <a th:href="@{/admin/reclamacoes}"
+               class="menu-item">
+                <i class="bi bi-exclamation-circle-fill"></i>
+                <span>Reclamações</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <a href="#" class="menu-item">
+                <i class="bi bi-question-circle"></i>
+                <span>Ajuda</span>
+            </a>
+
+            <a th:href="@{/login/logout}"
+               class="menu-item logout">
+                <i class="bi bi-box-arrow-left"></i>
+                <span>Sair</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+
+    <main class="main-content">
+
+        <!-- TOPO -->
+
+        <header class="topbar">
+
+            <div>
+                <h1>Painel Administrativo</h1>
+
+                <p>
+                    Gerencie os usuários e as reclamações de Mairinque.
+                </p>
+            </div>
+
+        </header>
+
+        <!-- BOAS-VINDAS -->
+
+        <section class="profile-card">
+
+            <div class="profile-cover"></div>
+
+            <div class="profile-content">
+
+                <div class="profile-photo-area">
+
+                    <div class="profile-photo">
+
+                        <img th:if="${pessoa.foto != null and !#strings.isEmpty(pessoa.foto)}"
+                             th:src="${pessoa.foto}"
+                             alt="Foto do administrador">
+
+                        <i th:if="${pessoa.foto == null or #strings.isEmpty(pessoa.foto)}"
+                           class="bi bi-shield-lock-fill">
+                        </i>
+
+                    </div>
+
+                </div>
+
+                <div class="profile-info">
+
+                    <h1 class="h3 mb-2"
+                        th:text="${pessoa.nome}">
+                        Nome do administrador
+                    </h1>
+
+                    <!-- DADOS DO ADMINISTRADOR -->
+
+                    <div class="admin-info">
+
+                        <p>
+                            <i class="bi bi-envelope"></i>
+                            <span th:text="${pessoa.email}"></span>
+                        </p>
+
+                        <p>
+                            <i class="bi bi-person-vcard"></i>
+                            <span th:text="${pessoa.cpf}"></span>
+                        </p>
+
+                        <p>
+                            <i class="bi bi-telephone"></i>
+                            <span th:text="${pessoa.telefone}"></span>
+                        </p>
+
+                    </div>
+
+                    <span class="profile-status">
+
+                        <i class="bi bi-circle-fill"></i>
+                        Acesso administrativo
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ESTATÍSTICAS -->
+
+        <section>
+
+            <div class="section-heading">
+
+                <div>
+                    <h2>Visão geral</h2>
+
+                    <p>
+                        Acompanhe os dados gerais da plataforma.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="row g-4">
+
+                <!-- USUÁRIOS -->
+
+                <div class="col-12 col-sm-6 col-xl-4">
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon blue">
+                            <i class="bi bi-people-fill"></i>
+                        </div>
+
+                        <div class="stat-info">
+
+                            <span>Usuários cadastrados</span>
+
+                            <strong th:text="${totalUsuarios ?: 0}">
+                                0
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- TOTAL DE RECLAMAÇÕES -->
+
+                <div class="col-12 col-sm-6 col-xl-4">
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+                            <i class="bi bi-file-earmark-text-fill"></i>
+                        </div>
+
+                        <div class="stat-info">
+
+                            <span>Total de reclamações</span>
+
+                            <strong th:text="${totalReclamacoes ?: 0}">
+                                0
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- RASCUNHOS -->
+
+                <div class="col-12 col-sm-6 col-xl-4">
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+                            <i class="bi bi-file-earmark-fill"></i>
+                        </div>
+
+                        <div class="stat-info">
+
+                            <span>Rascunhos</span>
+
+                            <strong th:text="${reclamacoesRascunho ?: 0}">
+                                0
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- EM ANDAMENTO -->
+
+                <div class="col-12 col-sm-6 col-xl-4">
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon yellow">
+                            <i class="bi bi-clock-fill"></i>
+                        </div>
+
+                        <div class="stat-info">
+
+                            <span>Em andamento</span>
+
+                            <strong th:text="${reclamacoesEmAndamento ?: 0}">
+                                0
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- APROVADAS -->
+
+                <div class="col-12 col-sm-6 col-xl-4">
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon green">
+                            <i class="bi bi-check-circle-fill"></i>
+                        </div>
+
+                        <div class="stat-info">
+
+                            <span>Aprovadas</span>
+
+                            <strong th:text="${reclamacoesAprovadas ?: 0}">
+                                0
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- RECUSADAS -->
+
+                <div class="col-12 col-sm-6 col-xl-4">
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon orange">
+                            <i class="bi bi-x-circle-fill"></i>
+                        </div>
+
+                        <div class="stat-info">
+
+                            <span>Recusadas</span>
+
+                            <strong th:text="${reclamacoesRecusadas ?: 0}">
+                                0
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ATALHOS ADMINISTRATIVOS -->
+
+        <section class="new-call-card">
+
+            <div class="new-call-icon">
+                <i class="bi bi-gear-fill"></i>
+            </div>
+
+            <div class="new-call-text">
+
+                <h3>Gerenciamento da plataforma</h3>
+
+                <p>
+                    Acesse os usuários cadastrados e gerencie
+                    as reclamações enviadas pelos moradores.
+                </p>
+
+            </div>
+
+            <div class="new-call-action">
+
+                <a th:href="@{/admin/reclamacoes}"
+                   class="btn btn-primary btn-lg">
+
+                    <i class="bi bi-arrow-right-circle"></i>
+                    Gerenciar reclamações
+
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<!-- FOOTER -->
+
+<div th:insert="~{fragments/footer :: footer-content}"></div>
+
+<!-- CSS DOS DADOS DO ADMINISTRADOR -->
+
+<style>
+
+    .profile-info .admin-info {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        margin-top: 4px;
+        margin-bottom: 12px;
+    }
+
+    .profile-info .admin-info p {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0;
+        color: #64748b;
+        font-size: 13px;
+        font-weight: 400;
+        line-height: 1.5;
+    }
+
+    .profile-info .admin-info i {
+        color: #1F4EA3;
+        font-size: 14px;
+    }
+
+</style>
+
+<!-- BOOTSTRAP -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous">
+</script>
+
+</body>
+</html>
