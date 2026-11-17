@@ -18,7 +18,11 @@
 
                 <div class="card-header bg-primary text-white p-4">
                     <h1 class="h3 mb-1">Meu perfil</h1>
-                    <p th:text="${pessoa.nome}">Nome do administrador</p>
+
+                    <p th:text="${pessoa.nome}">
+                        Nome do administrador
+                    </p>
+
                     <p class="mb-0">
                         Visualize e atualize seus dados administrativos.
                     </p>
@@ -26,210 +30,348 @@
 
                 <div class="card-body p-4">
 
-                    <form th:action="@{/admin/perfil/atualizar}"
-                          th:object="${pessoa}"
-                          method="post"
-                          enctype="multipart/form-data">
+                    <!-- MENSAGENS -->
+                    <div th:if="${sucessoFoto}"
+                         class="alert alert-success"
+                         th:text="${sucessoFoto}">
+                    </div>
 
-                        <h2 class="h5 mb-3">Foto de perfil</h2>
+                    <!-- ABAS -->
+                    <ul class="nav nav-tabs mb-4" id="abasPerfil">
 
-                        <div class="mb-4">
+                        <li class="nav-item">
+                            <button type="button"
+                                    class="nav-link"
+                                    th:classappend="${abaAtiva == 'foto'} ? ' active' : ''"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#abaFoto">
 
-                            <div id="containerFoto" class="mb-3">
+                                <i class="bi bi-camera me-1"></i>
+                                Foto de perfil
 
-                                <img th:if="${pessoa.foto != null and !pessoa.foto.isEmpty()}"
-                                     th:src="@{${pessoa.foto}}"
-                                     id="previewFoto"
-                                     alt="Foto do administrador"
-                                     class="foto-perfil">
-
-                                <div th:unless="${pessoa.foto != null and !pessoa.foto.isEmpty()}"
-                                     id="semFoto"
-                                     class="foto-perfil d-flex align-items-center justify-content-center">
-                                    <i class="bi bi-person-fill fs-1 text-muted"></i>
-                                </div>
-
-                            </div>
-
-                            <label for="foto" class="form-label">
-                                Escolha uma foto
-                            </label>
-
-                            <input type="file"
-                                   class="form-control"
-                                   id="foto"
-                                   name="fotoArquivo"
-                                   accept="image/png, image/jpeg, image/webp">
-
-
-                            <small id="nomeArquivo" class="text-muted">
-                                Formatos aceitos: JPG, PNG e WEBP.
-                            </small>
-
-                            <div th:if="${erroFoto}"
-                                 class="alert alert-danger mt-2"
-                                 th:text="${erroFoto}">
-                            </div>
-
-                        </div>
-
-                        <hr>
-
-                        <h2 class="h5 mb-3">Dados pessoais</h2>
-
-                        <div class="row g-3">
-
-                            <div class="col-12">
-                                <label class="form-label">Nome completo</label>
-                                <input type="text"
-                                       class="form-control"
-                                       th:field="*{nome}"
-                                       required>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="form-label">CPF</label>
-                                <input type="text"
-                                       class="form-control"
-                                       th:field="*{cpf}">
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="form-label">E-mail</label>
-                                <input type="email"
-                                       class="form-control"
-                                       th:field="*{email}"
-                                       required>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="form-label">Telefone</label>
-                                <input type="tel"
-                                       class="form-control"
-                                       th:field="*{telefone}">
-                            </div>
-
-                        </div>
-
-                        <hr class="my-4">
-
-                        <h2 class="h5 mb-3">Endereço</h2>
-
-                        <div class="row g-3">
-
-                            <div class="col-md-4">
-                                <label class="form-label">CEP</label>
-
-                                <div class="input-group">
-                                    <input type="text"
-                                           class="form-control"
-                                           th:field="*{cep}"
-                                           id="cep"
-                                           maxlength="9"
-                                           placeholder="00000-000">
-
-                                    <button type="button"
-                                            class="btn btn-primary"
-                                            id="btnBuscarCep">
-                                        Buscar
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div class="col-md-8">
-                                <label class="form-label">Logradouro</label>
-                                <input type="text"
-                                       class="form-control"
-                                       th:field="*{logradouro}"
-                                       id="logradouro">
-                            </div>
-
-                            <div class="col-md-4">
-                                <label class="form-label">Número</label>
-                                <input type="text"
-                                       class="form-control"
-                                       th:field="*{numero}">
-                            </div>
-
-                            <div class="col-md-8">
-                                <label class="form-label">Complemento</label>
-                                <input type="text"
-                                       class="form-control"
-                                       th:field="*{complemento}">
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="form-label">Bairro</label>
-                                <input type="text"
-                                       class="form-control"
-                                       th:field="*{bairro}"
-                                       id="bairro">
-                            </div>
-
-                            <div class="col-md-4">
-                                <label class="form-label">Cidade</label>
-                                <input type="text"
-                                       class="form-control"
-                                       th:field="*{cidade}"
-                                       id="cidade">
-                            </div>
-
-                            <div class="col-md-2">
-                                <label class="form-label">Estado</label>
-                                <input type="text"
-                                       class="form-control"
-                                       th:field="*{estado}"
-                                       id="estado"
-                                       maxlength="2">
-                            </div>
-
-                        </div>
-
-                        <hr class="my-4">
-
-                        <div class="d-flex justify-content-end gap-2">
-
-                            <a th:href="@{/admin/dashboard}"
-                               class="btn btn-outline-secondary">
-                                Voltar
-                            </a>
-
-                            <button type="submit"
-                                    class="btn btn-primary">
-                                Salvar alterações
                             </button>
+                        </li>
+
+                        <li class="nav-item">
+                            <button type="button"
+                                    class="nav-link"
+                                    th:classappend="${abaAtiva != 'foto'} ? ' active' : ''"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#abaInformacoes">
+
+                                <i class="bi bi-person me-1"></i>
+                                Informações gerais
+
+                            </button>
+                        </li>
+
+                    </ul>
+
+                    <div class="tab-content">
+
+                        <!-- ================================= -->
+                        <!-- ABA 1 - FOTO -->
+                        <!-- ================================= -->
+
+                        <div class="tab-pane fade"
+                             th:classappend="${abaAtiva == 'foto'} ? ' show active' : ''"
+                             id="abaFoto">
+
+                            <form th:action="@{/admin/perfil/atualizar-foto}"
+                                  method="post"
+                                  enctype="multipart/form-data">
+
+                                <h2 class="h5 mb-3">
+                                    Alterar foto de perfil
+                                </h2>
+
+                                <div class="mb-4">
+
+                                    <div id="containerFoto" class="mb-3">
+
+                                        <img th:if="${pessoa.foto != null and !pessoa.foto.isEmpty()}"
+                                             th:src="@{${pessoa.foto}}"
+                                             id="previewFoto"
+                                             alt="Foto do administrador"
+                                             class="foto-perfil">
+
+                                        <div th:unless="${pessoa.foto != null and !pessoa.foto.isEmpty()}"
+                                             id="semFoto"
+                                             class="foto-perfil d-flex align-items-center justify-content-center">
+
+                                            <i class="bi bi-person-fill fs-1 text-muted"></i>
+
+                                        </div>
+
+                                    </div>
+
+                                    <label for="foto" class="form-label">
+                                        Escolha uma nova foto
+                                    </label>
+
+                                    <input type="file"
+                                           class="form-control"
+                                           id="foto"
+                                           name="foto"
+                                           accept="image/png, image/jpeg, image/webp">
+
+                                    <small id="nomeArquivo" class="text-muted">
+                                        Formatos aceitos: JPG, PNG e WEBP.
+                                        Tamanho máximo: 10 MB.
+                                    </small>
+
+                                    <div th:if="${erroFoto}"
+                                         class="alert alert-danger mt-3"
+                                         th:text="${erroFoto}">
+                                    </div>
+
+                                </div>
+
+                                <hr>
+
+                                <div class="d-flex justify-content-end gap-2">
+
+                                    <a th:href="@{/admin/dashboard}"
+                                       class="btn btn-outline-secondary">
+                                        Voltar
+                                    </a>
+
+                                    <button type="submit"
+                                            class="btn btn-primary">
+                                        <i class="bi bi-camera me-1"></i>
+                                        Atualizar foto
+                                    </button>
+
+                                </div>
+
+                            </form>
 
                         </div>
 
-                    </form>
+
+                        <!-- ================================= -->
+                        <!-- ABA 2 - INFORMAÇÕES GERAIS -->
+                        <!-- ================================= -->
+
+                        <div class="tab-pane fade"
+                             th:classappend="${abaAtiva != 'foto'} ? ' show active' : ''"
+                             id="abaInformacoes">
+
+                            <form th:action="@{/admin/perfil/atualizar}"
+                                  th:object="${pessoa}"
+                                  method="post">
+
+                                <h2 class="h5 mb-3">
+                                    Dados pessoais
+                                </h2>
+
+                                <div class="row g-3">
+
+                                    <div class="col-12">
+
+                                        <label class="form-label">
+                                            Nome completo
+                                        </label>
+
+                                        <input type="text"
+                                               class="form-control"
+                                               th:field="*{nome}"
+                                               required>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+
+                                        <label class="form-label">
+                                            CPF
+                                        </label>
+
+                                        <input type="text"
+                                               class="form-control"
+                                               th:field="*{cpf}">
+
+                                    </div>
+
+                                    <div class="col-md-6">
+
+                                        <label class="form-label">
+                                            E-mail
+                                        </label>
+
+                                        <input type="email"
+                                               class="form-control"
+                                               th:field="*{email}"
+                                               required>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+
+                                        <label class="form-label">
+                                            Telefone
+                                        </label>
+
+                                        <input type="tel"
+                                               class="form-control"
+                                               th:field="*{telefone}">
+
+                                    </div>
+
+                                </div>
+
+                                <hr class="my-4">
+
+                                <h2 class="h5 mb-3">
+                                    Endereço
+                                </h2>
+
+                                <div class="row g-3">
+
+                                    <div class="col-md-4">
+
+                                        <label class="form-label">
+                                            CEP
+                                        </label>
+
+                                        <div class="input-group">
+
+                                            <input type="text"
+                                                   class="form-control"
+                                                   th:field="*{cep}"
+                                                   id="cep"
+                                                   maxlength="9"
+                                                   placeholder="00000-000">
+
+                                            <button type="button"
+                                                    class="btn btn-primary"
+                                                    id="btnBuscarCep">
+                                                Buscar
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-8">
+
+                                        <label class="form-label">
+                                            Logradouro
+                                        </label>
+
+                                        <input type="text"
+                                               class="form-control"
+                                               th:field="*{logradouro}"
+                                               id="logradouro">
+
+                                    </div>
+
+                                    <div class="col-md-4">
+
+                                        <label class="form-label">
+                                            Número
+                                        </label>
+
+                                        <input type="text"
+                                               class="form-control"
+                                               th:field="*{numero}">
+
+                                    </div>
+
+                                    <div class="col-md-8">
+
+                                        <label class="form-label">
+                                            Complemento
+                                        </label>
+
+                                        <input type="text"
+                                               class="form-control"
+                                               th:field="*{complemento}">
+
+                                    </div>
+
+                                    <div class="col-md-6">
+
+                                        <label class="form-label">
+                                            Bairro
+                                        </label>
+
+                                        <input type="text"
+                                               class="form-control"
+                                               th:field="*{bairro}"
+                                               id="bairro">
+
+                                    </div>
+
+                                    <div class="col-md-4">
+
+                                        <label class="form-label">
+                                            Cidade
+                                        </label>
+
+                                        <input type="text"
+                                               class="form-control"
+                                               th:field="*{cidade}"
+                                               id="cidade">
+
+                                    </div>
+
+                                    <div class="col-md-2">
+
+                                        <label class="form-label">
+                                            Estado
+                                        </label>
+
+                                        <input type="text"
+                                               class="form-control"
+                                               th:field="*{estado}"
+                                               id="estado"
+                                               maxlength="2">
+
+                                    </div>
+
+                                </div>
+
+                                <hr class="my-4">
+
+                                <div class="d-flex justify-content-end gap-2">
+
+                                    <a th:href="@{/admin/dashboard}"
+                                       class="btn btn-outline-secondary">
+                                        Voltar
+                                    </a>
+
+                                    <button type="submit"
+                                            class="btn btn-primary">
+                                        Salvar alterações
+                                    </button>
+
+                                </div>
+
+                            </form>
+
+                        </div>
+
+                    </div>
 
                 </div>
+
             </div>
 
         </div>
+
     </div>
+
 </div>
 
-<div th:insert="~{fragments/footer :: footer-content}"></div>
 
-<style>
 
-    body {
-        background-color: #f8f9fa;
-    }
+<!-- PRÉ-VISUALIZAÇÃO DA FOTO -->
+<!-- BOOTSTRAP -->
 
-    .foto-perfil {
-        width: 120px;
-        height: 120px;
-        object-fit: cover;
-        border-radius: 50%;
-        border: 3px solid #dee2e6;
-        background-color: #f8f9fa;
-    }
-
-</style>
-
-<!-- Pré-visualização da foto -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous">
+</script>
 
 <script>
 
@@ -255,8 +397,11 @@
             const semFoto = document.getElementById("semFoto");
 
             if (preview) {
+
                 preview.src = e.target.result;
+
             } else {
+
                 preview = document.createElement("img");
 
                 preview.id = "previewFoto";
@@ -279,7 +424,8 @@
 
 </script>
 
-<!-- Busca de CEP -->
+
+<!-- BUSCA DE CEP -->
 
 <script>
 
@@ -310,6 +456,7 @@
             .catch(() => {
                 alert("Não foi possível consultar o CEP.");
             });
+
     });
 
 </script>

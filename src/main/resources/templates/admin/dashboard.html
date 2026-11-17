@@ -34,6 +34,8 @@
                 <span>Painel administrativo</span>
             </a>
 
+
+
             <a th:href="@{/admin/perfil}"
                class="menu-item">
                 <i class="bi bi-person-circle"></i>
@@ -86,6 +88,12 @@
                     Gerencie os usuários e as reclamações de Mairinque.
                 </p>
             </div>
+
+            <a th:href="@{/}"
+               class="btn btn-outline-primary">
+                <i class="bi bi-house-door"></i>
+                Voltar ao início
+            </a>
 
         </header>
 
@@ -356,10 +364,6 @@
     </main>
 
 </div>
-
-<!-- FOOTER -->
-
-<div th:insert="~{fragments/footer :: footer-content}"></div>
 
 <!-- CSS DOS DADOS DO ADMINISTRADOR -->
 

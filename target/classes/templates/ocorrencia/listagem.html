@@ -2,15 +2,109 @@
 <html lang="pt-BR"
       xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="~{fragments/head :: head('Lista de usuários')}">
-</head>
-
 <body>
-
-<div class="container-fluid p-0 m-0">
-
     <!-- MENU -->
-    <div th:insert="~{fragments/menu :: menu-content}"></div>
+    <div th:fragment="menu-content">
+
+        <nav class="navbar navbar-expand-lg"
+             style="background-color: #1F4EA3; min-height: 80px;" >
+
+            <div class="container-fluid px-4">
+
+                <!-- LOGO -->
+                <a class="navbar-brand" th:href="@{/}">
+                    <img th:src="@{/img/logo.png}"
+                         alt="Reclama Mairinque"
+                         title="Reclama Mairinque"
+                         style="width: 200px; max-height: 75px; object-fit: contain;">
+                </a>
+
+                <!-- BOTÃO CELULAR -->
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#menuPrincipal"
+                        aria-controls="menuPrincipal"
+                        aria-expanded="false"
+                        aria-label="Abrir menu">
+
+                    <span class="navbar-toggler-icon"></span>
+
+                </button>
+
+
+                <!-- LINKS -->
+                <div class="collapse navbar-collapse" id="menuPrincipal">
+
+                    <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-3">
+
+                        <!-- QUANDO NÃO ESTIVER LOGADO -->
+                        <th:block th:if="${session.pessoaLogada == null}">
+
+                            <li class="nav-item">
+                                <a class="nav-link text-white fw-semibold"
+                                   th:href="@{/login}">
+                                    Entrar
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link fw-semibold"
+                                   th:href="@{/pessoa/cadastro}"
+                                   style="background-color: #F2C230;
+                          color: #000;
+                          border-radius: 8px;
+                          padding: 10px 20px;">
+                                    Criar conta
+                                </a>
+                            </li>
+
+                        </th:block>
+
+                        <!-- QUANDO ESTIVER LOGADO -->
+                        <th:block th:if="${session.pessoaLogada != null}">
+
+                            <li class="nav-item">
+
+                                <a th:href="@{/pessoa/dashboard}"
+                                   title="Meu perfil"
+                                   class="d-flex align-items-center">
+
+                                    <img th:if="${session.pessoaLogada.foto != null
+                                  and !session.pessoaLogada.foto.isEmpty()}"
+                                         th:src="${session.pessoaLogada.foto}"                                             alt="Foto de perfil"
+                                         class="rounded-circle"
+                                         style="width: 45px;
+                                height: 45px;
+                                object-fit: cover;
+                                border: 2px solid #F2C230;">
+
+                                    <img th:unless="${session.pessoaLogada.foto != null
+                                      and !session.pessoaLogada.foto.isEmpty()}"
+                                         th:src="@{/img/perfil-padrao.png}"
+                                         alt="Foto de perfil"
+                                         class="rounded-circle"
+                                         style="width: 45px;
+                                height: 45px;
+                                object-fit: cover;
+                                border: 2px solid #F2C230;">
+
+                                </a>
+
+                            </li>
+
+                        </th:block>
+
+                    </ul>
+
+                </div>
+
+
+            </div>
+
+        </nav>
+
+    </div>
 
 
     <div class="container py-4">

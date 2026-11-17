@@ -15,12 +15,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
+
 
     private final PessoaRepository pessoaRepository;
     private final OcorrenciaRepository ocorrenciaRepository;
@@ -97,15 +99,10 @@ public class AdminController {
 
         return "admin/perfil";
     }
-
     @PostMapping("/perfil/atualizar")
     public String atualizarPerfil(
             @ModelAttribute("pessoa") Pessoa dados,
-            @RequestParam(value = "foto", required = false) MultipartFile foto,
-            HttpSession session,
-            Model model) throws IOException {
-
-        System.out.println("ENTROU NO MÉTODO ATUALIZAR PERFIL");
+            HttpSession session) {
 
         if (!isAdministrador(session)) {
             return "redirect:/login";
@@ -134,34 +131,75 @@ public class AdminController {
         pessoa.setLatitude(dados.getLatitude());
         pessoa.setLongitude(dados.getLongitude());
 
-        // Verifica se uma foto foi enviada
-        if (foto != null && !foto.isEmpty()) {
-
-            System.out.println("Nome da foto: " +
-                    foto.getOriginalFilename());
-
-            System.out.println("Tamanho da foto: " +
-                    foto.getSize());
-
-            if (foto.getContentType() == null ||
-                    !foto.getContentType().startsWith("image/")) {
-
-                model.addAttribute("pessoa", pessoa);
-                model.addAttribute("erroFoto",
-                        "Selecione um arquivo de imagem válido.");
-
-                return "admin/perfil";
-            }
-
-            String caminhoFoto = arquivoService.salvarFoto(foto);
-            pessoa.setFoto(caminhoFoto);
-        }
-
         pessoaRepository.save(pessoa);
 
         session.setAttribute("pessoaLogada", pessoa);
 
         return "redirect:/admin/dashboard";
+    }
+
+    @PostMapping("/perfil/atualizar-foto")
+    public String atualizarFoto(
+            @RequestParam("foto") MultipartFile foto,
+            HttpSession session,
+            RedirectAttributes redirectAttributes) throws IOException {
+
+        if (!isAdministrador(session)) {
+            return "redirect:/login";
+        }
+
+        Pessoa pessoaLogada =
+                (Pessoa) session.getAttribute("pessoaLogada");
+
+        Pessoa pessoa = pessoaRepository.findById(pessoaLogada.getId())
+                .orElseThrow(() ->
+                        new IllegalArgumentException("Administrador não encontrado."));
+
+        if (foto == null || foto.isEmpty()) {
+            redirectAttributes.addFlashAttribute(
+                    "erroFoto", "Selecione uma imagem."
+            );
+
+            redirectAttributes.addFlashAttribute("abaAtiva", "foto");
+
+            return "redirect:/admin/dashboard";
+        }
+
+        if (foto.getSize() > 10 * 1024 * 1024) {
+            redirectAttributes.addFlashAttribute(
+                    "erroFoto", "A imagem deve ter no máximo 10 MB."
+            );
+
+            redirectAttributes.addFlashAttribute("abaAtiva", "foto");
+
+            return "redirect:/admin/perfil";
+        }
+
+        if (foto.getContentType() == null ||
+                !foto.getContentType().startsWith("image/")) {
+
+            redirectAttributes.addFlashAttribute(
+                    "erroFoto", "Selecione um arquivo de imagem válido."
+            );
+
+            redirectAttributes.addFlashAttribute("abaAtiva", "foto");
+
+            return "redirect:/admin/perfil";
+        }
+
+        String caminhoFoto = arquivoService.salvarFoto(foto);
+
+        pessoa.setFoto(caminhoFoto);
+
+        pessoaRepository.save(pessoa);
+
+        session.setAttribute("pessoaLogada", pessoa);
+
+        redirectAttributes.addFlashAttribute(
+                "sucessoFoto", "Foto de perfil atualizada com sucesso!"
+        );
+
+        return "redirect:/admin/perfil";
     }
 
     @GetMapping("/reclamacoes")
